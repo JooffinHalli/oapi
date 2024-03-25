@@ -18,7 +18,7 @@ patchConstructors(); // Object, Array
 var { config: configFile, service } = Process.args;
 
 
-var projectDir = joinPath(process.cwd(), '..');
+var projectDir = joinPath(process.cwd());
 var configDir = joinPath(projectDir, configFile);
 console.log({ projectDir, configDir });
 Config.assertIsJson(configFile);
