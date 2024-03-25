@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 var { join: joinPath } = require('node:path');
-var { load: convertYamlBytesToJsObj } = require('js-yaml');
 var { Config, FS, Git, Process, patchConstructors, assertVersion } = require('./utils');
 
 var serviceSchemasTs   = require('./scripts/service/1.schemasTs');
@@ -43,12 +42,10 @@ FS.rmDirSafe(repoName);
 Git.clone(repo, branch);
 Git.assertClonning(repoName, file);
 
-var yamlBytes = FS.readFileSync(`${repoName}/${file}`);
+/** @type {import('./types/OpenAPIObject').OpenAPIObject} */
+var openapiObject = FS.readFileSync(`${repoName}/${file}`);
 
 FS.rmDir(repoName);
-
-/** @type {import('./types/OpenAPIObject').OpenAPIObject} */
-var openapiObject = convertYamlBytesToJsObj(yamlBytes);
 
 assertVersion(openapiObject);
 
