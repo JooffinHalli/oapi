@@ -1,4 +1,8 @@
 {
   "name": "oapi",
-  "bin": "./index.js"
+  "bin": "./index.js",
+  "files": [
+    "*.js",
+    "**/*.js"
+  ]
 }
