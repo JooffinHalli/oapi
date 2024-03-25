@@ -1,4 +1,4 @@
-var { Schemas } = require('../../../openapi/utils');
+var { Schemas } = require('../../../utils');
 
 /**
  * создает файл schemas.ts с тайпскриптовыми типами схем
