@@ -17,10 +17,11 @@ patchConstructors(); // Object, Array
 
 var { config: configFile, service } = Process.args;
 
-Config.assertIsJson(configFile);
 
 var projectDir = joinPath(process.cwd(), '..');
 var configDir = joinPath(projectDir, configFile);
+console.log({ projectDir, configDir });
+Config.assertIsJson(configFile);
 
 var config = require(configDir);
 Config.assert(config, service, configDir);
