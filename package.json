@@ -1,3 +1,4 @@
 {
-  "name": "oapi"
+  "name": "oapi",
+  "bin": "./index.js"
 }
