@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 var { join: joinPath } = require('node:path');
 var { load: convertYamlBytesToJsObj } = require('js-yaml');
 var { Config, FS, Git, Process, patchConstructors, assertVersion } = require('./utils');
