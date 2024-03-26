@@ -1,69 +1,73 @@
 #!/usr/bin/env node
 
-var { join: joinPath } = require('node:path');
-var { Config, FS, Git, Process, patchConstructors, assertVersion } = require('./utils');
+fetch('http://staging.orders-v1-0.service.consul:82/_internal/orders/swagger/internal/swagger.json')
+    .then((res) => res.json())
+    .then(console.log)
+    .catch(console.log);
 
-var serviceSchemasTs   = require('./scripts/service/1.schemasTs');
-var serviceEnumsJs     = require('./scripts/service/2.enumsJs');
-var serviceUtilTypesTs = require('./scripts/service/3.utilTypesTs');
-var servicePathsTs     = require('./scripts/service/4.pathsTs');
-var serviceIndexJs     = require('./scripts/service/5.indexJs');
+// var { join: joinPath } = require('node:path');
+// var { Config, FS, Git, Process, patchConstructors, assertVersion } = require('./utils');
 
-var buildApiJs         = require('./scripts/buildApiJs');
-var utilTypesTs        = require('./scripts/utilTypesTs');
-var declarationsTs     = require('./scripts/buildDeclarationsTs');
+// var serviceSchemasTs   = require('./scripts/service/1.schemasTs');
+// var serviceEnumsJs     = require('./scripts/service/2.enumsJs');
+// var serviceUtilTypesTs = require('./scripts/service/3.utilTypesTs');
+// var servicePathsTs     = require('./scripts/service/4.pathsTs');
+// var serviceIndexJs     = require('./scripts/service/5.indexJs');
 
-patchConstructors(); // Object, Array
+// var buildApiJs         = require('./scripts/buildApiJs');
+// var utilTypesTs        = require('./scripts/utilTypesTs');
+// var declarationsTs     = require('./scripts/buildDeclarationsTs');
 
-var { config: configFile, service } = Process.args;
+// patchConstructors(); // Object, Array
 
+// var { config: configFile, service } = Process.args;
 
-var projectDir = joinPath(process.cwd());
-var configDir = joinPath(projectDir, configFile);
-console.log({ projectDir, configDir });
-Config.assertIsJson(configFile);
+// Config.assertIsJson(configFile);
 
-var config = require(configDir);
-Config.assert(config, service, configDir);
+// var projectDir = joinPath(process.cwd());
+// var configDir = joinPath(projectDir, configFile);
 
-var serviceConfig = config[service];
-Config.assertService(serviceConfig, configDir);
+// var config = require(configDir);
+// Config.assert(config, service, configDir);
 
-var { source } = config;
-var { prefix, repo, branch, file, output, ignore } = serviceConfig;
+// var serviceConfig = config[service];
+// Config.assertService(serviceConfig, configDir);
 
-Config.apiOutput = joinPath(projectDir, source);
-Config.serviceOutput = joinPath(Config.apiOutput, output);
-Config.prefix = prefix;
-Config.ignore = ignore;
+// var { source } = config;
+// var { prefix, repo, branch, file, output, ignore } = serviceConfig;
 
-Git.assertLink(repo);
-const repoName = Git.getRepoName(repo);
-FS.rmDirSafe(repoName);
-Git.clone(repo, branch);
-Git.assertClonning(repoName, file);
+// Config.apiOutput = joinPath(projectDir, source);
+// Config.serviceOutput = joinPath(Config.apiOutput, output);
+// Config.prefix = prefix;
+// Config.ignore = ignore;
 
-/** @type {import('./types/OpenAPIObject').OpenAPIObject} */
-var openapiObject = FS.readFileSync(`${repoName}/${file}`);
+// Git.assertLink(repo);
+// const repoName = Git.getRepoName(repo);
+// FS.rmDirSafe(repoName);
+// Git.clone(repo, branch);
+// Git.assertClonning(repoName, file);
 
-FS.rmDir(repoName);
+// /** @type {import('./types/OpenAPIObject').OpenAPIObject} */
+// var openapiObject = FS.readFileSync(`${repoName}/${file}`);
 
-assertVersion(openapiObject);
+// FS.rmDir(repoName);
 
-FS.mkDir(Config.apiOutput);
-FS.mkDir(Config.serviceOutput);
+// assertVersion(openapiObject);
 
-var schemas = openapiObject.components?.schemas;
-var paths = openapiObject.paths;
+// FS.mkDir(Config.apiOutput);
+// FS.mkDir(Config.serviceOutput);
 
-serviceSchemasTs(schemas);
-serviceEnumsJs(schemas);
-servicePathsTs(paths);
-serviceUtilTypesTs();
-serviceIndexJs();
+// var schemas = openapiObject.components?.schemas;
+// var paths = openapiObject.paths;
 
-buildApiJs();
-utilTypesTs();
-declarationsTs();
+// serviceSchemasTs(schemas);
+// serviceEnumsJs(schemas);
+// servicePathsTs(paths);
+// serviceUtilTypesTs();
+// serviceIndexJs();
 
-console.log("\x1b[32m", `апи  "${service}" успешно обновилось`, ` -> ${source}`); // green
+// buildApiJs();
+// utilTypesTs();
+// declarationsTs();
+
+// console.log("\x1b[32m", `апи  "${service}" успешно обновилось`, ` -> ${source}`); // green
