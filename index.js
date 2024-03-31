@@ -44,17 +44,19 @@ function mainScript(openapiObject) {
   var schemas = openapiObject.components?.schemas;
   var paths = openapiObject.paths;
 
-  serviceSchemasTs(schemas);
-  serviceEnumsJs(schemas);
-  servicePathsTs(paths);
-  serviceUtilTypesTs();
-  serviceIndexJs();
+  console.log({ schemas });
 
-  buildApiJs();
-  utilTypesTs();
-  declarationsTs();
+  // serviceSchemasTs(schemas);
+  // serviceEnumsJs(schemas);
+  // servicePathsTs(paths);
+  // serviceUtilTypesTs();
+  // serviceIndexJs();
 
-  console.log("\x1b[32m", `апи  "${service}" успешно обновилось`, ` -> ${sourcePath}`); // green
+  // buildApiJs();
+  // utilTypesTs();
+  // declarationsTs();
+
+  // console.log("\x1b[32m", `апи  "${service}" успешно обновилось`, ` -> ${sourcePath}`); // green
 }
 
 // var openapiObj = fetch('http://staging.orders-v1-0.service.consul:82/_internal/orders/swagger/internal/swagger.json')
