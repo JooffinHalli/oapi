@@ -1,31 +1,47 @@
+var fs = require('node:fs');
 var Process = require('../process');
 
-var serviceFields = ["prefix", "repo", "branch", "file", "output", "ignore"];
+var serviceFields = ["prefix", "link", "outputPath", "ignoreList"];
 
 /** Утилиты для работы с конфигом */
 class Config {
 
-  static assertIsJson = (fileName) => {
-    var { 1: ext } = fileName.split('.');
+  /** Проверяем, правильный ли путь и есть ли по нему файл */
+  static assertPath = (path) => {
+    var parts = path.split('.');
+    var ext = parts[parts.length - 1];
     const isNotJson = !ext || (ext !== 'json');
-    if (isNotJson) Process.exit('В качестве "config"\'a должен быть .json файл');
+    if (isNotJson) Process.exit(`В качестве config'a должен быть .json файл`);
+    if (!fs.existsSync(path)) Process.exit(`Файл по пути '${path}' не найден`);
   }
 
-  static assert = (config, service, configDir) => {
+  /** Получаем файл */
+  static read = (path) => {
+    try {
+      return require(path);
+    }
+    catch (e) {
+      Process.exit(`Ошибка при чтении json по пути '${path}'`);
+    }
+  }
+
+  /** Проверяем поля конфига на первом уровне */
+  static assert = (config, service, configPath) => {
     if (!config.has(service)) {
-      Process.exit(`В конфиге не описан сервис "${service}", проверьте -> ${configDir}`);
+      Process.exit(`В конфиге не описан сервис "${service}", проверьте -> ${configPath}`);
     }
     if (!config.has('source')) {
-      Process.exit(`Конфиг не содержит поле "source", проверьте -> ${configDir}`);
+      Process.exit(`Конфиг не содержит поле "source", проверьте -> ${configPath}`);
     }
   }
 
-  static assertService = (service, configDir) => {
+  /** Проверяем проверяем поля сервиса */
+  static assertService = (service, configPath) => {
     var l = serviceFields.length;
     for (var i = 0; i < l; i++) {
       var field = serviceFields[i];
       if (!service.has(field)) {
-        Process.exit(`Конфиг сервиса не содержит поле "${field}", проверьте -> ${configDir}`);
+        Process.exit(`Конфиг сервиса не содержит поле "${field}", проверьте -> ${configPath}`);
       }
     }
   }

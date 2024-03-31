@@ -41,6 +41,15 @@ class FS {
   }
 
   static readFileSync = fs.readFileSync;
+
+  static isJsonFile = () => {
+    try {
+      const stats = fs.statSync('/Users/joe/test.txt');
+    }
+    catch (e) {
+      Process.exit(`Ошибка при создании папки ${path}`);
+    }
+  }
   
 }
 

@@ -6,6 +6,7 @@
     "**/*.js"
   ],
   "scripts": {
-    "git": "git add . && git commit -m 'comm' && git push"
+    "git": "git add . && git commit -m 'comm' && git push",
+    "start": "npx https://github.com/JooffinHalli/oapi.git config=config.json service=ownloads"
   }
 }

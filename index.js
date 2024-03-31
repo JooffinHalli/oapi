@@ -15,61 +15,50 @@ var declarationsTs     = require('./scripts/buildDeclarationsTs');
 
 patchConstructors(); // Object, Array
 
-var { config: configFile, service } = Process.args;
+var { config: configFileName, service } = Process.args;
 
-console.log(Process.args);
+var projectPath = joinPath(process.cwd());
+var configPath = joinPath(projectPath, configFileName);
 
-Config.assertIsJson(configFile);
+Config.assertPath(configPath);
+var config = Config.read(configPath);
+Config.assert(config, service, configPath);
+var serviceConfig = config[service];
+Config.assertService(serviceConfig, configPath);
 
-var openapiObj = fetch('http://staging.orders-v1-0.service.consul:82/_internal/orders/swagger/internal/swagger.json')
-    .then((res) => res.json())
-    // .then(console.log)
-    // .catch(console.log);
+var { sourcePath } = config;
+var { link, outputPath, prefix, ignoreList } = serviceConfig;
 
-// var projectDir = joinPath(process.cwd());
-// var configDir = joinPath(projectDir, configFile);
+Config.apiOutput = joinPath(projectPath, sourcePath);
+Config.serviceOutput = joinPath(Config.apiOutput, outputPath);
+Config.prefix = prefix;
+Config.ignoreList = ignoreList;
 
-// var config = require(configDir);
-// Config.assert(config, service, configDir);
+/** @param {import('./types/OpenAPIObject').OpenAPIObject} openapiObject */
+function mainScript(openapiObject) {
+  assertVersion(openapiObject);
 
-// var serviceConfig = config[service];
-// Config.assertService(serviceConfig, configDir);
+  FS.mkDir(Config.apiOutput);
+  FS.mkDir(Config.serviceOutput);
 
-// var { source } = config;
-// var { prefix, repo, branch, file, output, ignore } = serviceConfig;
+  var schemas = openapiObject.components?.schemas;
+  var paths = openapiObject.paths;
 
-// Config.apiOutput = joinPath(projectDir, source);
-// Config.serviceOutput = joinPath(Config.apiOutput, output);
-// Config.prefix = prefix;
-// Config.ignore = ignore;
+  serviceSchemasTs(schemas);
+  serviceEnumsJs(schemas);
+  servicePathsTs(paths);
+  serviceUtilTypesTs();
+  serviceIndexJs();
 
-// Git.assertLink(repo);
-// const repoName = Git.getRepoName(repo);
-// FS.rmDirSafe(repoName);
-// Git.clone(repo, branch);
-// Git.assertClonning(repoName, file);
+  buildApiJs();
+  utilTypesTs();
+  declarationsTs();
 
-// /** @type {import('./types/OpenAPIObject').OpenAPIObject} */
-// var openapiObject = FS.readFileSync(`${repoName}/${file}`);
+  console.log("\x1b[32m", `апи  "${service}" успешно обновилось`, ` -> ${sourcePath}`); // green
+}
 
-// FS.rmDir(repoName);
-
-// assertVersion(openapiObject);
-
-// FS.mkDir(Config.apiOutput);
-// FS.mkDir(Config.serviceOutput);
-
-// var schemas = openapiObject.components?.schemas;
-// var paths = openapiObject.paths;
-
-// serviceSchemasTs(schemas);
-// serviceEnumsJs(schemas);
-// servicePathsTs(paths);
-// serviceUtilTypesTs();
-// serviceIndexJs();
-
-// buildApiJs();
-// utilTypesTs();
-// declarationsTs();
-
-// console.log("\x1b[32m", `апи  "${service}" успешно обновилось`, ` -> ${source}`); // green
+// var openapiObj = fetch('http://staging.orders-v1-0.service.consul:82/_internal/orders/swagger/internal/swagger.json')
+var openapiObj = fetch(link)
+  .then((res) => res.json())
+  .catch((e) => console.error('Ошибка при запросе', e))
+  .then(mainScript);

@@ -198,9 +198,9 @@ function Paths() {
   this.setHidden('pathMaxLength', 0);
 }
 Paths.prototype.add = function(path, pathItemObject) {
-  var { prefix, ignore } = Config;
+  var { prefix, ignoreList } = Config;
   path = prefix ? (`/${prefix}` + path) : path;
-  var shouldIgnore = ignore.isArray && ignore.some((substr) => {
+  var shouldIgnore = ignoreList.isArray && ignoreList.some((substr) => {
     return path.includes(substr);
   });
   if (shouldIgnore) return;
