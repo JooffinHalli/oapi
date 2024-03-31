@@ -44,6 +44,7 @@ CompositionAcc.prototype.add = function(index, schema) {
 
 class SchemasAcc {}; // public
 SchemasAcc.prototype.add = function(name, schema, isFirstLevel, imports) {
+  console.log(imports);
   var smartSchema = new SmartSchema(schema, name);
   var { isNullable, isRequired, compositionGeneric, value } = smartSchema;
   if (isNullable) name += '$NULLABLE';
