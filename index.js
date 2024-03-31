@@ -19,7 +19,7 @@ var { config: configFile, service } = Process.args;
 
 console.log(Process.args);
 
-// Config.assertIsJson(configFile);
+Config.assertIsJson(configFile);
 
 var openapiObj = fetch('http://staging.orders-v1-0.service.consul:82/_internal/orders/swagger/internal/swagger.json')
     .then((res) => res.json())
