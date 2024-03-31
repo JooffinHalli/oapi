@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 var { join: joinPath } = require('node:path');
-var { Config, FS, Git, Process, patchConstructors, assertVersion } = require('./utils');
+var { Config, FS, Process, patchConstructors, assertVersion } = require('./utils');
 
 var serviceSchemasTs   = require('./scripts/service/1.schemasTs');
 var serviceEnumsJs     = require('./scripts/service/2.enumsJs');
@@ -45,10 +45,10 @@ function mainScript(openapiObject) {
   var paths = openapiObject.paths;
 
   serviceSchemasTs(schemas);
-  // serviceEnumsJs(schemas);
-  // servicePathsTs(paths);
-  // serviceUtilTypesTs();
-  // serviceIndexJs();
+  serviceEnumsJs(schemas);
+  servicePathsTs(paths);
+  serviceUtilTypesTs();
+  serviceIndexJs();
 
   buildApiJs();
   utilTypesTs();
@@ -57,8 +57,7 @@ function mainScript(openapiObject) {
   console.log("\x1b[32m", `апи  "${service}" успешно обновилось`, ` -> ${sourcePath}`); // green
 }
 
-// var openapiObj = fetch('http://staging.orders-v1-0.service.consul:82/_internal/orders/swagger/internal/swagger.json')
-var openapiObj = fetch(link)
+fetch(link)
   .then((res) => res.json())
   .catch((e) => console.error('Ошибка при запросе', e))
   .then(mainScript);

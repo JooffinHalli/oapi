@@ -3,7 +3,6 @@ var Process = require('./process');
 module.exports = {
   Config: require('./config'),
   FS: require('./fs'),
-  Git: require('./git'),
   Json: require('./json'),
   Process,
   Schemas: require('./schema'),

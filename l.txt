@@ -1,7 +1,0 @@
-
-> start
-> npx https://github.com/JooffinHalli/oapi.git config=config.json service=ownloads
-
-Need to install the following packages:
-  github:JooffinHalli/oapi
-Ok to proceed? (y) y
