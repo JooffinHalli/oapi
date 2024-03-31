@@ -30,8 +30,8 @@ class Config {
     if (!config.has(service)) {
       Process.exit(`В конфиге не описан сервис "${service}", проверьте -> ${configPath}`);
     }
-    if (!config.has('source')) {
-      Process.exit(`Конфиг не содержит поле "source", проверьте -> ${configPath}`);
+    if (!config.has('sourcePath')) {
+      Process.exit(`Конфиг не содержит поле "sourcePath", проверьте -> ${configPath}`);
     }
   }
 

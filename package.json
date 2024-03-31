@@ -7,6 +7,7 @@
   ],
   "scripts": {
     "git": "git add . && git commit -m 'comm' && git push",
-    "start": "npx https://github.com/JooffinHalli/oapi.git config=config.json service=ownloads"
+    "start": "npx https://github.com/JooffinHalli/oapi.git config=config.json service=ownloads",
+    "test": "node index.js config=config.json service=ownloads"
   }
 }
