@@ -1,28 +1,30 @@
 #!/usr/bin/env node
 
-fetch('http://staging.orders-v1-0.service.consul:82/_internal/orders/swagger/internal/swagger.json')
-    .then((res) => res.json())
-    .then(console.log)
-    .catch(console.log);
+var { join: joinPath } = require('node:path');
+var { Config, FS, Git, Process, patchConstructors, assertVersion } = require('./utils');
 
-// var { join: joinPath } = require('node:path');
-// var { Config, FS, Git, Process, patchConstructors, assertVersion } = require('./utils');
+var serviceSchemasTs   = require('./scripts/service/1.schemasTs');
+var serviceEnumsJs     = require('./scripts/service/2.enumsJs');
+var serviceUtilTypesTs = require('./scripts/service/3.utilTypesTs');
+var servicePathsTs     = require('./scripts/service/4.pathsTs');
+var serviceIndexJs     = require('./scripts/service/5.indexJs');
 
-// var serviceSchemasTs   = require('./scripts/service/1.schemasTs');
-// var serviceEnumsJs     = require('./scripts/service/2.enumsJs');
-// var serviceUtilTypesTs = require('./scripts/service/3.utilTypesTs');
-// var servicePathsTs     = require('./scripts/service/4.pathsTs');
-// var serviceIndexJs     = require('./scripts/service/5.indexJs');
+var buildApiJs         = require('./scripts/buildApiJs');
+var utilTypesTs        = require('./scripts/utilTypesTs');
+var declarationsTs     = require('./scripts/buildDeclarationsTs');
 
-// var buildApiJs         = require('./scripts/buildApiJs');
-// var utilTypesTs        = require('./scripts/utilTypesTs');
-// var declarationsTs     = require('./scripts/buildDeclarationsTs');
+patchConstructors(); // Object, Array
 
-// patchConstructors(); // Object, Array
+var { config: configFile, service } = Process.args;
 
-// var { config: configFile, service } = Process.args;
+console.log(Process.args);
 
 // Config.assertIsJson(configFile);
+
+var openapiObj = fetch('http://staging.orders-v1-0.service.consul:82/_internal/orders/swagger/internal/swagger.json')
+    .then((res) => res.json())
+    // .then(console.log)
+    // .catch(console.log);
 
 // var projectDir = joinPath(process.cwd());
 // var configDir = joinPath(projectDir, configFile);

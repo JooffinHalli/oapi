@@ -63,19 +63,19 @@ function patchConstructors() {
 }
 
 function assertVersion(openapiObject) {
-  var supportedVarsions = {
-    '3.0.0': 1,
-    '3.0.1': 1,
-    '3.0.2': 1,
-    '3.0.3': 1,
-    '3.1.0': 1
-  };
+  var supportedVarsions = [
+    '3.0.0',
+    '3.0.1',
+    '3.0.2',
+    '3.0.3',
+    '3.1.0'
+  ];
   if (
     !openapiObject.has('openapi') ||
-    !supportedVarsions.has(openapiObject.openapi)
+    !supportedVarsions.includes(openapiObject.openapi)
   ) {
     Process.exit(
-      `supported openapi version are: ${Object.keys(supportedVarsions).join(', ')}`
+      `supported openapi versions are: ${supportedVarsions.join(', ')}`
     );
   }
 }

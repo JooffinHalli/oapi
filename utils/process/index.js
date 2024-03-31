@@ -1,11 +1,11 @@
-var { argv } = process;
+var { argv, exit: processExit } = process;
 var args = {};
 var keys = ['config', 'service'];
 var keysLength = keys.length;
-keys.toString = () => keys.map((k) => `"${k}"`, '').join(', ');
+keys.toString = () => keys.map(k => `"${k}"`).join(', ');
 var exit = (message) => {
   console.log('\x1b[31m%s\x1b[0m', message); // red
-  process.exit();
+  processExit();
 }
 
 if (argv.length !== (2 + keysLength)) {
