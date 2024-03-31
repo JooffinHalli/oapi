@@ -6,6 +6,6 @@
     "**/*.js"
   ],
   "scripts": {
-    "git": "git add . && git status && git commit -m '12' && git status"
+    "git": "git add . && git status && git commit -m 'comm' && git status && git push"
   }
 }
