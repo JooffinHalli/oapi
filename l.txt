@@ -1,3 +1,2314 @@
-Need to install the following packages:
-  github:JooffinHalli/oapi
-Ok to proceed? (y) 
+
+> start
+> npx https://github.com/JooffinHalli/oapi.git config=config.json service=ownloads
+
+{
+  schemas: {
+    ContractView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    OrderContractorLimit: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    LimitCount: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DealRoutedMap: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    OrderRole: {
+      type: 'integer',
+      description: 'Роль\n\n* `0` — Грузовладелец\n* `1` — Перевозчик',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    RoutedTrace: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    RoutedCar: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    MapCarType: {
+      type: 'integer',
+      description: '',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    TransportationInfoForMap: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DriverViewForMap: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    TruckViewForMap: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    LoadViewForMap: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    GpsSource: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DealNotFoundException: { allOf: [Array] },
+    NotFoundException: { allOf: [Array] },
+    FinalException: { allOf: [Array] },
+    Exception: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    MethodBase: { allOf: [Array] },
+    MethodAttributes: {
+      type: 'integer',
+      description: '',
+      'x-enumFlags': true,
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    MethodImplAttributes: {
+      type: 'integer',
+      description: '',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    CallingConventions: {
+      type: 'integer',
+      description: '',
+      'x-enumFlags': true,
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    RuntimeMethodHandle: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    IntPtr: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    MemberInfo: {
+      type: 'object',
+      'x-abstract': true,
+      additionalProperties: false,
+      properties: [Object]
+    },
+    MemberTypes: {
+      type: 'integer',
+      description: '',
+      'x-enumFlags': true,
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    Module: {
+      type: 'object',
+      'x-abstract': true,
+      additionalProperties: false,
+      properties: [Object]
+    },
+    Assembly: {
+      type: 'object',
+      'x-abstract': true,
+      additionalProperties: false,
+      properties: [Object]
+    },
+    TypeInfo: { allOf: [Array] },
+    ConstructorInfo: { allOf: [Array] },
+    EventInfo: { allOf: [Array] },
+    EventAttributes: {
+      type: 'integer',
+      description: '',
+      'x-enumFlags': true,
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    MethodInfo: { allOf: [Array] },
+    ParameterInfo: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    ParameterAttributes: {
+      type: 'integer',
+      description: '',
+      'x-enumFlags': true,
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    CustomAttributeData: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    CustomAttributeTypedArgument: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    CustomAttributeNamedArgument: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    ICustomAttributeProvider: { type: 'object', 'x-abstract': true, additionalProperties: false },
+    FieldInfo: { allOf: [Array] },
+    FieldAttributes: {
+      type: 'integer',
+      description: '',
+      'x-enumFlags': true,
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    RuntimeFieldHandle: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    PropertyInfo: { allOf: [Array] },
+    PropertyAttributes: {
+      type: 'integer',
+      description: '',
+      'x-enumFlags': true,
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    SecurityRuleSet: {
+      type: 'integer',
+      description: '',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    ModuleHandle: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    FinalExceptionModelOfFileAccessDeniedException: {
+      type: 'object',
+      description: 'Модель ошибки',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    FinalExceptionModelOfFileNotFoundException: {
+      type: 'object',
+      description: 'Модель ошибки',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DealDocumentAccessDto: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DealDocumentAccess: {
+      type: 'integer',
+      description: 'Доступ к документу\n            \n* `0` — Обе стороны\n* `1` — Водитель',
+      'x-enumFlags': true,
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    DealFileView: {
+      type: 'object',
+      description: 'Файлы заказа',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DealFileAccess: {
+      type: 'integer',
+      description: 'Доступ к файлу\n' +
+        '            \n' +
+        '* `0` — только загрузивший файл\n' +
+        '* `1` — обе стороны\n' +
+        '* `2` — загрузивший файл и водитель\n' +
+        '* `3` — доступен обеим сторонам и водителю',
+      'x-enumFlags': true,
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    DealFileSourceTypes: {
+      type: 'integer',
+      description: 'Источник файла\n' +
+        '            \n' +
+        '* `0` — Загружен в заказ\n' +
+        '* `1` — Скопирован из груза\n' +
+        '* `2` — Скопирован из данных о водителе\n' +
+        '* `3` — Скопироване из данных о грузовике\n' +
+        '* `4` — Скопирован из данных о прицепе\n' +
+        '* `5` — Скопирован из данных о полуприцепе\n' +
+        '* `6` — Скопирован из данных о тягаче\n' +
+        '* `7` — Загружен для Ати-водителя\n' +
+        '* `8` — Загружен из приложения АТИ-водитель',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    DealFileSourceFileTypes: {
+      type: 'integer',
+      description: 'Тип загруженного файла\n' +
+        '            \n' +
+        '* `0` — Обычный файл\n' +
+        '* `1` — Скан водительского удостоверения\n' +
+        '* `2` — Скан гражданского паспорта водителя\n' +
+        '* `3` — Скан ПТС\n' +
+        '* `4` — Скан пластикового ПТС\n' +
+        '* `5` — Фото ТС\n' +
+        '* `8` - Скан договора о безвоздмездном пользовании',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    DealFileType: {
+      type: 'integer',
+      description: 'Тип файла\n' +
+        '            \n' +
+        '* `0` — Другой документ\n' +
+        '* `1` — Товарно-транспортная накладная\n' +
+        '* `2` — Товарная накладная\n' +
+        '* `3` — Транспортная накладная\n' +
+        '* `4` — Накладная\n' +
+        '* `5` — Счет-фактура\n' +
+        '* `6` — Счет на оплату\n' +
+        '* `7` — Платежное поручение\n' +
+        '* `8` — Акт выполненных работ\n' +
+        '* `9` — Заявка\n' +
+        '* `10` — Заявка к договору\n' +
+        '* `11` — Заказ\n' +
+        '* `12` — Договор\n' +
+        '* `13` — Доп. соглашение к договору\n' +
+        '* `14` — Доверенность\n' +
+        '* `15` — Поручение экспедитору\n' +
+        '* `16` — Информационное письмо\n' +
+        '* `17` — Документ о происшествии с грузом/ТС',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    FinalExceptionModelOfFileWrongException: {
+      type: 'object',
+      description: 'Модель ошибки',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    FinalExceptionModelOfDealAccessDeniedException: {
+      type: 'object',
+      description: 'Модель ошибки',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    FinalExceptionModelOfDealNotFoundException: {
+      type: 'object',
+      description: 'Модель ошибки',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    FinalExceptionModelOfFinalException: {
+      type: 'object',
+      description: 'Модель ошибки',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DealFileAccessDto: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DealFilesAndDocumentsView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DocumentInfoView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    SimpleUser: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DocumentType: {
+      type: 'integer',
+      description: 'Тип документа\n' +
+        '            \n' +
+        '* `0` — Нет\n' +
+        '* `1` — Заказ\n' +
+        '* `2` — Договор-заявка\n' +
+        '* `3` — Поручение экспедитору\n' +
+        '* `4` — Акт\n' +
+        '* `5` — Счет\n' +
+        '* `6` — Одностороннее расторжение\n' +
+        '* `7` — Доверенность\n' +
+        '* `8` — Табличный заказ\n' +
+        '* `9` — Заявка к договору (табличный вид)',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    DocumentTemplatesView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DocumentTemplateView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DealDocumentTemplateAccess: {
+      type: 'integer',
+      description: 'Доступ к файлу\n' +
+        '            \n' +
+        '* `0` — только загрузивший файл\n' +
+        '* `1` — обе стороны',
+      'x-enumFlags': true,
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    OrdersInformationView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DealOrderView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    LoadView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DateType: {
+      type: 'integer',
+      description: 'Готовность груза к перевозке\n' +
+        '            \n' +
+        '* `0` — Готов к отправке сегодня или завтра\n' +
+        '* `1` — Готов к отправке между FirstDate и LastDate\n' +
+        '* `2` — Готов к отправке постоянно\n' +
+        '* `3` — Груза нет, запрос ставки',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    Periodicity: {
+      type: 'integer',
+      description: 'Периодичность загрузки\n' +
+        '            \n' +
+        '* `0` — Нет\n' +
+        '* `1` — Ежедневно\n' +
+        '* `100` — Только по рабочим дням',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    LoadPointViewForOrder: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    LoadingCargo: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    LoadSize: {
+      type: 'object',
+      description: 'Размеры груза',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    LoadExtraPoint: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    LoadExtraPointType: {
+      type: 'integer',
+      description: 'Тип дополнительной точки маршрута груза\n' +
+        '            \n' +
+        '* `1` — Загрузка\n' +
+        '* `2` — Разгрузка\n' +
+        '* `3` — Таможня\n' +
+        '* `4` — Ближайший крупный город к городу загрузки\n' +
+        '* `5` — Ближайший крупный город к городу разгрузки\n' +
+        '* `8` — Проехать через',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    UnloadingCargo: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    Organization: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    Residency: {
+      type: 'integer',
+      description: '',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    OrganizationDocsAddress: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    Stock: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    StockSchedule: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DayOfWeek: {
+      type: 'integer',
+      description: '',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    ContactPerson: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    StockType: {
+      type: 'integer',
+      description: '',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    TimeslotsBinding: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    TimeslotsBindingStatus: {
+      type: 'integer',
+      description: '',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    LoadCargo: {
+      type: 'object',
+      description: 'Параметры груза',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DogruzType: {
+      type: 'integer',
+      description: 'Параметр, отвечающий за способ перевозки груза\n' +
+        '            \n' +
+        '* `1` — Только отдельной машиной\n' +
+        '* `2` — Догруз возможен\n' +
+        '* `3` — Догруз',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    LoadTransport: {
+      type: 'object',
+      description: 'Параметры перевозки',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    AuctionView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    AuctionFinishType: {
+      type: 'integer',
+      description: 'Тип завершения Торгов (аукциона)\n' +
+        '\n' +
+        '* `0` — Обычное завершение\n' +
+        '* `1` — Завершение при выставлении минимальной ставки\n' +
+        '* `2` — Досрочное завершение',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    RouteInfoView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DealView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    RateType: {
+      type: 'integer',
+      description: 'Тип оплаты\n' +
+        '            \n' +
+        '* `0` — Нет\n' +
+        '* `1` — Любая\n' +
+        '* `2` — С НДС\n' +
+        '* `3` — Без НДС',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    DealState: {
+      type: 'integer',
+      description: 'Статус Заказа\n' +
+        '\n' +
+        '* `0` — Груз зарезервирован перевозчиком\n' +
+        '* `1` — Перевозчик заполнил информацию о реквизитах/водителе/машине и грузовладелец не просмотрел заявку\n' +
+        '* `2` — Перевозчик заполнил информацию о реквизитах/водителе/машине и грузовладелец просмотрел заявку\n' +
+        '* `3` — Грузовладелец отправил документ-заявку перевозчику\n' +
+        '* `4` — Заказ в исполнении (перевозчик дал согласие на документ-заявку)\n' +
+        '* `5` — Заказ завершен и перенесен в архив\n' +
+        '* `7` — Есть только приглашение на Заказ\n' +
+        '* `8` — Заказа нет, но есть Торги, у которых есть возможные победители\n' +
+        '* `9` — Заказ отклонен автоматически, так как после последней даты загрузки прошло уже более 7 дней\n' +
+        '* `10` — Заказ завершен, ожидается оплата\n' +
+        '* `11` — В Торгах лучшая ставка из других Торгов\n' +
+        '* `-11` — Заказ удален\n' +
+        '* `-10` — Резерв груза перевозчиком отменен\n' +
+        '* `-9` — Заказ отклонен грузовладельцем в Торгах после истечения срока подачи документов (смена победителя)\n' +
+        '* `-8` — Грузовладелец отменил Заказ в исполнении\n' +
+        '* `-7` — Перевозчик отменил Заказ в исполнении\n' +
+        '* `-6` — Заказ отклонен грузовладельцем после удаления Торгов\n' +
+        '* `-4` — Заказ отклонен грузовладельцем в Торгах (смена победителя)\n' +
+        '* `-3` — Заказ отклонен грузовладельцем\n' +
+        '* `-2` — Заказ отозван перевозчиком',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    DealKinds: {
+      type: 'integer',
+      description: 'Тип Заказа\n' +
+        '            \n' +
+        '* `0` — Заказ невозможен \n' +
+        '* `1` — Взятие груза из поиска\n' +
+        '* `2` — Заказ из Торгов\n' +
+        '* `4` — Предложение груза\n' +
+        '* `8` — Из перехвата машин\n' +
+        '* `16` — Односторонний заказ\n' +
+        '* `32` — Предложение груза из встречного предложения\n' +
+        '* `64` — Предложение груза по контракту',
+      'x-enumFlags': true,
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    DriverView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DriverOrigin: {
+      type: 'integer',
+      description: 'Идентификатор источника информации о водителе\n' +
+        '            \n' +
+        '* `0` — Неизвестно откуда указан водитель\n' +
+        '* `1` — Водитель указан на странице заказов у Заказа в исполнении\n' +
+        '* `2` — Водитель указан в АТИ-Доках',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    ScanView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    AutoparkDocumentType: {
+      type: 'integer',
+      description: 'Тип документа сущности каталогов\n' +
+        '            \n' +
+        '* `1` — Скан водительского удостоверения\n' +
+        '* `2` — Скан гражданского паспорта\n' +
+        '* `3` — Скан ПТС\n' +
+        '* `4` — Скан пластикового ПТС\n' +
+        '* `6` — Скан договора аренды\n' +
+        '* `5` — Фото ТС\n' +
+        '* `8` — Договор о безвоздмездном пользовании',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    TrackerPresenceView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    SmsInviteStatusView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    SmsStatus: {
+      type: 'integer',
+      description: '',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    TrackerOfferStatus: {
+      type: 'integer',
+      description: '',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    ExtendedDealInWorkStatus: {
+      type: 'integer',
+      description: '',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    TrackerRouteBadEvent: {
+      type: 'integer',
+      description: 'Происшествия по ходу маршрута водителя',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    TruckView: {
+      type: 'object',
+      description: 'Транспортное средство',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    TruckOwnershipType: {
+      type: 'integer',
+      description: 'Тип владения ТС\n' +
+        '            \n' +
+        '* `0` - Собственное\n' +
+        '* `1` - Привлеченное\n' +
+        '* `2` - Аренда\n' +
+        '* `3` - Лизинг\n' +
+        '* `4` - Совместная собственность (супругов)\n' +
+        '* `5` - Безвозмездное пользование',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    TruckType: {
+      type: 'integer',
+      description: 'Тип транспортного средства\n' +
+        '            \n' +
+        '* `1` — Грузовик\n' +
+        '* `2` — Тягач\n' +
+        '* `4` — Полуприцеп\n' +
+        '* `8` — Прицеп',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    TruckOrigin: {
+      type: 'integer',
+      description: 'Источник создания Транспорта\n' +
+        '            \n' +
+        '* `0` — Неизвестно откуда указано ТС\n' +
+        '* `1` — ТС указано на странице заказов у Заказа в исполнении\n' +
+        '* `2` — ТС Указано в АТИ-доках',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    DocumentInfoView2: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    InWorkStatusModel: {
+      type: 'integer',
+      description: 'Статусная модель перевозки\n' +
+        '            \n' +
+        '* `0` — Простая перевозка\n' +
+        '* `1` — Первая миля\n' +
+        '* `2` — Последняя миля\n' +
+        '* `3` — Порожний контейнер',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    DealInWorkView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    InWorkStatus: {
+      type: 'integer',
+      description: 'Статус перевозки\n' +
+        '            \n' +
+        '* `0` — Нет статуса\n' +
+        '* `1` — Едет на загрузку\n' +
+        '* `2` — Ожидает загрузку\n' +
+        '* `3` — Загружается\n' +
+        '* `4` — Загрузился, едет на выгрузку\n' +
+        '* `5` — Ожидает выгрузку\n' +
+        '* `6` — Выгружается\n' +
+        '* `7` — Выгрузился\n' +
+        '* `8` — Поломка\n' +
+        '* `9` — ДТП\n' +
+        '* `10` — Арест ТС\n' +
+        '* `11` — Контейнер получен на погрузку\n' +
+        '* `12` — Контейнер на погрузке\n' +
+        '* `13` — Погрузка контейнера окончена\n' +
+        '* `14` — Контейнер сдан с погрузки\n' +
+        '* `15` — Контейнер получен на выгрузку\n' +
+        '* `16` — Контейнер на выгрузке\n' +
+        '* `17` — Выгрузка контейнера окончена\n' +
+        '* `18` — Контейнер сдан с выгрузки\n' +
+        '* `19` — Пустой контейнер получен\n' +
+        '* `20` — Пустой контейнер сдан',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    DataForDriverView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DriverTrackerPointView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DealPointTypes: {
+      type: 'integer',
+      description: 'Тип точки маршрута\n' +
+        '            \n' +
+        '* `1` — Загрузка\n' +
+        '* `2` — Разгрузка\n' +
+        '* `3` — Таможня\n' +
+        '* `8` — Ехать через',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    ContactPerson2: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DealPointView: {
+      type: 'object',
+      description: 'Точка маршрута заказа',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    PointStockDocView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    ContactPersonView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    OrganizationView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DealPaymentView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    RateView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    PayDocsView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DocumentStatusInfoView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DocumentTrackingInfoView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    PaymentStatusView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    RequisiteView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    FirmAddressView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    Signee: {
+      type: 'object',
+      description: 'Подписант (лицо, поставившее свою подпись под документом).',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    CustomSetting: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    PersonalInvitationOrderView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    PersonalInvitationView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    AuctionWithPossibleWinnersOrderView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    AccountView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    PassportView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    FirmStatus: {
+      type: 'integer',
+      description: '',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    ContactView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    CountersView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    OrderCounter: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    CityView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    Comment: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    JsonValidationException: { allOf: [Array] },
+    OrderTab: {
+      type: 'integer',
+      description: 'Вкладка\n' +
+        '\n' +
+        '* `0` — Согласование\n' +
+        '* `1` — В исполнении\n' +
+        '* `2` — Архив\n' +
+        '* `3` — ДО и Оплата',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    DealFileTypeInfo: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    InWorkStatusModelInfo: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    InWorkStatusInfo: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    FullOrderView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    FinalExceptionModelOfContactAccessDeniedException: {
+      type: 'object',
+      description: 'Модель ошибки',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    FinalExceptionModelOfLoadCantReserveException: {
+      type: 'object',
+      description: 'Модель ошибки',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    FinalExceptionModelOfDeserializationException: {
+      type: 'object',
+      description: 'Модель ошибки',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    FinalExceptionModelOfAccessDeniedException: {
+      type: 'object',
+      description: 'Модель ошибки',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    FinalExceptionModelOfAuctionIsExWinnerException: {
+      type: 'object',
+      description: 'Модель ошибки',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    FinalExceptionModelOfAuctionIsNotWinnerException: {
+      type: 'object',
+      description: 'Модель ошибки',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    FinalExceptionModelOfInvitationNotFoundException: {
+      type: 'object',
+      description: 'Модель ошибки',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    FinalExceptionModelOfLoadNotFoundException: {
+      type: 'object',
+      description: 'Модель ошибки',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    FinalExceptionModel_1: {
+      type: 'object',
+      description: 'Модель ошибки',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    ChangeDriverDto: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    ChangeTruckDto: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    ChangeRateDto: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    SaveUnilateralOrderDto: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    UnilateralOrderPointDtoInbox: {
+      type: 'object',
+      additionalProperties: false,
+      required: [Array],
+      properties: [Object]
+    },
+    UnilateralLoadExtraPointType: {
+      type: 'integer',
+      description: 'Тип дополнительной точки маршрута груза\n' +
+        '            \n' +
+        '* `1` — Загрузка\n' +
+        '* `2` — Разгрузка\n' +
+        '* `3` — Таможня',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    UnilateralPaymentType: {
+      type: 'integer',
+      description: 'Типы оплаты для Одностороннего заказа\n' +
+        '            \n' +
+        '* `0` — Оплата наличными\n' +
+        '* `1` — Безналичная оплата без НДС \n' +
+        '* `2` — Безналичная оплата c НДС',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    FinalExceptionModelOfLoadCantTakeException: {
+      type: 'object',
+      description: 'Модель ошибки',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    FinalExceptionModelOfInvalidTruckCombinationException: {
+      type: 'object',
+      description: 'Модель ошибки',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    FinalExceptionModelOfJsonValidationException: {
+      type: 'object',
+      description: 'Модель ошибки',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    FinalExceptionModelOfDealWithDocsCantOverwriteException: {
+      type: 'object',
+      description: 'Модель ошибки',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    FinalExceptionModelOfDealNoChangeIsDropDocsNotSpecifiedException: {
+      type: 'object',
+      description: 'Модель ошибки',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    LoadTakeInfoDto: {
+      type: 'object',
+      description: 'Параметры Заказа',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    LoadTakeCopiesDto: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DriverInfo: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    Scan: {
+      type: 'object',
+      description: 'Скан документа ТС или водителя',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    TrackerPresence: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    SmsInviteStatus: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    PhoneBinding: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    PhoneOwnerType: {
+      type: 'integer',
+      description: '',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    Account: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    PayedService: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    FirmAccessLevel: {
+      type: 'integer',
+      description: '',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    FirmServiceCity: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    Passport: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    Contact: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    OrderPhone: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    TruckInfo: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    AutoparkPhoto: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    Sensor: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    SensorHost: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    PayDocsDto: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DocumentStatusInfoDto: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DocumentTrackingInfoDto: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    PaymentStatusDto: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    FinalExceptionModelOfDealInWorkOutOfRangeStatusException: {
+      type: 'object',
+      description: 'Модель ошибки',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DealInWorkDto: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    FullOrdersInfoDto: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    OrdersCountersDto: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    TransportCompanyView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    FinalExceptionModelOfPersonalInvitationNotFoundException: {
+      type: 'object',
+      description: 'Модель ошибки',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    ProblemDetails: {
+      type: 'object',
+      additionalProperties: [Object],
+      properties: [Object]
+    },
+    LoadCopyViewForAtiTrucker: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    ExtraPointViewForAtiTrucker: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    AccountViewForAtiTrucker: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    PassportViewForAtiTrucker: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    LoadBoard: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DealViewForAtiTrucker: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DriverRmqModel: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    TruckInfoRmqModel: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    SensorRmqModel: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    SensorHostRmqModel: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    PayDocsRmqModel: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DocumentStatusInfoRmqModel: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    PaymentStatusRmqModel: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    TrackerOwnerAccess: {
+      type: 'integer',
+      description: '',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    DealInWorkRmqModel: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DataForDriverViewForAtiTrucker: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DriverTruckerPointViewForAtiTrucker: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DealFileRmqModel: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DealFileActionStatus: {
+      type: 'integer',
+      description: '',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    LoadCopyForDealRmqModel: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    LoadBoardForDealRmqModel: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    AgentRmqModel: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DealAgentType: {
+      type: 'integer',
+      description: '',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    DocumentInfoRmqModel: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DealDocumentActionStatus: {
+      type: 'integer',
+      description: '',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    DealPayment: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    RateInfo: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    PaymentSource: {
+      type: 'integer',
+      description: 'Источник параметров оплаты\n' +
+        '            \n' +
+        ' * `0` — Нет\n' +
+        ' * `1` — Встречное предложение\n' +
+        ' * `2` — Торги\n' +
+        ' * `3` — Груз\n' +
+        ' * `4` — Предложение груза\n' +
+        ' * `5` — Предложение по контракту',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    AtiTruckerDealsFilterDto: {
+      type: 'object',
+      additionalProperties: false,
+      required: [Array],
+      properties: [Object]
+    },
+    Point: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    OrderContractor: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    OrderView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    LoadView2: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    ExtendedLoadPoint: { allOf: [Array] },
+    LargeCityWithRegion: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    LoadPoint: {
+      type: 'object',
+      description: 'Точка маршрута груза',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    LargeCityWithDistance: {
+      type: 'object',
+      description: 'Сущность, описывающая ближайший крупный город',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    Auction: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    AuctionPaymentType: {
+      type: 'integer',
+      description: 'Тип оплаты\n' +
+        '\n' +
+        '* `22` — Любая\n' +
+        '* `1` — Наличные\n' +
+        '* `23` — По карте\n' +
+        '* `24` — Безналичные с НДС\n' +
+        '* `25` — Безналичные без НДС',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    AuctionRate: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    FirmStarsInfo: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    AuctionRateState: {
+      type: 'integer',
+      description: '',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    RatePlaceType: {
+      type: 'integer',
+      description: '',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    AuctionState: {
+      type: 'integer',
+      description: '',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    WinnerCriteria: {
+      type: 'integer',
+      description: '',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    PassThroughInfo: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    BoardInfo: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    ParentLoadInfo: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    AuctionCustomSetting: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    LoadPayment: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DealView2: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DealPaymentView2: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    ShortDriverInfo: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    CustomSettingView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    InternalFullOrdersInfo: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    OrderFilter: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    ReserveInternalDto: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DealLoadPair: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    PassThroughTakeDtoInternal: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    LoadTakeCopiesRmqModel: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    OrderTakerInfo: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DeclineByAuctionsDto: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    ChangeOrdersInternalDto: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    ChangeOrdersPairDto: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    ChangeOrdersReserveDto: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    ChangeOrdersDeclineDto: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    SetOrderDateInternalDto: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    GetDealsInternalDto: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DeleteOutdatedInviteDto: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    PersonalInvitationView2: { allOf: [Array] },
+    UnilateralOrderViewOfFullDealView: {
+      type: 'object',
+      description: 'Груз и связанный заказ',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    LoadCopyView: {
+      type: 'object',
+      description: 'Копия груза\n' +
+        '\n' +
+        '*При взятии груз копируется, копия не отображается в поиске и её невозможно отредактировать*',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    LoadMeta: {
+      type: 'object',
+      description: 'Метаданные груза',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    BoardView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    FullDealView: { allOf: [Array] },
+    RequisiteView2: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DriverView2: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    TruckView2: {
+      type: 'object',
+      description: 'Транспортное средство',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DocumentView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    AdditionalDocumentView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DealView3: {
+      type: 'object',
+      description: 'Заказ\n            \n*Основная информация о Заказе*',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DealPaymentView3: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    RateView2: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DealDocumentTemplatesView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    SaveUnilateralOrderDtoNew: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    UnilateralOrderPointDtoInboxNew: {
+      type: 'object',
+      additionalProperties: false,
+      required: [Array],
+      properties: [Object]
+    },
+    UnilateralLoadPointType: {
+      type: 'integer',
+      description: 'Тип дополнительной точки маршрута груза\n' +
+        '            \n' +
+        '* `1` — Загрузка\n' +
+        '* `2` — Разгрузка\n' +
+        '* `3` — Таможня\n' +
+        '* `8` — Ехать через',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    CargoDto: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    CargoWeight: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    WeightType: {
+      type: 'integer',
+      description: 'Тип веса груза\n            \n* `0` — Килограммы\n* `1` — Тонны',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    LoadSizeDto: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DocumentMinView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DriverTrackerPointDTO: {
+      type: 'object',
+      additionalProperties: false,
+      required: [Array],
+      properties: [Object]
+    },
+    DealMapView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    GoalView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    EventView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    TrackerEventType: {
+      type: 'integer',
+      description: '',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    LocationNameView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    TraceView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    CarView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    PointView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    MapHistoryView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    UserDealsHistoryView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    OrderViewOfFullDealView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    FinalExceptionModelOfNotFoundException: {
+      type: 'object',
+      description: 'Модель ошибки',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    SaveUnilateralOrderDto2: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    OrderFilter2: {
+      type: 'object',
+      description: 'Фильтр по заказам',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DealStatusView: {
+      type: 'object',
+      description: 'Информация о статусе заказа',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    OrderToWorkDtoInbox: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DocumentInfoShortView: {
+      type: 'object',
+      description: 'Параметры ссылки для открытия Заказа в АТИ-Доках ',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DealAcceptFromLoadIntegratorsDtoInbox: {
+      type: 'object',
+      description: 'Данные грузовладельца для Заказа',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DealPointIntegratorsDtoInbox: {
+      type: 'object',
+      description: 'Адрес загрузки/разгрузки в Заказе',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    LoadTakeInfoIntegratorsDto: {
+      type: 'object',
+      description: 'Параметры Заказа',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    ChangeContactsDto: {
+      type: 'object',
+      additionalProperties: false,
+      required: [Array],
+      properties: [Object]
+    },
+    DeclineOrderIntegratorsDto: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    FinishActionIntegrators: {
+      type: 'integer',
+      description: 'Действие после отмены заказа\n' +
+        '* `1` — Восстановить груз\n' +
+        '* `2` — Оставить груз в Архиве (если по грузу есть торги, они отменятся)\n' +
+        '* `3` — Сменить победителя\n' +
+        '* `4` — Перезапустить Торги',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    PersonalInvitationDTO: {
+      type: 'object',
+      additionalProperties: false,
+      required: [Array],
+      properties: [Object]
+    },
+    PersonalInvitationPaymentDTO: {
+      type: 'object',
+      description: 'Параметры оплаты заказа. Обязательно указание хотя бы одной ставки и валюты для неё.',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    PersonalOfferInvitationDTO: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    PriceType: {
+      type: 'integer',
+      description: 'Тип ставки\n' +
+        '            \n' +
+        '* `0` — наличные\n' +
+        '* `1` — б/нал с НДС\n' +
+        '* `2` — б/нал без НДС',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    LoadPersonalInvitationView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    InvitationPaymentView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    InvitationRateView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    PersonalInvitationView3: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    ShortLoadView: {
+      type: 'object',
+      description: 'Краткая информация по грузу',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DealOrderView2: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    LoadView3: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    LoadPointViewForOrder2: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    LoadExtraPointView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    AuctionView2: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    CopySource: {
+      type: 'integer',
+      description: '',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    LotInformationView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DealView4: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DriverView3: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    PhoneBindingView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    PhoneBindingStatus: {
+      type: 'integer',
+      description: '',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    ScanView2: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    TruckView3: {
+      type: 'object',
+      description: 'Транспортное средство',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    SensorView: {
+      type: 'object',
+      description: 'Датчик мониторинга транспортного средства',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    SensorHostView: {
+      type: 'object',
+      description: 'Информация о сервере поставщика устройства мониторинга транспорта',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DealTrackerInfoView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    PayDocsView2: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DealDocumentSourceTypes: {
+      type: 'integer',
+      description: 'Место создания документа\n' +
+        '            \n' +
+        '* `0` — попап заказов\n' +
+        '* `1` — попап данных для АТИ-Водителя\n' +
+        '* `2` — интегратор',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    OrdersInformation: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    IOrder: {
+      type: 'object',
+      'x-abstract': true,
+      additionalProperties: false,
+      properties: [Object]
+    },
+    Load: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DealItem: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DealType: {
+      type: 'integer',
+      description: '',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    OrdersCounters: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    City: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    Board: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    CargosLots: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    PaymentResponse: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    OrderFormView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    OrderFormPoint: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    OrderFormPointTime: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    OrderFormPointDate: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    OrderFormContactPerson: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    OrderFormCargo: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    OrderFormLoadSize: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    OrganizationInfo: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    OrderFormDealFile: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    ChangeAddressDto: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    ChangeRouteDto: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    OrderIdWithType: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    OrderIdTypes: {
+      type: 'integer',
+      description: 'Тип Заказа\n' +
+        '\n' +
+        '* `0` — Заказ\n' +
+        '* `1` — Аукцион\n' +
+        '* `2` — Персональное приглашение\n' +
+        '* `3` — Груз в заказе',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    OrdersInformationViewFrontend: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    IOrderView: {
+      type: 'object',
+      'x-abstract': true,
+      additionalProperties: false,
+      properties: [Object]
+    },
+    AccountView2: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    PassportView2: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    ContactView2: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    FirmServiceCityView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    PayedServicesView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    PayedServiceView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    CountersView2: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    LotCounters: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    CityView2: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    FullOrdersInfoByIdsDto: { allOf: [Array] },
+    TakeLoadRequest: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DealAcceptFromLoadDtoInbox: { allOf: [Array] },
+    DealPointDtoInbox: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DealAcceptBaseDtoInbox: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    CreateContractDtoInbox: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DeclineOrderDto: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    FinishActionFrontend: {
+      type: 'integer',
+      description: 'Действие после отмены заказа\n' +
+        '* `0` — Выполнить действие по умолчанию \n' +
+        '* `1` — Восстановить груз\n' +
+        '* `2` — Оставить груз в Архиве (если по грузу есть торги, они отменятся)\n' +
+        '* `3` — Сменить победителя\n' +
+        '* `4` — Перезапустить Торги\n' +
+        '* `5` — Ничего не делать, в том числе основное действие',
+      'x-enumNames': [Array],
+      enum: [Array]
+    },
+    PersonalInvitationDTO2: {
+      type: 'object',
+      additionalProperties: false,
+      required: [Array],
+      properties: [Object]
+    },
+    PersonalInvitationPaymentDTO2: {
+      type: 'object',
+      description: 'Параметры оплаты заказа. Обязательно указание одной ставки и валюты для неё.',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    PersonalOfferInvitationDTO2: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    LoadListInvitationsView: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    LoadPersonalInvitationView2: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    PersonalInvitationPayment: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    InvitationSearchFilter: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    FirmsDealMap: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DealMapWithProgress: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    MapsFilterRequest: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    GeoSquare: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    GeoPair: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DealIdsAndRoleRequestDto: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    },
+    DocumentTemplateDto: {
+      type: 'object',
+      additionalProperties: false,
+      properties: [Object]
+    }
+  }
+}
