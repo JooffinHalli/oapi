@@ -43,7 +43,9 @@ function patchConstructors() {
   }
 
   define(function isEmpty() {
-    for (var key in this) return false;
+    for (var key in this) {
+      return false;
+    }
     return true;
   });
   define(function has(key) {
@@ -77,7 +79,6 @@ function assertVersion(openapiObject) {
     '3.0.3',
     '3.1.0'
   ];
-  // console.log(openapiObject);
   if (
     !openapiObject.has('openapi') ||
     !supportedVarsions.includes(openapiObject.openapi)

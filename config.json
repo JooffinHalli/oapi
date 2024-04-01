@@ -1,12 +1,15 @@
 {
   "sourcePath": "src/api",
+
   "orders": {
     "prefix": "gw",
     "link": "http://staging.orders-v1-0.service.consul:82/_internal/orders/swagger/internal/swagger.json",
     "outputPath": "orders",
+    "tagWhiteList": ["Contracts"],
     "pathBlackList": ["mobile", "_internal"],
     "fieldBlackList": ["."]
   },
+  
   "georgia": {
     "prefix": "gw",
     "link": "http://staging.georgia-api.service.consul:5017/_internal/v2/loads/swagger/internal/swagger.json",

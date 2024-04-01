@@ -27,11 +27,12 @@ var serviceConfig = config[service];
 Config.assertService(serviceConfig, configPath);
 
 var { sourcePath } = config;
-var { link, outputPath, prefix, pathBlackList, fieldBlackList } = serviceConfig;
+var { link, outputPath, prefix, tagWhiteList, pathBlackList, fieldBlackList } = serviceConfig;
 
 Config.apiOutput = joinPath(projectPath, sourcePath);
 Config.serviceOutput = joinPath(Config.apiOutput, outputPath);
 Config.prefix = prefix;
+Config.tagWhiteList = tagWhiteList;
 Config.pathBlackList = pathBlackList;
 Config.fieldBlackList = fieldBlackList;
 

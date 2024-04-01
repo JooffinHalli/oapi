@@ -127,9 +127,15 @@ PathItem.methodBitMask = {
   head:   32,
   trace:  64,
 }
-PathItem.addOperation = function(value, key) {
-  this.methodsBitMask |= PathItem.methodBitMask[key];
-  this[key] = new Operation(value);
+PathItem.addOperation = function(pathItemObject, httpMethod) {
+  var { tagWhiteList } = Config;
+  var hasWrongTag = !pathItemObject.tags?.some(tagWhiteList.someMatches.bind(tagWhiteList));
+  if (hasWrongTag) {
+    this.setHidden('isIgnoded', true);
+    return;
+  }
+  this.methodsBitMask |= PathItem.methodBitMask[httpMethod];
+  this[httpMethod] = new Operation(pathItemObject);
 }
 PathItem.prototype.get     = PathItem.addOperation;
 PathItem.prototype.post    = PathItem.addOperation;
@@ -139,8 +145,8 @@ PathItem.prototype.options = PathItem.addOperation;
 PathItem.prototype.patch   = PathItem.addOperation;
 PathItem.prototype.head    = PathItem.addOperation;
 PathItem.prototype.trace   = PathItem.addOperation;
-PathItem.prototype.add = function(key, value) {
-  if (this.has(key)) this[key](value, key);
+PathItem.prototype.add = function(httpMethod, pathItemObject) {
+  if (this.has(httpMethod)) this[httpMethod](pathItemObject, httpMethod);
 }
 
 class PathPart {}
@@ -210,6 +216,7 @@ Paths.prototype.add = function(path, pathItemObject) {
   if (pathBlackList.someMatches?.(path)) return;
   this.pathMaxLength = (path.length > this.pathMaxLength) ? path.length : this.pathMaxLength;
   var operations = pathItemObject.addTo(new PathItem);
+  if (operations.isIgnoded) return;
   this[`'${path}'`] = operations;
   this.endpoints[path] = ('0b' + (operations.methodsBitMask).toString(2).padStart(8, 0));
   this.basePath.save(path);

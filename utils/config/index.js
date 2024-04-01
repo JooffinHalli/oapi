@@ -1,7 +1,14 @@
 var fs = require('node:fs');
 var Process = require('../process');
 
-var serviceFields = ["prefix", "link", "outputPath", "pathBlackList", "fieldBlackList"];
+var serviceFields = [
+  'prefix',
+  'link',
+  'outputPath',
+  'tagWhiteList',
+  'pathBlackList',
+  'fieldBlackList'
+];
 
 /** Утилиты для работы с конфигом */
 class Config {
