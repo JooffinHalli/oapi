@@ -87,8 +87,8 @@ SmartSchema.prototype.boolean = () => 'boolean';
 SmartSchema.prototype.number  = () => 'number';
 SmartSchema.prototype.integer = () => 'number';
 SmartSchema.prototype.format = {
-  ['binary']:    'Buffer',
-  ['byte']:      'Buffer',
+  ['binary']:    'string',
+  ['byte']:      'string',
   ['date']:      'Date',
   ['date-time']: 'Date'
 };
