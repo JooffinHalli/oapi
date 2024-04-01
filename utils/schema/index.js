@@ -181,10 +181,6 @@ Printable.prototype.pritified = function(content) {
       return `${p1}| ${p2}`;
     })
     .replaceAll(/(.*)(")(.*)(")(:)(.{1,})/g, (match, p0, p1, key, p3, p4, value) => {
-      if (key.includes('$NULLABLE')) {
-        key = key.replace('$NULLABLE', '');
-        value = ` null |${value}`;
-      }
       if (key.includes('$AllOf')) {
         key = key.replace('$AllOf', '');
         value = ` AllOf<${value.trim().replace('[', '')}`;
@@ -196,6 +192,10 @@ Printable.prototype.pritified = function(content) {
       if (key.includes('$OneOf')) {
         key = key.replace('$OneOf', '');
         value = ` OneOf<${value.trim().replace('[', '')}`;
+      }
+      if (key.includes('$NULLABLE')) {
+        key = key.replace('$NULLABLE', '');
+        value = ` null |${value}`;
       }
       if ((this.keyWord === 'namespace') && (p0 === '  ')) {
         return `${p0}export type ${key} =${value}`;
@@ -215,7 +215,6 @@ Printable.prototype.pritified = function(content) {
     })
 }
 Printable.prototype.print = function(path) {
-
   FS.writeFile(`${Config.serviceOutput}/${path}`, this.pritified(this.content));
 };
 
