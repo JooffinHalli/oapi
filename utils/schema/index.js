@@ -44,7 +44,7 @@ CompositionAcc.prototype.add = function(index, schema) {
 
 class SchemasAcc {}; // public
 SchemasAcc.prototype.add = function(name, schema, isFirstLevel, imports) {
-  var smartSchema = new SmartSchema(schema, name);
+  var smartSchema = new SmartSchema(schema, name, imports);
   var { isNullable, isRequired, compositionGeneric, value } = smartSchema;
   if (isNullable) name += '$NULLABLE';
   if (compositionGeneric) {
@@ -56,9 +56,9 @@ SchemasAcc.prototype.add = function(name, schema, isFirstLevel, imports) {
 }
 
 /** @param {import('../../../types/common/SchemaObject').SchemaObject} schema */
-function SmartSchema(schema, name) { // public
+function SmartSchema(schema, name, imports) { // public
   var type = this.getType(schema);
-  this.value = !type ? 'unknown' : this[type](schema);
+  this.value = !type ? 'unknown' : this[type](schema, imports);
   this.setHidden('type', type);
   this.setHidden('isRequired', schema.required?.includes(name));
   this.setHidden('isNullable', !!schema.nullable);
@@ -98,9 +98,9 @@ SmartSchema.prototype.string = function(schema) {
   }
   return 'string';
 };
-SmartSchema.prototype.object = function(schema) {
+SmartSchema.prototype.object = function(schema, imports) {
   if (!schema.properties) return 'Record<string, unknown>';
-  return schema.properties.addTo(new SchemasAcc);
+  return schema.properties.addTo(new SchemasAcc, 0, imports);
 };
 SmartSchema.prototype.array = function(schema) {
   if (!schema.items) return ['unknown'];
