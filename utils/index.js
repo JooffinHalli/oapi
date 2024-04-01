@@ -77,6 +77,7 @@ function assertVersion(openapiObject) {
     '3.0.3',
     '3.1.0'
   ];
+  // console.log(openapiObject);
   if (
     !openapiObject.has('openapi') ||
     !supportedVarsions.includes(openapiObject.openapi)

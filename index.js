@@ -42,8 +42,10 @@ fetch(link)
 
 /** @param {import('./types/OpenAPIObject').OpenAPIObject} openapiObject */
 function mainScript(openapiObject) {
-  FS.writeFile(`api-${service}.json`, JSON.stringify(openapiObject, null, 2), false);
+  if (!openapiObject) Process.exit(`Swagger json не был возвращен с урла ${link}`);
+  console.log(openapiObject);
   assertVersion(openapiObject);
+  FS.writeFile(`api-${service}.json`, JSON.stringify(openapiObject, null, 2), false);
 
   FS.mkDir(Config.apiOutput);
   FS.mkDir(Config.serviceOutput);

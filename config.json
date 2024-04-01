@@ -6,5 +6,13 @@
     "outputPath": "orders",
     "pathBlackList": ["mobile", "_internal"],
     "fieldBlackList": ["."]
+  },
+  "georgia": {
+    "prefix": "gw",
+    "link": "http://staging.georgia-api.service.consul:5017/_internal/v2/loads/swagger/internal/swagger.json",
+    "outputPath": "georgia",
+    "tagWhiteList": [],
+    "pathBlackList": ["mobile", "_internal"],
+    "fieldBlackList": ["."]
   }
 }
