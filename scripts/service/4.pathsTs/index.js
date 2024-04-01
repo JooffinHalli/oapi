@@ -106,7 +106,10 @@ Operation.prototype.handleRes = function(responses) {
   return this.setRes('unknown');
 }
 Operation.prototype.getSmartSchema = function(entity) {
-  var schema = entity.content?.['application/json']?.schema;
+  var schema = (
+    entity.content?.['application/json']?.schema ||
+    entity.content?.['application/octet-stream']?.schema
+  );
   return schema ? new Schemas.Smart(schema) : {};
 }
 
