@@ -42,7 +42,7 @@ fetch(link)
 
 /** @param {import('./types/OpenAPIObject').OpenAPIObject} openapiObject */
 function mainScript(openapiObject) {
-  FS.writeFile('swagger.json', JSON.stringify(openapiObject, null, 2), false);
+  FS.writeFile(`api-${service}.json`, JSON.stringify(openapiObject, null, 2), false);
   assertVersion(openapiObject);
 
   FS.mkDir(Config.apiOutput);
