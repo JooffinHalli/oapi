@@ -53,7 +53,7 @@ SchemasAcc.prototype.add = function(name, schema, isFirstLevel, imports) {
   }
   if (!isRequired && !isFirstLevel) name += '?';
   var { fieldBlackList } = Config
-  if (fieldBlackList.someMatches?.(name)) return;
+  if (fieldBlackList?.someMatches?.(name)) return;
   this[name] = value;
 }
 

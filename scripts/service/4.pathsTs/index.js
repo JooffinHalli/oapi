@@ -129,7 +129,7 @@ PathItem.methodBitMask = {
 }
 PathItem.addOperation = function(pathItemObject, httpMethod) {
   var { tagWhiteList } = Config;
-  var hasWrongTag = !pathItemObject.tags?.some(tagWhiteList.someMatches.bind(tagWhiteList));
+  var hasWrongTag = !pathItemObject.tags?.some(tagWhiteList?.someMatches.bind(tagWhiteList));
   if (hasWrongTag) {
     this.setHidden('isIgnoded', true);
     return;
@@ -215,7 +215,7 @@ function Paths() {
 Paths.prototype.add = function(path, pathItemObject) {
   var { prefix, pathBlackList } = Config;
   path = prefix ? (`/${prefix}` + path) : path;
-  if (pathBlackList.someMatches?.(path)) return;
+  if (pathBlackList?.someMatches?.(path)) return;
   var operations = pathItemObject.addTo(new PathItem);
   if (operations.isIgnoded) return;
   this.pathMaxLength = (path.length > this.pathMaxLength) ? path.length : this.pathMaxLength;
