@@ -36,6 +36,7 @@ Config.ignoreList = ignoreList;
 
 /** @param {import('./types/OpenAPIObject').OpenAPIObject} openapiObject */
 function mainScript(openapiObject) {
+  console.log(openapiObject);
   assertVersion(openapiObject);
 
   FS.mkDir(Config.apiOutput);
