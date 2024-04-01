@@ -27,7 +27,7 @@ var serviceConfig = config[service];
 Config.assertService(serviceConfig, configPath);
 
 var { sourcePath } = config;
-var { link, outputPath, prefix, ignorePathList } = serviceConfig;
+var { link, outputPath, prefix, ignorePathList, ignoreFieldList } = serviceConfig;
 
 Config.apiOutput = joinPath(projectPath, sourcePath);
 Config.serviceOutput = joinPath(Config.apiOutput, outputPath);
