@@ -216,9 +216,9 @@ Paths.prototype.add = function(path, pathItemObject) {
   var { prefix, pathBlackList } = Config;
   path = prefix ? (`/${prefix}` + path) : path;
   if (pathBlackList.someMatches?.(path)) return;
-  this.pathMaxLength = (path.length > this.pathMaxLength) ? path.length : this.pathMaxLength;
   var operations = pathItemObject.addTo(new PathItem);
   if (operations.isIgnoded) return;
+  this.pathMaxLength = (path.length > this.pathMaxLength) ? path.length : this.pathMaxLength;
   this[`'${path}'`] = operations;
   this.endpoints[path] = ('0b' + (operations.methodsBitMask).toString(2).padStart(8, 0));
   this.basePath.save(path);
