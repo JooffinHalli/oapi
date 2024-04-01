@@ -161,10 +161,12 @@ class BasePathAcc {
   #acc = [];
   save(path) {
     this.#totalPathsCount++;
-    path.split('/').addTo(this);
+    var parts = path.split('/');
+    parts.addTo(this, parts.length - 1);
   }
-  add(index, part) {
-    if (+index === 0) return;
+  add(index, part, lastIndex) {
+    if (+index === 0) return; // part[0] === ''
+    if (+index === lastIndex) return;
     index--;
     if (!this.#acc.has(index)) {
       this.#acc[index] = { [part]: 1 };
