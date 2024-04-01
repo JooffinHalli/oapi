@@ -53,10 +53,7 @@ SchemasAcc.prototype.add = function(name, schema, isFirstLevel, imports) {
   }
   if (!isRequired && !isFirstLevel) name += '?';
   var { ignoreFieldList } = Config
-  var shouldIgnore = ignoreFieldList.isArray && ignoreFieldList.some((subStr) => {
-    return name.includes(subStr);
-  });
-  if (shouldIgnore) return;
+  if (ignoreFieldList.someMatches?.(name)) return;
   this[name] = value;
 }
 

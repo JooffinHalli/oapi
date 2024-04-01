@@ -26,6 +26,14 @@ function patchConstructors() {
     new ValueDescriptor(true)
   );
 
+  Object.defineProperty(
+    Array.prototype,
+    'someMatches',
+    new ValueDescriptor(function(str) {
+      return this.some(str.includes.bind(str));
+    })
+  );
+
   var define = (fn) => {
     Object.defineProperty(
       Object.prototype,

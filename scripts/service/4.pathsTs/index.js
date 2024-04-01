@@ -149,7 +149,7 @@ class BasePathAcc {
     path.split('/').addTo(this);
   }
   add(index, part) {
-    if (index === 0) return;
+    if (+index === 0) return;
     index--;
     if (!this.#acc.has(index)) {
       this.#acc[index] = { [part]: 1 };
@@ -172,25 +172,23 @@ class BasePathAcc {
 
 class Endpoints {
   cutPaths(basePath, pathMaxLength) {
-    this.setHidden('basePath', basePath);
-    this.setHidden('basePathLength', basePath.length);
     this.setHidden('pathMaxLength', pathMaxLength);
-    this.setHidden('round', 1);
-    this.addTo(this);
+    this.addTo(this, basePath);
     return this;
   }
-  add(path, httpMethods) {
+  add(path, httpMethods, basePath) {
     delete this[path];
-    if (path.startsWith(this.basePath)) {
-      path = path.slice(this.basePathLength);
+    if (path.startsWith(basePath)) {
+      path = path.slice(basePath.length);
     }
-    var diff = this.pathMaxLength - this.basePathLength - path.length;
-    if (diff < 0) {
-      this.pathMaxLength -= diff;
-      this.addTo(this);
+    var spacesCount = this.pathMaxLength - path.length;
+    if (spacesCount < 0) {
+      this.pathMaxLength = path.length;
+      this.addTo(this, basePath);
       return;
     }
-    this[`'${path}'`] = `${' '.repeat(diff)}${httpMethods}`;
+    path = path.startsWith("'") ? path : `'${path}'`;
+    this[path] = `${' '.repeat(spacesCount)}${httpMethods}`;
   }
 }
 
@@ -200,10 +198,7 @@ function Paths() {
 Paths.prototype.add = function(path, pathItemObject) {
   var { prefix, ignorePathList } = Config;
   path = prefix ? (`/${prefix}` + path) : path;
-  var shouldIgnore = ignorePathList.isArray && ignorePathList.some((substr) => {
-    return path.includes(substr);
-  });
-  if (shouldIgnore) return;
+  if (ignorePathList.someMatches?.(path)) return;
   this.pathMaxLength = (path.length > this.pathMaxLength) ? path.length : this.pathMaxLength;
   var operations = pathItemObject.addTo(new PathItem);
   this[`'${path}'`] = operations;
