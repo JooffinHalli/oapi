@@ -36,7 +36,7 @@ Config.ignoreList = ignoreList;
 
 /** @param {import('./types/OpenAPIObject').OpenAPIObject} openapiObject */
 function mainScript(openapiObject) {
-  FS.writeFile('swagger.json', openapiObject, false);
+  FS.writeFile('swagger.json', JSON.stringify(openapiObject, null, 2), false);
   assertVersion(openapiObject);
 
   FS.mkDir(Config.apiOutput);
