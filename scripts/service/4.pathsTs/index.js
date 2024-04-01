@@ -129,7 +129,10 @@ PathItem.methodBitMask = {
 }
 PathItem.addOperation = function(pathItemObject, httpMethod) {
   var { tagWhiteList } = Config;
-  var hasWrongTag = !pathItemObject.tags?.some(tagWhiteList?.someMatches.bind(tagWhiteList));
+  var hasWrongTag = (
+    tagWhiteList?.someMatches.isArray &&
+    !pathItemObject.tags?.some(tagWhiteList.someMatches.bind(tagWhiteList))
+  );
   if (hasWrongTag) {
     this.setHidden('isIgnoded', true);
     return;
