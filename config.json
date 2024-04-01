@@ -1,10 +1,10 @@
 {
   "sourcePath": "src/api",
-  "ownloads": {
+  "orders": {
     "prefix": "gw",
     "link": "http://staging.orders-v1-0.service.consul:82/_internal/orders/swagger/internal/swagger.json",
-    "outputPath": "georgia",
-    "ignorePathList": ["mobile", "_internal", "v1.2", "v2", "public"],
+    "outputPath": "orders",
+    "ignorePathList": ["mobile", "_internal"],
     "ignoreFieldList": ["."]
   }
 }

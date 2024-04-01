@@ -42,9 +42,15 @@ class Parameters {
 }
 Parameters.prototype.setParams = function(parameter, key) {
   var { name, required, schema } = parameter;
-  key = !!required ? key : `${key}?`;
-  if (!this.has(key)) this[key] = {};
   var value = schema ? new Schemas.Smart(schema).value : 'any';
+  if (!this.has(key)) this[key] = {};
+  if (!required) {
+    var optionalKey = `'${key}'?`;
+    if (!this.has(optionalKey)) this[optionalKey] = {};
+    this[optionalKey].assign(this[key]);
+    delete this[key];
+    key = optionalKey;
+  }
   this[key][!!required ? `'${name}'` : `'${name}'?`] = value;
 }
 Parameters.prototype.nameMapping = {

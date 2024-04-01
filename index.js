@@ -61,5 +61,5 @@ function mainScript(openapiObject) {
   utilTypesTs();
   declarationsTs();
 
-  console.log("\x1b[32m", `апи  "${service}" успешно обновилось`, ` -> ${sourcePath}`); // green
+  console.log("\x1b[32m", `апи "${service}" успешно обновилось -> ${sourcePath}`); // green
 }
