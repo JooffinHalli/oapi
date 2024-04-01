@@ -141,7 +141,7 @@ class Printable { // public
 Printable.prototype.type = {
   namespace: (name, data) => `export namespace ${name} ${data}`,
   type:      (name, data) => `export type ${name} = ${data}`,
-  const:     (name, data) => `export const ${name} = ${data} as const;`,
+  const:     (name, data) => `export const ${name} = <const>${data};`,
   json:      (name, data) => `export const ${name} = JSON.parse(${data});`,
 }
 Printable.prototype.importsBlock = {
