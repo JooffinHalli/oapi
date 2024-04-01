@@ -1,3 +1,7 @@
+process.on('uncaughtException', function (e) {
+  console.log('uncaughtException', e);
+});
+
 var { argv, exit: processExit } = process;
 var args = {};
 var keys = ['config', 'service'];
