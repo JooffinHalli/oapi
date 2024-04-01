@@ -27,13 +27,13 @@ var serviceConfig = config[service];
 Config.assertService(serviceConfig, configPath);
 
 var { sourcePath } = config;
-var { link, outputPath, prefix, ignorePathList, ignoreFieldList } = serviceConfig;
+var { link, outputPath, prefix, pathBlackList, fieldBlackList } = serviceConfig;
 
 Config.apiOutput = joinPath(projectPath, sourcePath);
 Config.serviceOutput = joinPath(Config.apiOutput, outputPath);
 Config.prefix = prefix;
-Config.ignorePathList = ignorePathList;
-Config.ignoreFieldList = ignoreFieldList;
+Config.pathBlackList = pathBlackList;
+Config.fieldBlackList = fieldBlackList;
 
 fetch(link)
   .then((res) => res.json())

@@ -4,7 +4,7 @@
     "prefix": "gw",
     "link": "http://staging.orders-v1-0.service.consul:82/_internal/orders/swagger/internal/swagger.json",
     "outputPath": "orders",
-    "ignorePathList": ["mobile", "_internal"],
-    "ignoreFieldList": ["."]
+    "pathBlackList": ["mobile", "_internal"],
+    "fieldBlackList": ["."]
   }
 }

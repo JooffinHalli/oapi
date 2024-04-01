@@ -205,9 +205,9 @@ function Paths() {
   this.setHidden('pathMaxLength', 0);
 }
 Paths.prototype.add = function(path, pathItemObject) {
-  var { prefix, ignorePathList } = Config;
+  var { prefix, pathBlackList } = Config;
   path = prefix ? (`/${prefix}` + path) : path;
-  if (ignorePathList.someMatches?.(path)) return;
+  if (pathBlackList.someMatches?.(path)) return;
   this.pathMaxLength = (path.length > this.pathMaxLength) ? path.length : this.pathMaxLength;
   var operations = pathItemObject.addTo(new PathItem);
   this[`'${path}'`] = operations;
