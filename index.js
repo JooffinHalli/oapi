@@ -35,6 +35,11 @@ Config.prefix = prefix;
 Config.ignorePathList = ignorePathList;
 Config.ignoreFieldList = ignoreFieldList;
 
+fetch(link)
+  .then((res) => res.json())
+  .catch((e) => console.error('Ошибка при запросе', e))
+  .then(mainScript);
+
 /** @param {import('./types/OpenAPIObject').OpenAPIObject} openapiObject */
 function mainScript(openapiObject) {
   FS.writeFile('swagger.json', JSON.stringify(openapiObject, null, 2), false);
@@ -58,8 +63,3 @@ function mainScript(openapiObject) {
 
   console.log("\x1b[32m", `апи  "${service}" успешно обновилось`, ` -> ${sourcePath}`); // green
 }
-
-fetch(link)
-  .then((res) => res.json())
-  .catch((e) => console.error('Ошибка при запросе', e))
-  .then(mainScript);
