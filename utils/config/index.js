@@ -1,7 +1,7 @@
 var fs = require('node:fs');
 var Process = require('../process');
 
-var serviceFields = ["prefix", "link", "outputPath", "ignoreList"];
+var serviceFields = ["prefix", "link", "outputPath", "ignorePathList", "ignoreFieldList"];
 
 /** Утилиты для работы с конфигом */
 class Config {

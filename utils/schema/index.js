@@ -52,6 +52,11 @@ SchemasAcc.prototype.add = function(name, schema, isFirstLevel, imports) {
     name += `$${compositionGeneric}`;
   }
   if (!isRequired && !isFirstLevel) name += '?';
+  var { ignoreFieldList } = Config
+  var shouldIgnore = ignoreFieldList.isArray && ignoreFieldList.some((subStr) => {
+    return name.includes(subStr);
+  });
+  if (shouldIgnore) return;
   this[name] = value;
 }
 

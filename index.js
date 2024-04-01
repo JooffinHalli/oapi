@@ -27,12 +27,13 @@ var serviceConfig = config[service];
 Config.assertService(serviceConfig, configPath);
 
 var { sourcePath } = config;
-var { link, outputPath, prefix, ignoreList } = serviceConfig;
+var { link, outputPath, prefix, ignorePathList } = serviceConfig;
 
 Config.apiOutput = joinPath(projectPath, sourcePath);
 Config.serviceOutput = joinPath(Config.apiOutput, outputPath);
 Config.prefix = prefix;
-Config.ignoreList = ignoreList;
+Config.ignorePathList = ignorePathList;
+Config.ignoreFieldList = ignoreFieldList;
 
 /** @param {import('./types/OpenAPIObject').OpenAPIObject} openapiObject */
 function mainScript(openapiObject) {

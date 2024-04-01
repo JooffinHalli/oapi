@@ -4,6 +4,7 @@
     "prefix": "gw",
     "link": "http://staging.orders-v1-0.service.consul:82/_internal/orders/swagger/internal/swagger.json",
     "outputPath": "georgia",
-    "ignoreList": ["_internal"]
+    "ignorePathList": ["_internal"],
+    "ignoreFieldList": ["."]
   }
 }
