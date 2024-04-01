@@ -38,8 +38,8 @@ Config.fieldBlackList = fieldBlackList;
 
 fetch(link)
   .then((res) => res.json())
-  .catch((e) => console.error('Ошибка при запросе', e))
-  .then(mainScript);
+  .then(mainScript)
+  .catch((e) => console.error('Ошибка при запросе', e));
 
 /** @param {import('./types/OpenAPIObject').OpenAPIObject} openapiObject */
 function mainScript(openapiObject) {
