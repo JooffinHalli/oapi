@@ -17,7 +17,7 @@ patchConstructors(); // Object, Array
 
 var { config: configFileName, service } = Process.args;
 
-var projectPath = joinPath(process.cwd());
+var projectPath = process.cwd();
 var configPath = joinPath(projectPath, configFileName);
 
 Config.assertPath(configPath);
