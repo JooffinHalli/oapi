@@ -26,7 +26,7 @@ var handleEnumsJs = (schemas) => {
 
   FS.writeFile(
     `${Config.serviceOutput}/enums.ts`,
-    `export const Enums = ${Json.stringify(schemas.addTo(new Acc))} as const;`
+    `export const Enums = <const>${Json.stringify(schemas.addTo(new Acc))};`
       .replaceAll('"', '')
   );
 }
