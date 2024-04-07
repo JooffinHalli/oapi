@@ -37,7 +37,7 @@ class FS {
   }
   
   static writeFile = function(path, data, withBanner = true) {
-    fs.promises.writeFile(path, `${withBanner ? this.banner : ''}${data}`, null);
+    fs.promises.writeFile(path, `/* eslint-disable */\n\n${withBanner ? this.banner : ''}${data}`, null);
   }
 
   static readFileSync = fs.readFileSync;

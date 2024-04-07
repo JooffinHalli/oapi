@@ -135,7 +135,7 @@ class Printable { // public
     var imports = this.importsBlock[name](importsSet);
     var extra = this.extra[name];
     var content = this.type[keyWord](name, Json.stringify(data));
-    this.content = `/* eslint-disable */\n\n${imports}${extra}${content}`;
+    this.content = `${imports}${extra}${content}`;
   }
 }
 Printable.prototype.type = {
