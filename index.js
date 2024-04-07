@@ -28,7 +28,6 @@ Config.assertService(serviceConfig, configPath);
 
 var { sourcePath } = config;
 var { link, outputPath, prefix, tagWhiteList, pathBlackList, fieldBlackList, onlyTypes } = serviceConfig;
-console.log({ onlyTypes });
 
 Config.apiOutput = joinPath(projectPath, sourcePath);
 Config.serviceOutput = joinPath(Config.apiOutput, outputPath);
