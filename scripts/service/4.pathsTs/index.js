@@ -14,7 +14,6 @@ var handlePathsTs = (paths) => {
   var printablePaths = new Schemas.Printable('Paths', content, 'type', imports);
   printablePaths.print('paths.ts');
 
-  console.log(!!Config.onlyTypes);
   if (!!Config.onlyTypes) return;
 
   var basePath = `${content.basePath}`;
