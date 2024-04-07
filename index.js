@@ -54,9 +54,9 @@ function mainScript(openapiObject) {
   var schemas = openapiObject.components?.schemas;
   var paths = openapiObject.paths;
 
-  onlyTypes && serviceSchemasTs(schemas);
+  serviceSchemasTs(schemas);
   !onlyTypes && serviceEnumsJs(schemas);
-  onlyTypes && servicePathsTs(paths);
+  servicePathsTs(paths);
   !onlyTypes && serviceUtilTypesTs();
   !onlyTypes && serviceIndexJs();
 
