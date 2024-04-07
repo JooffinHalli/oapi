@@ -27,7 +27,8 @@ var serviceConfig = config[service];
 Config.assertService(serviceConfig, configPath);
 
 var { sourcePath } = config;
-var { link, outputPath, prefix, tagWhiteList, pathBlackList, fieldBlackList } = serviceConfig;
+var { link, outputPath, prefix, tagWhiteList, pathBlackList, fieldBlackList, onlyTypes } = serviceConfig;
+console.log({ onlyTypes });
 
 Config.apiOutput = joinPath(projectPath, sourcePath);
 Config.serviceOutput = joinPath(Config.apiOutput, outputPath);
@@ -35,6 +36,7 @@ Config.prefix = prefix;
 Config.tagWhiteList = tagWhiteList;
 Config.pathBlackList = pathBlackList;
 Config.fieldBlackList = fieldBlackList;
+Config.onlyTypes = onlyTypes;
 
 fetch(link)
   .then((res) => res.json())
@@ -53,15 +55,15 @@ function mainScript(openapiObject) {
   var schemas = openapiObject.components?.schemas;
   var paths = openapiObject.paths;
 
-  serviceSchemasTs(schemas);
-  serviceEnumsJs(schemas);
-  servicePathsTs(paths);
-  serviceUtilTypesTs();
-  serviceIndexJs();
+  onlyTypes && serviceSchemasTs(schemas);
+  !onlyTypes && serviceEnumsJs(schemas);
+  onlyTypes && servicePathsTs(paths);
+  !onlyTypes && serviceUtilTypesTs();
+  !onlyTypes && serviceIndexJs();
 
-  buildApiJs();
-  utilTypesTs();
-  declarationsTs();
+  !onlyTypes && buildApiJs();
+  !onlyTypes && utilTypesTs();
+  !onlyTypes && declarationsTs();
 
   console.log("\x1b[32m", `апи "${service}" успешно обновилось -> ${sourcePath}`); // green
 }

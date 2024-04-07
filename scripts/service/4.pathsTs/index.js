@@ -9,17 +9,22 @@ var imports = new Set;
  */
 var handlePathsTs = (paths) => {
   if (!paths) return;
-  var content   = paths.addTo(new Paths);
-  var basePath  = `${content.basePath}`;
-  var config    = { basePath: `'${basePath}'`, endpoints: 'Endpoints' };
+
+  var content = paths.addTo(new Paths);
+  var printablePaths = new Schemas.Printable('Paths', content, 'type', imports);
+  printablePaths.print('paths.ts');
+
+  if (Config.onlyTypes) return;
+
+  var basePath = `${content.basePath}`;
+
+  var config = { basePath: `'${basePath}'`, endpoints: 'Endpoints' };
+  var printableConfig = new Schemas.Printable('Config', config, 'type');
+  printableConfig.print('config.ts');
+
   var endpoints = content.endpoints.cutPaths(basePath, content.pathMaxLength);
-  var printablePaths     = new Schemas.Printable('Paths', content, 'type', imports);
-  var printableConfig    = new Schemas.Printable('Config', config, 'type');
   var printableEndpoints = new Schemas.Printable('endpoints', endpoints, 'const');
-  printablePaths    .print('paths.ts');
-  printableConfig   .print('config.ts');
   printableEndpoints.print('endpoints.ts');
-  return content.basePath;
 }
 
 class Servers extends Array {
@@ -45,7 +50,7 @@ Parameters.prototype.setParams = function(parameter, key) {
   var value = schema ? new Schemas.Smart(schema).value : 'any';
   if (!this.has(key)) this[key] = {};
   if (!required) {
-    var optionalKey = `'${key}'?`;
+    var optionalKey = `${key}?`;
     if (!this.has(optionalKey)) this[optionalKey] = {};
     this[optionalKey].assign(this[key]);
     delete this[key];
@@ -80,37 +85,22 @@ Operation.prototype.handleParameters = function(parameterObjects) {
   if (!parameterObjects) return;
   this.assign(new Parameters(parameterObjects));
 };
-Operation.prototype.setBody = function(value, isRequired) {
-  this[isRequired ? 'body' : 'body?'] = value;
-}
 Operation.prototype.handleBody = function(requestBody) {
-  if (!requestBody) return;
-  var { value } = this.getSmartSchema(requestBody);
-  if (value) return this.setBody(value, !!requestBody.required);
-  return this.setBody('unknown', false);
-}
-Operation.prototype.setRes = function({ value, compositionGeneric }) {
-  var key = 'res';
-  if (compositionGeneric) {
-    imports.add(compositionGeneric);
-    key += `$${compositionGeneric}`;
-  }
-  this[key] = value;
+  this.set('body', requestBody);
 }
 Operation.prototype.handleRes = function(responses) {
   if (!responses) return;
   var res = responses.getFirst('200', '201', '2XX');
-  if (!res) return this.setRes('unknown');
-  var smartSchema = this.getSmartSchema(res);
-  if (smartSchema.value) return this.setRes(smartSchema);
-  return this.setRes('unknown');
+  this.set('res', res);
 }
-Operation.prototype.getSmartSchema = function(entity) {
+Operation.prototype.set = function(key, entity) {
+  if (!entity) return;
   var schema = (
-    entity.content?.['application/json']?.schema ||
-    entity.content?.['application/octet-stream']?.schema
+    entity?.content?.['application/json']?.schema ||
+    entity?.content?.['application/octet-stream']?.schema
   );
-  return schema ? new Schemas.Smart(schema) : {};
+  if (!schema) return this[`${key}?`] = 'unknown';
+  Schemas.Acc.prototype.add.call(this, key, schema, 1, imports);
 }
 
 class PathItem {
@@ -118,7 +108,7 @@ class PathItem {
     this.setHidden('methodsBitMask', 0);
   }
 }
-PathItem.methodBitMask = {
+var methodBitMask = {
   get:    1,
   post:   2,
   put:    4,
@@ -127,27 +117,27 @@ PathItem.methodBitMask = {
   head:   32,
   trace:  64,
 }
-PathItem.addOperation = function(pathItemObject, httpMethod) {
+function addOperation(pathItemObject, httpMethod) {
   var { tagWhiteList } = Config;
   var hasWrongTag = (
-    tagWhiteList?.someMatches.isArray &&
+    tagWhiteList?.isArray &&
     !pathItemObject.tags?.some(tagWhiteList.someMatches.bind(tagWhiteList))
   );
   if (hasWrongTag) {
     this.setHidden('isIgnoded', true);
     return;
   }
-  this.methodsBitMask |= PathItem.methodBitMask[httpMethod];
+  this.methodsBitMask |= methodBitMask[httpMethod];
   this[httpMethod] = new Operation(pathItemObject);
 }
-PathItem.prototype.get     = PathItem.addOperation;
-PathItem.prototype.post    = PathItem.addOperation;
-PathItem.prototype.put     = PathItem.addOperation;
-PathItem.prototype.delete  = PathItem.addOperation;
-PathItem.prototype.options = PathItem.addOperation;
-PathItem.prototype.patch   = PathItem.addOperation;
-PathItem.prototype.head    = PathItem.addOperation;
-PathItem.prototype.trace   = PathItem.addOperation;
+PathItem.prototype.get     = addOperation;
+PathItem.prototype.post    = addOperation;
+PathItem.prototype.put     = addOperation;
+PathItem.prototype.delete  = addOperation;
+PathItem.prototype.options = addOperation;
+PathItem.prototype.patch   = addOperation;
+PathItem.prototype.head    = addOperation;
+PathItem.prototype.trace   = addOperation;
 PathItem.prototype.add = function(httpMethod, pathItemObject) {
   if (this.has(httpMethod)) this[httpMethod](pathItemObject, httpMethod);
 }

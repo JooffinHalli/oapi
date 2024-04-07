@@ -4,8 +4,9 @@
   "orders": {
     "prefix": "gw",
     "link": "http://staging.orders-v1-0.service.consul:82/_internal/orders/swagger/internal/swagger.json",
+    "onlyTypes": true,
     "outputPath": "orders",
-    "tagWhiteList": ["Contracts"],
+    "tagWhiteList": null,
     "pathBlackList": ["mobile", "_internal"],
     "fieldBlackList": ["."]
   },
@@ -14,7 +15,7 @@
     "prefix": "gw",
     "link": "http://staging.georgia-api.service.consul:5017/_internal/v2/loads/swagger/internal/swagger.json",
     "outputPath": "georgia",
-    "tagWhiteList": [],
+    "tagWhiteList": ["Frontend"],
     "pathBlackList": ["mobile", "_internal"],
     "fieldBlackList": ["."]
   }

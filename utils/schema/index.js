@@ -52,7 +52,7 @@ SchemasAcc.prototype.add = function(name, schema, isFirstLevel, imports) {
     name += `$${compositionGeneric}`;
   }
   if (!isRequired && !isFirstLevel) name += '?';
-  var { fieldBlackList } = Config
+  var { fieldBlackList } = Config;
   if (fieldBlackList?.someMatches?.(name)) return;
   this[name] = value;
 }
