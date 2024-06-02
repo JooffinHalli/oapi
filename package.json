@@ -7,7 +7,7 @@
   ],
   "scripts": {
     "git": "git add . && git commit -m 'comm' && git push && git remote -v",
-    "start": "npx https://github.com/JooffinHalli/oapi.git config=config.json service=orders",
+    "start": "npx https://github.com/JooffinHalli/oapi.git config=config.json service=georgia",
     "test": "node index.js config=config.json service=orders"
   }
 }
