@@ -1,9 +1,10 @@
 var fs = require('node:fs');
-var json = require('./api-georgia.json');
+var json = require('./api-orders.json');
 var { paths, components: { schemas } } = json;
 var ignoreList = ['mobile', '_internal'];
 var ignorePattern = new RegExp(ignoreList.join('|'));
-
+// schemas
+var keyStr = (k) => (/[\- \/.]/.test(k) ? `'${k}'` : k);
 var initSchemaState = {
   description: (a, schema, level) => {
     var s = ' '.repeat(level);
@@ -24,8 +25,7 @@ var initSchemaState = {
     var props = properties, s = ' '.repeat(level), res = '{';
     for (var k in props) {
       var subSchema = props[k];
-      var formatedKey = /[.\-\/]/.test(k) ? `'${k}'` : k;
-      var key = required?.includes(k) ? formatedKey : `${formatedKey}?`;
+      var key = required?.includes(k) ? keyStr(k) : `${keyStr(k)}?`;
       var type = schemaStr(subSchema, level + 2);
       res += (`${subSchema.description || ''}\n${s}  ${key}: ${type}`);
     }
@@ -53,20 +53,19 @@ var initSchemaState = {
   pass: (a) => (a)
 }
 var schemaKeysOrder = Object.keys(initSchemaState);
-var l = schemaKeysOrder.length;
+var schemaKeysOrderLength = schemaKeysOrder.length;
 var schemaStr = (schema, level) => {
   var acc = '', state = initSchemaState;
-  for (var i = 0; i <= l; i++) {
+  for (var i = 0; i <= schemaKeysOrderLength; i++) {
     var k = schemaKeysOrder[i], v = schema[k];
     if (!v) continue;
-    while (state.constructor !== String) {
+    while (state.constructor !== String)
       state = (state[k] ?? state[v] ?? state.pass)(acc, schema, level);
-    }
     ((acc = state), (state = initSchemaState));
   }
   return (acc || 'unknown');
 }
-
+// paths
 var comment = (a, v, l) => {
   var s = ' '.repeat(l), e = `\n${s}`, comm = '';
   if (v.description || v.summary) {
@@ -75,25 +74,40 @@ var comment = (a, v, l) => {
     (v.summary) && (comm += (`${e} * @summary` + ' ' + v.summary.replaceAll('\n', `${e} * `)));
     comm += `${e} */\n`;
   }
-  return comm + a;
+  return (comm + a);
+}
+var getParam = (p, r) => (
+  r = p.$ref,
+  (!r ? p : getParam(json.components.parameters[r.replace('#/components/parameters/', '')]))
+);
+var prop = (k, v, l) => (v ? (`${' '.repeat(l)}  ${keyStr(k)}: ${v}\n`) : '');
+var objStr = (fields, l) => (fields ? ('{\n' + fields + ' '.repeat(l) + '}') : '');
+var paramsStr = (a, params, l) => {
+  var l2 = (l + 2), l4 = (l2 + 2);
+  var { query, path } = params.reduce((acc, param) => {
+    var p = getParam(param), inn = p.in;
+    acc[inn] += comment(prop(p.name, schemaStr(p.schema, l2), l2), p, l4);
+    return acc;
+  }, { query: '', path: '' });
+  var q = prop('queryParams', objStr(query, l2), l);
+  var p = prop('pathParams', objStr(path, l2), l);
+  return (a + q + p);
+};
+var resStr = (a, v, l) => {
+  var res = 'unknown', responseObject = {}, l2 = (l + 2);
+  for (var status in v) {
+    if ((status > 400) || !status) continue;
+    responseObject = v[status];
+    var schema = v[status].content?.['application/json']?.schema;
+    res = (schema ? (schemaStr(schema, l2)) : res);
+    break;
+  };
+  res = comment(prop('res', res, l), responseObject, l2);
+  return (a + res);
 }
 var methodState = {
-  parameters: (a, v, l) => a + `${' '.repeat(l)}  parameters: 1\n`,
-  responses: (a, v, l) => {
-    var res = 'any';
-    var responseObject = {};
-    for (var status in v) {
-      if ((status > 400) || !status) continue;
-      responseObject = v[status];
-      var schema = v[status].content?.['application/json']?.schema;
-      res = (schema ? (schemaStr(schema, l + 2)) : res);
-      break;
-    };
-    res = `${' '.repeat(l)}  res: ${res}\n`;
-    res = comment(res, responseObject, l + 2);
-    return (a + res);
-  },
-  comment
+  parameters: paramsStr,
+  responses: resStr
 };
 var pathState = {
   get: methodState,
@@ -104,26 +118,19 @@ var pathState = {
   head: methodState,
   patch: methodState,
   trace: methodState,
-  // parameters: methodState,
-  comment
+  parameters: paramsStr
 };
-var pathsState = {
-  '*': pathState,
-  comment
-};
+var pathsState = { '*': pathState };
 var pathsStr = (obj, l, state) => {
-  var acc = '', s = ' '.repeat(l);
+  var acc = '';
   for (var k in obj) {
-    var v = obj[k];
-    var newState = (state[k] || state['*']);
+    var v = obj[k], l2 = (l + 2), newState = (state[k] || state['*']);
     if (!newState || ignorePattern.test(k)) continue;
-    if (newState.constructor === Object) {
-      var field = `${s}  ${/[\-\/.]/.test(k) ? `'${k}'` : k}: ${pathsStr(v, l + 2, newState)}\n`;
-      acc += (newState.comment ? newState.comment(field, v, l + 2) : field);
-    }
-    else { acc = newState(acc, v, l); };
+    acc = (newState.constructor === Object)
+      ? (acc + comment(prop(k, pathsStr(v, l2, newState), l), v, l2))
+      : newState(acc, v, l)
   };
-  return '{\n' + acc + s + '}';
+  return objStr(acc, l);
 };
 
 var banner = `/**
@@ -131,9 +138,6 @@ var banner = `/**
 *  . этот файл сгенерирован автоматически .
 *  ........................................
 */\n\n`;
-
-var pathsStr = pathsStr(paths, 0, pathsState);
-
 var commentStr = `/**
  * @docs {@link http://staging.orders-v1-0.service.consul:82/_internal/orders/swagger/index.html swagger}
  */\n`;
@@ -145,6 +149,6 @@ for (var schemaName in schemas) {
 fs.writeFile('schemas.ts', (namespace + '\n}'), () => {});
 fs.writeFile(
   'paths.ts',
-  (banner + `import { Schemas } from './schemas';\n\n` + commentStr + 'export type Paths = ' + pathsStr),
+  (banner + `import { Schemas } from './schemas';\n\n` + commentStr + 'export type Paths = ' + pathsStr(paths, 0, pathsState)),
   () => {}
 );
