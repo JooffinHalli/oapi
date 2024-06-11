@@ -182,7 +182,6 @@ fetch(link).catch(() => { throw new Error(1) }).then(r => r.json()).then((json) 
       Object.assign(b, { prop, longest: pLengths.pop().length }),
       validPs,
       (ctx, a, k, v) => {
-        console.log(k, commonPathPart);
         var newK = (k.startsWith(commonPathPart) ? k.replace(commonPathPart, '') : k);
         var newStr = ctx.prop(newK, (
           ' '.repeat(ctx.longest - newK.length) +
