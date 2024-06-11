@@ -15,7 +15,7 @@ fetch(link).catch(() => { throw new Error(1) }).then(r => r.json()).then((json) 
   var ignoreList = ['mobile', '_internal'];
   var ignorePattern = new RegExp(ignoreList.join('|'));
   // schemas
-  var keyStr = (k) => (/[\- \/.]/.test(k) ? (`'` + k + `'`) : k);
+  var keyStr = (k, force) => (force || /[\- \/.\{]/.test(k) ? (`'` + k + `'`) : k);
   var initSchemaState = {
     description: (a, schema, l) => {
       var s = ' '.repeat(l);
@@ -91,7 +91,7 @@ fetch(link).catch(() => { throw new Error(1) }).then(r => r.json()).then((json) 
     r = p.$ref,
     (!r ? p : getParam(json.components.parameters[r.replace('#/components/parameters/', '')]))
   );
-  var prop = (k, v, l) => (v ? (`${' '.repeat(l || 0)}  ${keyStr(k)}: ${v}\n`) : '');
+  var prop = (k, v, l, f) => (v ? (`${' '.repeat(l || 0)}  ${keyStr(k, f)}: ${v}\n`) : '');
   var objStr = (fields, l) => (fields ? ('{\n' + fields + ' '.repeat(l) + '}') : '');
   var paramsStr = (a, params, l) => {
     var l2 = (l + 2), l4 = (l2 + 2);
@@ -144,7 +144,7 @@ fetch(link).catch(() => { throw new Error(1) }).then(r => r.json()).then((json) 
     return objStr(acc, l);
   };
 
-  var pathsReduce = (ctx, o, cb) => { var a = ''; for (var k in o) (a = cb(ctx, a, k, o[k])); return a; };
+  var pathsReduce = (ctx, o, cb) => {var a = ''; for (var k in o) (a = cb(ctx, a, k, o[k]));return a;};
   var pLengths = [], pParts = new Map, pI = new Map, validPs = {}, totalPs = 0;
   var guardPath = (path) => {
     if (ignorePattern.test(path)) return false;
@@ -175,22 +175,22 @@ fetch(link).catch(() => { throw new Error(1) }).then(r => r.json()).then((json) 
 
   var commonPathPart = Array.from(pParts).reduce(
     (a, { 0: k, 1: v }) => ((v > (~~(-~(totalPs >> 1)))) && (a[pI.get(k)] = k), a), []
-  ).join('/');
+  ).join('/') + '/';
   var b = { get: 1, post: 2, put: 4, delete: 8, patch: 16, head: 32, trace: 64 };
   var endpointsStr = objStr(
     pathsReduce(
       Object.assign(b, { prop, longest: pLengths.pop().length }),
       validPs,
       (ctx, a, k, v) => {
+        console.log(k, commonPathPart);
         var newK = (k.startsWith(commonPathPart) ? k.replace(commonPathPart, '') : k);
-        var newStr = ctx.prop(
-          newK,
-          (' '.repeat(ctx.longest - newK.length) +
-            '0b' +
-            pathsReduce(ctx, v, (ctx2, a1, k2) => (a1 |= ctx2[k2])).toString(2).padStart(8, 0) +
-            ',')
-        );
-        return a + newStr;
+        var newStr = ctx.prop(newK, (
+          ' '.repeat(ctx.longest - newK.length) +
+          '0b' +
+          pathsReduce(ctx, v, (ctx2, a1, k2) => (a1 |= ctx2[k2])).toString(2).padStart(8, 0) +
+          ','
+        ), 0, 1);
+        return (a + newStr);
       }
     )
   )
