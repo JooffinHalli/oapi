@@ -1,68 +1,237 @@
 #!/usr/bin/env node
 
-var { join: joinPath } = require('node:path');
-var { Config, FS, Process, patchConstructors, assertVersion } = require('./utils');
+process.on('uncaughtException', (e) => {
+  var errs = [', проверьте входные данные', ' при запросе json документа'];
+  console.log('\x1b[31m%s\x1b[0m', `\nПроизошла ошибка${errs[e.message] || errs[0]}\n`); // red
+});
 
-var serviceSchemasTs   = require('./scripts/service/1.schemasTs');
-var serviceEnumsJs     = require('./scripts/service/2.enumsJs');
-var serviceUtilTypesTs = require('./scripts/service/3.utilTypesTs');
-var servicePathsTs     = require('./scripts/service/4.pathsTs');
-var serviceIndexJs     = require('./scripts/service/5.indexJs');
+// a - acc, k - key, v - value, s - space, l - level of nesting, p = path, f - force
 
-var buildApiJs         = require('./scripts/buildApiJs');
-var utilTypesTs        = require('./scripts/utilTypesTs');
-var declarationsTs     = require('./scripts/buildDeclarationsTs');
+var fs = require('node:fs'), path = require('node:path');
 
-patchConstructors(); // Object, Array
+var { argv: { 2: configPath, 3: serviceName } } = process;
+var config = require(configPath), sourcePath = config.sourcePath;
+var { link, pathBlackList } = config[serviceName];
+var dirPath = path.join(sourcePath, serviceName);
 
-var { config: configFileName, service } = Process.args;
+fetch(link).catch(() => { throw new Error(1) }).then(r => r.json()).then((json) => {
+  var { info: { title }, paths, components: { schemas } } = json;
+  var ignorePattern = new RegExp(pathBlackList.join('|'));
 
-var projectPath = process.cwd();
-var configPath = joinPath(projectPath, configFileName);
+  // common
+  var keyStr = (k, force) => (force || /[\- \/.\{]/.test(k) ? (`'` + k + `'`) : k);
+  var propStr = (k, v, l, f) => (v ? (`${' '.repeat(l || 0)}  ${keyStr(k, f)}: ${v}\n`) : '');
+  var objStr = (fields, l) => (fields ? ('{\n' + fields + ' '.repeat(l) + '}') : '');
 
-Config.assertPath(configPath);
-var config = Config.read(configPath);
-Config.assert(config, service, configPath);
-var serviceConfig = config[service];
-Config.assertService(serviceConfig, configPath);
+  // schemas
+  var initSchemaState = {
+    description: (a, schema, l) => {
+      var s = ' '.repeat(l);
+      var formated = schema.description.replaceAll('\n', `\n${s} * `);
+      schema.description = `\n${s}/**\n${s} * @description ${formated}\n${s} */`;
+      return a;
+    },
+    type: () => ({
+      string: () => 'string',
+      number: () => 'number',
+      integer: () => 'number',
+      object: (a, { properties }) => (properties ? a : 'Record<string, unknown>'),
+      array: (a, { items }) => (items ? a : 'unknown[]'),
+      boolean: () => 'boolean',
+      null: () => 'null'
+    }),
+    properties: (a, { properties, required }, l) => {
+      var props = properties, s = ' '.repeat(l), res = '{';
+      for (var k in props) {
+        var subSchema = props[k];
+        var key = required?.includes(k) ? keyStr(k) : `${keyStr(k)}?`;
+        var type = schemaStr(subSchema, l + 2);
+        res += (`${subSchema.description || ''}\n${s}  ${key}: ${type}`);
+      }
+      return res + `\n${s}}`;
+    },
+    items: (a, { items }, l) => (`${schemaStr(items, l)}[]`),
+    $ref: (a, { $ref }) => $ref.replace('#/components/schemas/', `Schemas.`),
+    allOf: (a, v, l) => (v.allOf.reduce((a, s) => `${a ? `${a} & ` : ''}${schemaStr(s, l)}`, '')),
+    oneOf: (a, v, l) => (v.oneOf.reduce((a, s) => `${a ? `${a} | ` : ''}${schemaStr(s, l)}`, '')),
+    anyOf: (a, v, l) => (v.anyOf.reduce((a, s) => `${a ? `${a} | ` : ''}${schemaStr(s, l)}`, '')),
+    additionalProperties: (a, { additionalProperties: s }, l) => {
+      var type = schemaStr(s, l + 4), res = `Record<string, ${type}>`;
+      return (a.length && (a !== res)) ? `(${a} & ${res})` : res;
+    },
+    nullable: (a) => (a.length ? ((a === 'null') ? a : `${a} | null`) : `unknown | null`),
+    enum: (a, schema, l) => {
+      var { description: d, enum: e, ['x-enumNames']: n } = schema, s = ' '.repeat(l), acc = '';
+      if (n.length === e.length) {
+        for (var i in n) (acc += `\n${s} * * \`${n[i]}\` — ${e[i]}`);
+        acc = `\n${s} * @names${acc}\n${s} */`;
+        schema.description = d.length ? `${d.replace('*/', '*')}${s}${acc}` : `\n${s}/**${acc}`;
+      }
+      return e.join(' | ');
+    },
+    pass: (a) => (a)
+  };
+  var schemaKeysOrder = Object.keys(initSchemaState);
+  var schemaKeysOrderLength = schemaKeysOrder.length;
+  var schemaStr = (schema, l) => {
+    var acc = '', state = initSchemaState;
+    for (var i = 0; i <= schemaKeysOrderLength; i++) {
+      var k = schemaKeysOrder[i], v = schema[k];
+      if (!v) continue;
+      while (state.constructor !== String)
+        state = (state[k] ?? state[v] ?? state.pass)(acc, schema, l);
+      ((acc = state), (state = initSchemaState));
+    };
+    return (acc || 'unknown');
+  }
 
-var { sourcePath } = config;
-var { link, outputPath, prefix, tagWhiteList, pathBlackList, fieldBlackList, onlyTypes } = serviceConfig;
+  // paths
+  var commented = (a, v, l) => {
+    var s = ' '.repeat(l), e = `\n${s}`, comm = '';
+    if (v.description || v.summary) {
+      comm = `${s}/**`;
+      (v.description) && (comm += (`${e} * @description` + ' ' + v.description.replaceAll('\n', `${e} * `)));
+      (v.summary) && (comm += (`${e} * @summary` + ' ' + v.summary.replaceAll('\n', `${e} * `)));
+      comm += `${e} */\n`;
+    };
+    return (comm + a);
+  }
+  var getParam = (p, r) => (
+    r = p.$ref,
+    (!r ? p : getParam(json.components.parameters[r.replace('#/components/parameters/', '')]))
+  );
+  var paramsStr = (a, params, l) => {
+    var l2 = (l + 2), l4 = (l2 + 2);
+    var { query, path } = params.reduce((acc, param) => {
+      var p = getParam(param), inn = p.in;
+      acc[inn] += commented(propStr(p.name, schemaStr(p.schema, l2), l2), p, l4);
+      return acc;
+    }, { query: '', path: '' });
+    var q = propStr('queryParams', objStr(query, l2), l);
+    var p = propStr('pathParams', objStr(path, l2), l);
+    return (a + q + p);
+  };
+  var methodState = {
+    parameters: paramsStr,
+    responses: (a, v, l) => {
+      var res = 'unknown', responseObject = {}, l2 = (l + 2);
+      for (var status in v) {
+        if ((status > 400) || !status) continue;
+        responseObject = v[status];
+        var schema = v[status].content?.['application/json']?.schema;
+        res = (schema ? (schemaStr(schema, l2)) : res);
+        break;
+      };
+      res = commented(propStr('res', res, l), responseObject, l2);
+      return (a + res);
+    }
+  };
+  var pathState = {
+    get: methodState,
+    put: methodState,
+    post: methodState,
+    delete: methodState,
+    options: methodState,
+    head: methodState,
+    patch: methodState,
+    trace: methodState,
+    parameters: paramsStr
+  };
+  var pathsState = { '*': pathState };
+  var pathsStr = (obj, l, state, canGo = () => true) => {
+    var acc = '';
+    for (var k in obj) {
+      var v = obj[k], l2 = (l + 2), newState = (state[k] || state['*']);
+      if (!newState || !canGo(k)) continue;
+      acc = (newState.constructor === Object)
+        ? (acc + commented(propStr(k, pathsStr(v, l2, newState), l), v, l2))
+        : newState(acc, v, l);
+    };
+    return objStr(acc, l);
+  };
 
-Config.apiOutput = joinPath(projectPath, sourcePath);
-Config.serviceOutput = joinPath(Config.apiOutput, outputPath);
-Config.prefix = prefix;
-Config.tagWhiteList = tagWhiteList;
-Config.pathBlackList = pathBlackList;
-Config.fieldBlackList = fieldBlackList;
-Config.onlyTypes = onlyTypes;
+  // endpoints
+  var pathsReduce = (ctx, o, cb) => {var a = ''; for (var k in o) (a = cb(ctx, a, k, o[k]));return a;};
+  var pLengths = [], pParts = new Map, pI = new Map, validPs = {}, totalPs = 0;
+  var guardPath = (path) => {
+    if (ignorePattern.test(path)) return false;
+    totalPs++;
+    pLengths[path.length] = path;
+    path.split('/').forEach((part, i) => {
+      pParts.set(part, ((pParts.get(part) || 0) + 1));
+      pI.set(part, i);
+    });
+    validPs[path] = json.paths[path];
+    return true;
+  };
 
-fetch(link)
-  .then((res) => res.json())
-  .then(mainScript)
-  .catch((e) => console.error('Ошибка при запросе', e));
+  // get strings
+  var banner = `/**
+ *  ........................................
+ *  . этот файл сгенерирован автоматически .
+ *  ........................................
+ */\n\n`;
+  var see = ` * @see {@link ${link.replace('internal/swagger.json', 'index.html')} swagger}\n`;
 
-/** @param {import('./types/OpenAPIObject').OpenAPIObject} openapiObject */
-function mainScript(openapiObject) {
-  if (!openapiObject) Process.exit(`Swagger json не был возвращен с урла ${link}, попробуйте еще раз`);
-  assertVersion(openapiObject);
-  FS.writeFile(`api-${service}.json`, JSON.stringify(openapiObject, null, 2), false);
+  var namespace = `${banner}/**\n * Схемы для сервиса \`${title}\`\n${see} */\nexport namespace Schemas {\n`;
+  for (var schemaName in schemas) {
+    var schema = schemas[schemaName], type = schemaStr(schemas[schemaName], 2);
+    namespace += (`${schema.description || ''}\n  export type ${schemaName} = ${type}\n`);
+  };
 
-  FS.mkDir(Config.apiOutput);
-  FS.mkDir(Config.serviceOutput);
+  var pathsTypeStr = pathsStr(paths, 0, pathsState, guardPath);
 
-  var schemas = openapiObject.components?.schemas;
-  var paths = openapiObject.paths;
+  var commonPathPart = Array.from(pParts).reduce(
+    (a, { 0: k, 1: v }) => ((v > (~~(-~(totalPs >> 1)))) && (a[pI.get(k)] = k), a), []
+  ).join('/') + '/';
+  var b = { get: 1, post: 2, put: 4, delete: 8, patch: 16, head: 32, trace: 64 };
+  var endpointsStr = objStr(
+    pathsReduce(
+      Object.assign(b, { propStr, longest: pLengths.pop().length }),
+      validPs,
+      (ctx, a, k, v) => {
+        var newK = (k.startsWith(commonPathPart) ? k.replace(commonPathPart, '') : k.replace('/', ''));
+        var newStr = ctx.propStr(newK, (
+          ' '.repeat(ctx.longest - newK.length) +
+          '0b' +
+          pathsReduce(ctx, v, (ctx2, a1, k2) => (a1 |= ctx2[k2])).toString(2).padStart(8, 0) +
+          ','
+        ), 0, 1);
+        return (a + newStr);
+      }
+    )
+  );
 
-  serviceSchemasTs(schemas);
-  !onlyTypes && serviceEnumsJs(schemas);
-  servicePathsTs(paths);
-  !onlyTypes && serviceUtilTypesTs();
-  !onlyTypes && serviceIndexJs();
-
-  !onlyTypes && buildApiJs();
-  !onlyTypes && utilTypesTs();
-  !onlyTypes && declarationsTs();
-
-  console.log("\x1b[32m", `апи "${service}" успешно обновилось -> ${sourcePath}`); // green
-}
+  // write files
+  if (!fs.existsSync(dirPath)) fs.mkdirSync(dirPath);
+  fs.writeFile(
+    path.join(dirPath, 'schemas.ts'),
+    (namespace + '\n}'),
+    () => {}
+  );
+  fs.writeFile(
+    path.join(dirPath, 'paths.ts'),
+    (
+      banner +
+      `import { Schemas } from './schemas';\n\n` +
+      `/**\n * Типы эндпойнтов для сервиса \`${title}\`\n${see} */\n` +
+      'export type Paths = ' + pathsTypeStr
+    ),
+    () => {}
+  );
+  fs.writeFile(
+    path.join(dirPath, 'endpoints.ts'),
+    (
+      banner +
+      `/** список эндпойнтов и их методов отображенных в виде числа для сервиса \`${title}\` */\nexport type Endpoints = typeof endpoints\n\n/**
+ * список эндпойнтов и их методов отображенных в виде числа для сервиса \`${title}\`,
+ * где каждый бит указывает на наличие метода
+ * | trace | head | patch | delete | put | post | get |
+ * | ----- | ---- | ----- | ------ | --- | ---- | --- |
+ * |    64 |   32 |    16 |      8 |   4 |    2 |   1 |
+ */\n` +
+      'export const endpoints = ' + endpointsStr
+    ),
+    () => {}
+  );
+});
