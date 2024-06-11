@@ -1,0 +1,3323 @@
+{
+  "x-generator": "NSwag v14.0.2.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))",
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API сервиса грузов Georgia API",
+    "version": "internal"
+  },
+  "servers": [
+    {
+      "url": "http://staging.georgia-api.service.consul:5017"
+    }
+  ],
+  "paths": {
+    "/own_cargoes/v2/loads/ownloadsinit": {
+      "get": {
+        "tags": [
+          "Frontend"
+        ],
+        "summary": "Получение информации для старта \"Ваших грузов\"",
+        "operationId": "Frontend_GetOwnLoadsInitData",
+        "parameters": [
+          {
+            "name": "X-Authenticated-UserId",
+            "in": "header",
+            "description": "ID пользователя",
+            "schema": {
+              "type": "string",
+              "pattern": "\\d{5,10}\\.\\d{1,4}"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OwnloadsInitView"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      }
+    },
+    "/own_cargoes/v2/loads/counters": {
+      "get": {
+        "tags": [
+          "Frontend"
+        ],
+        "summary": "Получение счетчиков",
+        "operationId": "Frontend_GetUserCounters",
+        "parameters": [
+          {
+            "name": "X-Authenticated-UserId",
+            "in": "header",
+            "description": "ID пользователя",
+            "schema": {
+              "type": "string",
+              "pattern": "\\d{5,10}\\.\\d{1,4}"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Counts"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      }
+    },
+    "/own_cargoes/v2/loads/search": {
+      "post": {
+        "tags": [
+          "Frontend"
+        ],
+        "summary": "Получение полной информации для вывода списка грузов",
+        "operationId": "Frontend_Search",
+        "parameters": [
+          {
+            "name": "X-Authenticated-UserId",
+            "in": "header",
+            "description": "ID пользователя",
+            "schema": {
+              "type": "string",
+              "pattern": "\\d{5,10}\\.\\d{1,4}"
+            }
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchRequest"
+              }
+            }
+          },
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoadsView"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      }
+    },
+    "/_internal/georgia/search": {
+      "post": {
+        "tags": [
+          "Internal"
+        ],
+        "summary": "Получение полной информации для вывода списка грузов",
+        "operationId": "Internal_Search",
+        "parameters": [
+          {
+            "name": "X-Authenticated-UserId",
+            "in": "header",
+            "description": "ID пользователя",
+            "schema": {
+              "type": "string",
+              "pattern": "\\d{5,10}\\.\\d{1,4}"
+            }
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchRequest"
+              }
+            }
+          },
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoadsView"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      }
+    },
+    "/_internal/georgia/ownloadsinit": {
+      "get": {
+        "tags": [
+          "Internal"
+        ],
+        "summary": "Получение информации для старта \"Ваших грузов\"",
+        "operationId": "Internal_GetOwnLoadsInitData",
+        "parameters": [
+          {
+            "name": "X-Authenticated-UserId",
+            "in": "header",
+            "description": "ID пользователя",
+            "schema": {
+              "type": "string",
+              "pattern": "\\d{5,10}\\.\\d{1,4}"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OwnloadsInitView"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      }
+    },
+    "/_internal/georgia/counters": {
+      "get": {
+        "tags": [
+          "Internal"
+        ],
+        "summary": "Получение счетчиков",
+        "operationId": "Internal_GetUserCounters",
+        "parameters": [
+          {
+            "name": "X-Authenticated-UserId",
+            "in": "header",
+            "description": "ID пользователя",
+            "schema": {
+              "type": "string",
+              "pattern": "\\d{5,10}\\.\\d{1,4}"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Counts"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      }
+    },
+    "/mobile/own_cargoes/v1/loads/{loadId}": {
+      "get": {
+        "tags": [
+          "Mobile"
+        ],
+        "summary": "Получение информации по id груза",
+        "operationId": "Mobile_GetLoadInfo",
+        "parameters": [
+          {
+            "name": "loadId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "X-Authenticated-UserId",
+            "in": "header",
+            "description": "ID пользователя",
+            "schema": {
+              "type": "string",
+              "pattern": "\\d{5,10}\\.\\d{1,4}"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoadView"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      }
+    },
+    "/mobile/own_cargoes/v1/loads/search": {
+      "post": {
+        "tags": [
+          "Mobile"
+        ],
+        "summary": "Получение полной информации для вывода списка грузов",
+        "operationId": "Mobile_Search",
+        "parameters": [
+          {
+            "name": "X-Authenticated-UserId",
+            "in": "header",
+            "description": "ID пользователя",
+            "schema": {
+              "type": "string",
+              "pattern": "\\d{5,10}\\.\\d{1,4}"
+            }
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "description": "Запрос",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchRequest"
+              }
+            }
+          },
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoadsView"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "OwnloadsInitView": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "Departments": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/Department"
+            }
+          },
+          "Account": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Account"
+              }
+            ]
+          },
+          "Dictionaries": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/DictionariesView"
+              }
+            ]
+          }
+        }
+      },
+      "Department": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "Id": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "Name": {
+            "type": "string"
+          },
+          "ShortName": {
+            "type": "string",
+            "nullable": true
+          },
+          "DeletionDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "FirmId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ContactsWithAccess": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContactWithAccess"
+            }
+          }
+        }
+      },
+      "ContactWithAccess": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "ContactId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "UserRights": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "Account": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "FirmType": {
+            "type": "string",
+            "nullable": true
+          },
+          "FirmId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "AccountId": {
+            "type": "string",
+            "nullable": true
+          },
+          "ContactId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "FullFirmName": {
+            "type": "string",
+            "description": "Имя фирмы + форма собственности",
+            "nullable": true
+          },
+          "FirmName": {
+            "type": "string",
+            "nullable": true
+          },
+          "Brand": {
+            "type": "string",
+            "nullable": true
+          },
+          "Ownership": {
+            "type": "string",
+            "nullable": true
+          },
+          "OwnershipId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "IsRrd": {
+            "type": "boolean"
+          },
+          "LoadsAccess": {
+            "$ref": "#/components/schemas/FirmAccessLevel"
+          },
+          "Contacts": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/Contact"
+            }
+          },
+          "MaxContactsCount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "FirmAccessLevel": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "NoAccess",
+          "ReadOnly",
+          "ReadWrite",
+          "AddDelete",
+          "Full"
+        ],
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "Contact": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "Id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "Name": {
+            "type": "string",
+            "nullable": true
+          },
+          "Email": {
+            "type": "string",
+            "nullable": true
+          },
+          "UserRights": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "AvailableDepartments": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "CanWorkWithSubdivisions": {
+            "type": "boolean"
+          },
+          "CanWorkWithCommonBoard": {
+            "type": "boolean"
+          },
+          "CanWorkWithPersonalBoard": {
+            "type": "boolean"
+          }
+        }
+      },
+      "DictionariesView": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "CarTypes": {
+            "type": "object",
+            "nullable": true,
+            "additionalProperties": {
+              "$ref": "#/components/schemas/CarTypeView"
+            }
+          },
+          "CargoTypes": {
+            "type": "object",
+            "nullable": true,
+            "additionalProperties": {
+              "$ref": "#/components/schemas/CargoTypeView"
+            }
+          },
+          "PackTypes": {
+            "type": "object",
+            "nullable": true,
+            "additionalProperties": {
+              "$ref": "#/components/schemas/PackTypeView"
+            }
+          },
+          "LoadingTypes": {
+            "type": "object",
+            "nullable": true,
+            "additionalProperties": {
+              "$ref": "#/components/schemas/LoadingTypeView"
+            }
+          },
+          "UnloadingTypes": {
+            "type": "object",
+            "nullable": true,
+            "additionalProperties": {
+              "$ref": "#/components/schemas/LoadingTypeView"
+            }
+          },
+          "CurrencyTypes": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/CurrencyView"
+            }
+          },
+          "MoneyTypes": {
+            "type": "object",
+            "nullable": true,
+            "additionalProperties": {
+              "$ref": "#/components/schemas/MoneyTypeView"
+            }
+          },
+          "AtiDocsDocumentTypes": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "DenialReasons": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/LoadAccessDeniedReasonsView"
+            }
+          }
+        }
+      },
+      "CarTypeView": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "Id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "Id2": {
+            "type": "string",
+            "format": "guid"
+          },
+          "Name": {
+            "type": "string"
+          },
+          "Attribs": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "Position": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "TypeId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ShortName": {
+            "type": "string"
+          }
+        }
+      },
+      "CargoTypeView": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "Id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "Id2": {
+            "type": "string",
+            "format": "guid"
+          },
+          "Name": {
+            "type": "string"
+          }
+        }
+      },
+      "PackTypeView": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "Id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "Id2": {
+            "type": "string",
+            "format": "guid"
+          },
+          "Name": {
+            "type": "string"
+          },
+          "ShortName": {
+            "type": "string"
+          }
+        }
+      },
+      "LoadingTypeView": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "Id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "Id2": {
+            "type": "string",
+            "format": "guid"
+          },
+          "Name": {
+            "type": "string"
+          },
+          "ShortName": {
+            "type": "string"
+          }
+        }
+      },
+      "CurrencyView": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "Id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "Id2": {
+            "type": "string",
+            "format": "guid"
+          },
+          "Name": {
+            "type": "string"
+          },
+          "Modifier": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "CurrencyIdPerKm": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "Iso4217Code": {
+            "type": "string",
+            "nullable": true
+          },
+          "Iso4217DigitalCode": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "AuctionView": {
+            "type": "boolean"
+          },
+          "IsCurrency": {
+            "type": "boolean"
+          }
+        }
+      },
+      "MoneyTypeView": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "Id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "Id2": {
+            "type": "string",
+            "format": "guid"
+          },
+          "Name": {
+            "type": "string"
+          }
+        }
+      },
+      "LoadAccessDeniedReasonsView": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "Id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "Name": {
+            "type": "string"
+          }
+        }
+      },
+      "Counts": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "PublishedLoadsCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ContactPublishedLoadsCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "UnpublishedLoadsCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ContactUnpublishedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ReservedLoadsCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "TotalLoadsCount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "LoadsView": {
+        "description": "description",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "Counterparts": {
+            "type": "object",
+            "nullable": true,
+            "additionalProperties": {
+              "$ref": "#/components/schemas/Account"
+            }
+          },
+          "Cities": {
+            "$ref": "#/components/schemas/CitiesView"
+          },
+          "Comments": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Comment"
+              }
+            }
+          },
+          "Counters": {
+            "$ref": "#/components/schemas/Counts"
+          },
+          "CounterOffers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CounterOffer"
+            }
+          },
+          "PersonalOffers": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/PersonalInvitation"
+              }
+            }
+          },
+          "Responses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoadResponseInfo"
+            }
+          },
+          "TotalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "CurrentPage": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "Container": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoadContainer"
+            }
+          }
+        }
+      },
+      "CitiesView": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "LoadingCities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/City"
+            }
+          },
+          "UnloadingCities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/City"
+            }
+          },
+          "ExtraPointsCities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/City"
+            }
+          },
+          "LargeCities": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/City"
+            }
+          }
+        }
+      },
+      "City": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "CityId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "RegionId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "CountryId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "IsRegionalCenter": {
+            "type": "boolean"
+          },
+          "Name": {
+            "type": "string",
+            "nullable": true
+          },
+          "RegionName": {
+            "type": "string",
+            "nullable": true
+          },
+          "CountryName": {
+            "type": "string",
+            "nullable": true
+          },
+          "CountryCodeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "TimeZone": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "Longitude": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Latitude": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Count": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "FullName": {
+            "type": "string",
+            "description": "Составное название состоящее из названий города, региона и страны разделенные через запятую"
+          }
+        }
+      },
+      "Comment": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "CommentId": {
+            "type": "string",
+            "description": "Идентификатор комментария",
+            "format": "guid"
+          },
+          "Message": {
+            "type": "string",
+            "description": "Комментарий"
+          },
+          "ContactId": {
+            "type": "integer",
+            "description": "Контакт фирмы, который оставил комментарий",
+            "format": "int32"
+          },
+          "CommentDateTime": {
+            "type": "string",
+            "description": "Время, когда комментарий был оставлен",
+            "format": "date-time"
+          }
+        }
+      },
+      "CounterOffer": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "LoadId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "ResponseId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "AddedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "Price": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "CurrencyId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "IsOutdated": {
+            "type": "boolean"
+          },
+          "IsNoLoad": {
+            "type": "boolean"
+          },
+          "AnnouncedCurrencyId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "AnnouncedRate": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "NdsPrice": {
+            "type": "number",
+            "description": "Предложенная цена встречного предложения с ндс",
+            "format": "decimal"
+          },
+          "NdsCurrencyId": {
+            "type": "integer",
+            "description": "Валюта встречного предложения с ндс",
+            "format": "int32"
+          },
+          "NotNdsPrice": {
+            "type": "number",
+            "description": "Предложенная цена встречного предложения без ндс",
+            "format": "decimal"
+          },
+          "NotNdsCurrencyId": {
+            "type": "integer",
+            "description": "Валюта встречного предложения без ндс",
+            "format": "int32"
+          }
+        }
+      },
+      "PersonalInvitation": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Deal"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "CancellationDate": {
+                "type": "string",
+                "description": "Дата отмены приглашения \"Оформить Заказ\"",
+                "format": "date-time",
+                "nullable": true
+              },
+              "DealKind": {
+                "description": "Тип Заказа",
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/DealKinds"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "DealKinds": {
+        "type": "integer",
+        "description": "Тип Заказа\n            \n* `0` — Заказ невозможен \n* `1` — Взятие груза из поиска\n* `2` — Заказ из Торгов\n* `4` — Предложение груза\n* `8` — Из перехвата машин\n* `16` — Односторонний заказ\n* `32` — Предложение груза из встречного предложения\n* `64` — Предложение груза по контракту",
+        "x-enumFlags": true,
+        "x-enumNames": [
+          "None",
+          "OrdinaryDeal",
+          "AuctionDeal",
+          "PersonalDeal",
+          "TruckInterDeal",
+          "UnilateralDeal",
+          "CounterOfferDeal",
+          "ContractDeal"
+        ],
+        "enum": [
+          0,
+          1,
+          2,
+          4,
+          8,
+          16,
+          32,
+          64
+        ]
+      },
+      "Deal": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "DealId": {
+            "type": "string",
+            "description": "Id Заказа",
+            "format": "guid"
+          },
+          "Status": {
+            "description": "Статус Заказа",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/DealState"
+              }
+            ]
+          },
+          "CounterpartyStatus": {
+            "description": "Статус Заказа контрагента",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/DealState"
+              }
+            ]
+          },
+          "TakerFirmId": {
+            "type": "integer",
+            "description": "Id фирмы перевозчика",
+            "format": "int32"
+          },
+          "CargoOwnerFirmId": {
+            "type": "integer",
+            "description": "Id фирмы грузовладельца",
+            "format": "int32"
+          },
+          "CargoOwnerAtiId": {
+            "type": "string",
+            "description": "AtiId фирмы грузовладельца"
+          },
+          "TakerAtiId": {
+            "type": "string",
+            "description": "AtiId фирмы перевозчика"
+          },
+          "LoadId": {
+            "type": "string",
+            "description": "Id груза",
+            "format": "guid"
+          },
+          "Payment": {
+            "$ref": "#/components/schemas/DealPayment"
+          }
+        }
+      },
+      "DealState": {
+        "type": "integer",
+        "description": "Статус Заказа\n\n* `0` — Груз зарезервирован перевозчиком\n* `1` — Перевозчик заполнил информацию о реквизитах/водителе/машине и грузовладелец не просмотрел заявку\n* `2` — Перевозчик заполнил информацию о реквизитах/водителе/машине и грузовладелец просмотрел заявку\n* `3` — Грузовладелец отправил документ-заявку перевозчику\n* `4` — Заказ в исполнении (перевозчик дал согласие на документ-заявку)\n* `5` — Заказ завершен и перенесен в архив\n* `7` — Есть только приглашение на Заказ\n* `8` — Заказа нет, но есть Торги, у которых есть возможные победители\n* `9` — Заказ отклонен автоматически, так как после последней даты загрузки прошло уже более 7 дней\n* `10` — Заказ завершен, ожидается оплата\n* `11` — В Торгах лучшая ставка из других Торгов\n* `-11` — Заказ удален\n* `-10` — Резерв груза перевозчиком отменен\n* `-9` — Заказ отклонен грузовладельцем в Торгах после истечения срока подачи документов (смена победителя)\n* `-8` — Грузовладелец отменил Заказ в исполнении\n* `-7` — Перевозчик отменил Заказ в исполнении\n* `-6` — Заказ отклонен грузовладельцем после удаления Торгов\n* `-4` — Заказ отклонен грузовладельцем в Торгах (смена победителя)\n* `-3` — Заказ отклонен грузовладельцем\n* `-2` — Заказ отозван перевозчиком",
+        "x-enumNames": [
+          "Reserve",
+          "Taken",
+          "TakenViewed",
+          "DocumentSentByCargoOwner",
+          "DocumentApprovedByTrucker",
+          "Finished",
+          "PersonalDealInvite",
+          "AuctionWithPossibleWinner",
+          "CancelAuto",
+          "WaitPaymentAndDocuments",
+          "BestRateFromOtherPassThroughAuction",
+          "Deleted",
+          "ReserveCanceled",
+          "DenialInAuctionByDocExpired",
+          "CancelInWorkByCargoOwner",
+          "CancelInWorkByTrucker",
+          "DenialBecauseDeleteAuction",
+          "DenialInAuction",
+          "DenialByCargoOwner",
+          "DenialByTrucker"
+        ],
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          7,
+          8,
+          9,
+          10,
+          11,
+          -11,
+          -10,
+          -9,
+          -8,
+          -7,
+          -6,
+          -4,
+          -3,
+          -2
+        ]
+      },
+      "DealPayment": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "PaymentSource": {
+            "$ref": "#/components/schemas/PaymentSource"
+          }
+        }
+      },
+      "PaymentSource": {
+        "type": "integer",
+        "description": "Источник параметров оплаты\n            \n * `0` — Нет\n * `1` — Встречное предложение\n * `2` — Торги\n * `3` — Груз\n * `4` — Предложение груза\n * `5` — Предложение по контракту",
+        "x-enumNames": [
+          "None",
+          "CounterOffer",
+          "Auction",
+          "Load",
+          "Invitation",
+          "Contract"
+        ],
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "LoadResponseInfo": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "ResponseId": {
+            "type": "string",
+            "description": "Id отзыва",
+            "format": "guid"
+          },
+          "LoadId": {
+            "type": "string",
+            "description": "Id груза, на который оставлен отзыв",
+            "format": "guid"
+          },
+          "LoadNumber": {
+            "type": "string",
+            "description": "Номер груза"
+          },
+          "LoadFirmId": {
+            "type": "integer",
+            "description": "Id фирмы, которой принадлежит груз",
+            "format": "int32"
+          },
+          "FirmId": {
+            "type": "integer",
+            "description": "Id фирмы, которая оставила отзыв",
+            "format": "int32"
+          },
+          "FirmName": {
+            "type": "string",
+            "description": "Название фирмы"
+          },
+          "ContactId": {
+            "type": "integer",
+            "description": "Контакт, который сделал встречное предложение",
+            "format": "int32"
+          },
+          "AddedAt": {
+            "type": "string",
+            "description": "Дата добавления отзыва",
+            "format": "date-time"
+          },
+          "UpdatedAt": {
+            "type": "string",
+            "description": "Дата изменения отзыва",
+            "format": "date-time"
+          },
+          "Price": {
+            "type": "number",
+            "description": "Предложенная цена встречного предложения",
+            "format": "decimal"
+          },
+          "CurrencyId": {
+            "type": "integer",
+            "description": "Валюта встречного предложения",
+            "format": "int32"
+          },
+          "AnnouncedCurrencyId": {
+            "type": "integer",
+            "description": "Валюта \"Озвученной ставки\"",
+            "format": "int32"
+          },
+          "AnnouncedRate": {
+            "type": "integer",
+            "description": "Озвученная ставка",
+            "format": "int32"
+          },
+          "CounterOfferSource": {
+            "description": "Обозначение откуда было добавлено встречное предложение\n\n* `0` - Неизвестный источник\n* `1` - Мобильное приложение\n* `2` - Интегратор\n* `3` - Перехват грузов интегратором\n* `4` - Страница поиска грузов\n* `5` - Перехват машин\n* `6` - Сквозное встречное предложение, добавлено автоматически",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/CounterOfferSource"
+              }
+            ]
+          },
+          "IsNoLoad": {
+            "type": "boolean",
+            "description": "Параметр \"Груза нет\""
+          },
+          "IsOutdated": {
+            "type": "boolean",
+            "description": "Когда груз редактируют, удаляют, обновляют, встречное предложение помечается просроченным"
+          },
+          "NdsPrice": {
+            "type": "number",
+            "description": "Предложенная цена встречного предложения с ндс",
+            "format": "decimal"
+          },
+          "NdsCurrencyId": {
+            "type": "integer",
+            "description": "Валюта встречного предложения с ндс",
+            "format": "int32"
+          },
+          "NotNdsPrice": {
+            "type": "number",
+            "description": "Предложенная цена встречного предложения без ндс",
+            "format": "decimal"
+          },
+          "NotNdsCurrencyId": {
+            "type": "integer",
+            "description": "Валюта встречного предложения без ндс",
+            "format": "int32"
+          },
+          "Complaint": {
+            "type": "string",
+            "description": "Жалоба на груз"
+          }
+        }
+      },
+      "CounterOfferSource": {
+        "type": "integer",
+        "description": "Обозначение откуда было добавлено встречное предложение.\n\n* `0` - Неизвестный источник\n* `1` - Мобильное приложение\n* `2` - Интегратор\n* `3` - Перехват грузов интегратором\n* `4` - Страница поиска грузов\n* `5` - Перехват машин\n* `6` - Сквозное встречное предложение, добавлено автоматически",
+        "x-enumNames": [
+          "Site",
+          "Mobile",
+          "Integrator",
+          "CarrierInterception",
+          "Search",
+          "TruckInterception",
+          "PassThrough"
+        ],
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      "LoadContainer": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "Load": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/LoadView"
+              }
+            ]
+          },
+          "Lot": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/LotView"
+              }
+            ]
+          }
+        }
+      },
+      "LoadView": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "Auction": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Auction"
+              }
+            ]
+          },
+          "Deal": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Deal"
+              }
+            ]
+          },
+          "Id": {
+            "type": "string",
+            "format": "guid"
+          },
+          "LoadNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "UpdatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "AddedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "IsReserved": {
+            "type": "boolean"
+          },
+          "Distance": {
+            "type": "integer",
+            "description": "Расстояние по дорогам  в км",
+            "format": "int32"
+          },
+          "DistanceType": {
+            "type": "integer",
+            "description": "Какой маршрут был выбран (на текущий момент возможны ситуации: без проезда по МКАД - 0 и с проездом -1",
+            "format": "int32"
+          },
+          "ArchiveDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "TruePrice": {
+            "type": "integer",
+            "description": "Озвученная ставка",
+            "format": "int32"
+          },
+          "TrueCurrencyId": {
+            "type": "integer",
+            "description": "ID валюты озвученной ставки",
+            "format": "int32"
+          },
+          "CanBeDeleted": {
+            "type": "boolean",
+            "description": "Есть ли доступ на удаление груза."
+          },
+          "CanBeEdited": {
+            "type": "boolean",
+            "description": "Есть ли доступ на редактирование груза."
+          },
+          "CanBeRenewed": {
+            "type": "boolean",
+            "description": "Есть ли доступ на обновление груза."
+          },
+          "CanBeRestored": {
+            "type": "boolean",
+            "description": "Есть ли доступ на восстановление груза"
+          },
+          "HasPermissionsToLoad": {
+            "type": "boolean",
+            "description": "Есть ли доступ на работу с грузом (без учета прав)."
+          },
+          "EditRestriction": {
+            "description": "Причина отказа в доступе на редактирование груза.",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/LoadAccessDeniedReason"
+              }
+            ]
+          },
+          "DeleteRestriction": {
+            "description": "Причина отказа в доступе на удаление груза.",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/LoadAccessDeniedReason"
+              }
+            ]
+          },
+          "RestoreRestriction": {
+            "description": "Причина отказа в доступе на восстановление груза.",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/LoadAccessDeniedReason"
+              }
+            ]
+          },
+          "RenewRestriction": {
+            "type": "string",
+            "description": "Причина отказа в доступе на обновление груза."
+          },
+          "ParentId": {
+            "type": "string",
+            "description": "Id груза, с которого скопировали текущий груз из DealsLoads. Есть тогда и только тогда, когда груз из DealsLoads",
+            "format": "guid",
+            "nullable": true
+          },
+          "NotificationStatus": {
+            "$ref": "#/components/schemas/NotificationStatus"
+          },
+          "FirmId": {
+            "type": "string"
+          },
+          "AppId": {
+            "type": "string"
+          },
+          "LoadMeta": {
+            "$ref": "#/components/schemas/LoadMeta"
+          },
+          "ContactId1": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ContactId2": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "Note": {
+            "type": "string",
+            "default": ""
+          },
+          "FirstDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "LastDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "DateType": {
+            "type": "integer",
+            "description": "0 - Готов к загрузке,  1 - с Х по У, 2 - постоянно, 3 - груза нет",
+            "format": "int32"
+          },
+          "PeriodicityId": {
+            "description": "Периодичность загрузки при DateType == 2",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Periodicity"
+              }
+            ]
+          },
+          "OrderNumber": {
+            "type": "string"
+          },
+          "Krugoreis": {
+            "type": "boolean"
+          },
+          "Loading": {
+            "$ref": "#/components/schemas/LoadPoint"
+          },
+          "ExtraPoints": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoadExtraPoint"
+            }
+          },
+          "Unloading": {
+            "$ref": "#/components/schemas/LoadPoint"
+          },
+          "Cargo": {
+            "$ref": "#/components/schemas/LoadCargo"
+          },
+          "Transport": {
+            "$ref": "#/components/schemas/LoadTransport"
+          },
+          "Payment": {
+            "$ref": "#/components/schemas/LoadPayment"
+          },
+          "PriorityView": {
+            "$ref": "#/components/schemas/LoadPriorityView"
+          },
+          "Stealth": {
+            "$ref": "#/components/schemas/LoadStealth"
+          },
+          "LoadFiles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoadFile"
+            }
+          },
+          "Boards": {
+            "type": "array",
+            "description": "Список площадок",
+            "items": {
+              "$ref": "#/components/schemas/LoadBoardView"
+            }
+          },
+          "UnloadFirstDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "UnloadLastDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "IsPassThroughCopy": {
+            "type": "boolean"
+          },
+          "PassThroughInfo": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/PassThroughInfo"
+              }
+            ]
+          },
+          "LotId": {
+            "type": "string",
+            "format": "guid",
+            "nullable": true
+          },
+          "Source": {
+            "type": "string"
+          }
+        }
+      },
+      "Auction": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "AuctionId": {
+            "type": "string",
+            "description": "Id аукциона",
+            "format": "guid"
+          },
+          "LoadId": {
+            "type": "string",
+            "description": "Id груза, для которого активен аукцион",
+            "format": "guid"
+          },
+          "ActiveDealId": {
+            "type": "string",
+            "description": "Id сделки, привязанной к аукциону",
+            "format": "guid",
+            "nullable": true
+          },
+          "State": {
+            "description": "статус аукциона",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AuctionState"
+              }
+            ]
+          },
+          "Finished": {
+            "type": "boolean",
+            "description": "Завершен ли аукцион"
+          },
+          "StartRate": {
+            "type": "number",
+            "description": "Начальная ставка аукциона",
+            "format": "decimal"
+          },
+          "StartRateWithVat": {
+            "type": "number",
+            "description": "Начальная ставка аукциона c ндс",
+            "format": "decimal"
+          },
+          "StartRateWithoutVat": {
+            "type": "number",
+            "description": "Начальная ставка аукциона без ндс",
+            "format": "decimal"
+          },
+          "ActualRate": {
+            "type": "number",
+            "description": "Активная цена для аукциона",
+            "format": "decimal"
+          },
+          "ActualRateWithVat": {
+            "type": "number",
+            "description": "Активная цена с ндс для аукциона",
+            "format": "decimal"
+          },
+          "ActualRateWithoutVat": {
+            "type": "number",
+            "description": "Активная цена без ндс для аукциона",
+            "format": "decimal"
+          },
+          "Currency": {
+            "type": "integer",
+            "description": "Валюта ставки на груз",
+            "format": "int32"
+          },
+          "Step": {
+            "type": "number",
+            "description": "Минимальное изменение ставки по аукциону",
+            "format": "decimal"
+          },
+          "StepWithVat": {
+            "type": "number",
+            "description": "Минимальное изменение ставки с ндс по аукциону",
+            "format": "decimal"
+          },
+          "StepWithoutVat": {
+            "type": "number",
+            "description": "Минимальное изменение ставки без ндс по аукциону",
+            "format": "decimal"
+          },
+          "PaymentType": {
+            "description": "Тип оплаты",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AuctionPaymentType"
+              }
+            ]
+          },
+          "AcceptSecondPayType": {
+            "type": "boolean",
+            "description": "Возможность принимать другой тип оплаты"
+          },
+          "StartDate": {
+            "type": "string",
+            "description": "Время начала аукциона",
+            "format": "date-time",
+            "nullable": true
+          },
+          "EndDate": {
+            "type": "string",
+            "description": "Время окончания аукциона",
+            "format": "date-time",
+            "nullable": true
+          },
+          "EndDateBoundary": {
+            "type": "string",
+            "description": "Граница времени окончания, аукцион не должен идти позже этого времени",
+            "format": "date-time",
+            "nullable": true
+          },
+          "Nds": {
+            "type": "number",
+            "description": "Процент пересчета ндс",
+            "format": "decimal",
+            "nullable": true
+          },
+          "TimeToProvideDocuments": {
+            "type": "number",
+            "description": "Время на отправку заявки перевозчиком (в часах)",
+            "format": "decimal",
+            "nullable": true
+          },
+          "AutoRenew": {
+            "type": "boolean",
+            "description": "Нужно ли продление аукциона, если была ставка в последние 5 минут до окончания"
+          },
+          "RenewTime": {
+            "type": "integer",
+            "description": "Время, на которое надо сдвигать окончание аукциона при включенном AutoRenew",
+            "format": "int32",
+            "nullable": true
+          },
+          "MaxRenewTime": {
+            "type": "integer",
+            "description": "Максимально допустимое время, на которое можно сдвинуть окончание аукциона при включенном AutoRenew",
+            "format": "int32",
+            "nullable": true
+          },
+          "RaiseBid": {
+            "type": "boolean",
+            "description": "Повысить ставку на Шаг, если нет предложений"
+          },
+          "MaxRate": {
+            "type": "number",
+            "description": "Максимально допустимая ставка по аукциону",
+            "format": "decimal",
+            "nullable": true
+          },
+          "RaiseBidInterval": {
+            "type": "integer",
+            "description": "Период увеличения ставки при отсутствии предложений",
+            "format": "int32",
+            "nullable": true
+          },
+          "WinDate": {
+            "type": "string",
+            "description": "Время выигрыша ставки (когда для определенной ставки в AuctionRates установлен State = Winner)",
+            "format": "date-time",
+            "nullable": true
+          },
+          "ResponseInMinutes": {
+            "type": "integer",
+            "description": "К-во минут после StartDate, после которых возможно принимать встр. предложения\n            ",
+            "format": "int32",
+            "nullable": true
+          },
+          "AuctionRates": {
+            "type": "array",
+            "description": "Список ставок по аукциону",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/AuctionRate"
+            }
+          },
+          "FinishType": {
+            "$ref": "#/components/schemas/AuctionFinishType"
+          },
+          "Duration": {
+            "type": "integer",
+            "description": "Длительность аукциона в минутах ",
+            "format": "int32"
+          },
+          "IsPassThroughCopy": {
+            "type": "boolean"
+          },
+          "PassThroughInfo": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/PassThroughInfo"
+              }
+            ]
+          },
+          "StartSinceFirstBet": {
+            "type": "boolean",
+            "description": "Длительность аукциона отсчитывается с момента первой ставки"
+          },
+          "AuctionRestartParameters": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AuctionRestartParameters"
+              }
+            ]
+          },
+          "WinnerRate": {
+            "description": "Сделанная ставка",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AuctionRate"
+              }
+            ]
+          },
+          "ServerDate": {
+            "type": "string",
+            "description": "Серверное время. Используется для корректного вычисления времени окончания аукциона на клиенте.",
+            "format": "date-time"
+          },
+          "AcceptCounterOffersOnlyBeforeFirstBet": {
+            "type": "boolean",
+            "description": "Можно принимать встречные предложения только до первой ставки?"
+          },
+          "HasPossibleWinner": {
+            "type": "boolean"
+          },
+          "HasPossibleWinners": {
+            "type": "boolean",
+            "description": "Для совместимости с грузом"
+          },
+          "HasUndecidedRate": {
+            "type": "boolean"
+          },
+          "ShouldSelectAuctionWinnerManually": {
+            "type": "boolean"
+          },
+          "HasWinner": {
+            "type": "boolean"
+          },
+          "WinnerAtiId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "ParticipantsCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WinnerCriterion": {
+            "$ref": "#/components/schemas/WinnerCriteria"
+          },
+          "EndDateForce": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "TimeToProvideDocumentsForce": {
+            "type": "number",
+            "format": "decimal",
+            "nullable": true
+          },
+          "ResponseProhibited": {
+            "type": "boolean"
+          },
+          "Source": {
+            "$ref": "#/components/schemas/AuctionSource"
+          }
+        }
+      },
+      "AuctionState": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "OnAndNoRates",
+          "OnAndHasRates",
+          "UnknownState",
+          "DeclinedByOwner",
+          "DeletedByDeclinedOrder",
+          "DeletedWithoutRates",
+          "DeletedByAutoDecline",
+          "DeletedByDealFinished",
+          "Deleted",
+          "FinishedWithoutOtherBetsAndNeedChooseAction",
+          "FinishedWithOtherBetsAndNeedChooseAction",
+          "FinishedWithWinnerFromOtherAuction",
+          "FinishedWithIncomparableRates",
+          "FinishedAndNoDocsButHasOtherPossibleWinners",
+          "FinishedAndNoDocsFromSingleWinner",
+          "FinishedAndAwaitingDocs",
+          "FinishedAndNoRates"
+        ],
+        "enum": [
+          0,
+          1,
+          -100,
+          -14,
+          -13,
+          -12,
+          -11,
+          -10,
+          -9,
+          -8,
+          -7,
+          -6,
+          -5,
+          -4,
+          -3,
+          -2,
+          -1
+        ]
+      },
+      "AuctionPaymentType": {
+        "type": "integer",
+        "description": "Тип оплаты:\n\n* `1` = Наличка\n* `22` - Любая\n* `23` = На карту\n* `24` - С НДС\n* `25` - Без ДНС\n* Остальные зарезервированы",
+        "x-enumNames": [
+          "Cash",
+          "Any",
+          "OnCard",
+          "CashlessWithNds",
+          "CashlessWithoutNds"
+        ],
+        "enum": [
+          1,
+          22,
+          23,
+          24,
+          25
+        ]
+      },
+      "AuctionRate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "AuctionRateId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "AddedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "RateFirm": {
+            "description": "Фирма, оставившая заявку",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/FirmStarsInfo"
+              }
+            ]
+          },
+          "Rate": {
+            "type": "number",
+            "description": "Ставка на груз, которую поставил пользователь",
+            "format": "decimal"
+          },
+          "RateWithVat": {
+            "type": "number",
+            "description": "Ставка c ндс на груз, которую поставил пользователь",
+            "format": "decimal"
+          },
+          "RateWithoutVat": {
+            "type": "number",
+            "description": "Ставка без ндс на груз, которую поставил пользователь",
+            "format": "decimal"
+          },
+          "State": {
+            "description": "Статус ставки",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AuctionRateState"
+              }
+            ]
+          },
+          "PaymentType": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AuctionPaymentType"
+              }
+            ]
+          },
+          "LoadingDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "RatePlaceType": {
+            "$ref": "#/components/schemas/RatePlaceType"
+          },
+          "FirmId": {
+            "type": "integer",
+            "description": "Код фирмы, сделавшей ставку",
+            "format": "int32"
+          },
+          "ContactId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "FirmStarsInfo": {
+        "type": "object",
+        "description": "Содержит данные для рейтинга со звездами",
+        "additionalProperties": false,
+        "properties": {
+          "Score": {
+            "type": "number",
+            "description": "Account.Passport.TotalScore",
+            "format": "double"
+          },
+          "Status": {
+            "description": "Тип звезд фирмы\n            \n* `0`: Серый\n* `1`: Красный\n* `2`: Желтый\n* `3`: Зеленый\n* `4`: Партнер АТИ\n* `5`: Сотрудник АТИ\n* `6`: Гос. органы\n* `7`: ОДКС",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/FirmStatus"
+              }
+            ]
+          },
+          "Name": {
+            "type": "string",
+            "description": "Имя фирмы"
+          },
+          "ContactName": {
+            "type": "string",
+            "description": "Имя контакта"
+          },
+          "AtiId": {
+            "type": "string",
+            "description": "Идентификатор фирмы в АТИ"
+          },
+          "ClaimsCount": {
+            "type": "integer",
+            "description": "Количество претензий",
+            "format": "int32"
+          },
+          "RecommendationsCount": {
+            "type": "integer",
+            "description": "Количество рекомендаций",
+            "format": "int32"
+          },
+          "DocsCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "BadPartnerFirmsCount": {
+            "type": "integer",
+            "description": "Количество фирм, которые написали о данной фирме на форуме Недобросовестных партнеров",
+            "format": "int32"
+          }
+        }
+      },
+      "FirmStatus": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "Gray",
+          "Green",
+          "Yellow",
+          "Red",
+          "AtiPartner",
+          "AtiEmployee",
+          "GosOrgan",
+          "Odks"
+        ],
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "AuctionRateState": {
+        "type": "integer",
+        "description": "Статус ставки\n            \n* `1`: Победная ставка в аукционе\n* `0`: Обычная ставка по аукциону (участник аукциона)\n* `-2`: Участник аукциона отменил ставку\n* `-3`: Бывший победитель, который не прислал документы\n* `-4`: Победитель отказался от участия\n* `-5`: Грузовладелец отменил безоговорочную сделку\n* `-6`: Победитель отменил безоговорочную сделку\n* `-7`: Победитель отклонил документ\n* `-8`: Грузовладелец отклонил документ",
+        "x-enumNames": [
+          "Undecided",
+          "Winner",
+          "CargoOwnerDeclineDocument",
+          "WinnerDeclineDocument",
+          "WinnerRefuseDeal",
+          "CargoOwnerRefuseDeal",
+          "WinnerRefused",
+          "ExWinner",
+          "Refused",
+          "Loser"
+        ],
+        "enum": [
+          0,
+          1,
+          -8,
+          -7,
+          -6,
+          -5,
+          -4,
+          -3,
+          -2,
+          -1
+        ]
+      },
+      "RatePlaceType": {
+        "type": "integer",
+        "description": "В сквозных торгах место, где сделана ставка",
+        "x-enumNames": [
+          "Direct",
+          "Relative",
+          "Foreign"
+        ],
+        "enum": [
+          0,
+          1,
+          2
+        ]
+      },
+      "AuctionFinishType": {
+        "type": "integer",
+        "description": "Тип окончания аукциона\n\n* `0` - По времени\n* `1` - По минимальной ставке\n* `2` - Досрочное",
+        "x-enumNames": [
+          "Normal",
+          "ByMinimalRate",
+          "Force"
+        ],
+        "enum": [
+          0,
+          1,
+          2
+        ]
+      },
+      "PassThroughInfo": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "Marge": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "IsRoot": {
+            "type": "boolean"
+          },
+          "ParentBoards": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BoardView"
+            }
+          },
+          "ParentBoardList": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "ParentLoad": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ParentLoadView"
+              }
+            ]
+          }
+        }
+      },
+      "BoardView": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "Color": {
+            "type": "string"
+          },
+          "Id": {
+            "type": "string"
+          },
+          "Name": {
+            "type": "string"
+          },
+          "OriginalName": {
+            "type": "string"
+          }
+        }
+      },
+      "ParentLoadView": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "guid"
+          },
+          "Number": {
+            "type": "string"
+          }
+        }
+      },
+      "AuctionRestartParameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "AuctionFinishAction": {
+            "description": "Действие после того, как все попытки перезапуска и выбора нового победителя исчерпаны",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AuctionFinishAction"
+              }
+            ]
+          },
+          "InitRestartCount": {
+            "type": "integer",
+            "description": "Начальное количество попыток перезапуска торгов",
+            "format": "int32"
+          },
+          "CurrentRestartCount": {
+            "type": "integer",
+            "description": "Текущее количество попыток перезапуска торгов",
+            "format": "int32"
+          },
+          "InitChangeWinnerCount": {
+            "type": "integer",
+            "description": "Начальное количество попыток выбора нового победителя",
+            "format": "int32"
+          },
+          "DurationAfterRestart": {
+            "type": "integer",
+            "description": "Длительность торгов в минутах после перезапуска",
+            "format": "int32",
+            "nullable": true
+          },
+          "CurrentChangeWinnerCount": {
+            "type": "integer",
+            "description": "Текущее количество попыток выбора нового победителя",
+            "format": "int32"
+          },
+          "IsManuallyRestarted": {
+            "type": "boolean",
+            "description": "Параметр, показывающий, был ли последний перезапуск выбран вручную"
+          },
+          "RateIncrease": {
+            "type": "number",
+            "description": "Повышение ставки при перезапуске",
+            "format": "decimal",
+            "nullable": true
+          },
+          "RateIncreaseOption": {
+            "type": "integer",
+            "description": "1 - Повышение ставки в валюте\n2 - Повышение ставки в процентах",
+            "format": "int32",
+            "nullable": true
+          },
+          "RestartLimitExceeded": {
+            "type": "boolean"
+          },
+          "ChangeWinnerLimitExceeded": {
+            "type": "boolean"
+          }
+        }
+      },
+      "AuctionFinishAction": {
+        "type": "integer",
+        "description": "Действие после того, как все попытки перезапуска и выбора нового победителя торгов исчерпаны:\n\n* `1` - Опубликовать груз со ставкой. В грузе должна быть указана ставка (SumWithNDS, SumWithoutNDS, RateSum)\n* `2` - Опубликовать с запросом ставки, возможные типы оплаты будут взяты из поля AcceptPaymentTypes в грузе\n* `3` - Перенести груз в архив",
+        "x-enumNames": [
+          "PublishLoad",
+          "PublishLoadWithRateRequest",
+          "DeleteLoad"
+        ],
+        "enum": [
+          1,
+          2,
+          3
+        ]
+      },
+      "WinnerCriteria": {
+        "type": "integer",
+        "description": "Критерий победы в аукционе\n\n* `0` - Выбор победителя происходит автоматически по лучшей ставке\n* `1` - Выбор победителя  происходит по ставке и дате загрузки. Если нет лучшей ставки с лучшей датой - требуется выбор победителя вручную",
+        "x-enumNames": [
+          "Rate",
+          "RateAndLoadingDate"
+        ],
+        "enum": [
+          0,
+          1
+        ]
+      },
+      "AuctionSource": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "Ati",
+          "Atrucks"
+        ],
+        "enum": [
+          0,
+          2
+        ]
+      },
+      "LoadAccessDeniedReason": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "None",
+          "FirmDoesNotHaveAccess",
+          "LoadReserved",
+          "ActualLoadsLimitExceeded",
+          "LoginAsCommonUser",
+          "ContactDoesNotHaveAccessToCurrentLoad",
+          "LoadHasAuctionFinished",
+          "DealsServiceUnavailable",
+          "PassThroughCopy",
+          "ContactDoesNotHaveAccessToLoadCreation",
+          "ContactDoesNotHaveAccessToVirtualPayments",
+          "ContactCantWorkWithCommonBoards",
+          "ContactCantWorkWithPersonalBoards",
+          "ContactDoesntHaveAccessToAllBoards",
+          "ContactDoesntHaveAccessToLoadDepartment",
+          "ContactMustBeSelectedFirst",
+          "LoadIsNotPublishedOnBoards"
+        ],
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16
+        ]
+      },
+      "NotificationStatus": {
+        "type": "integer",
+        "description": "Статус уведомления:\n            \n* `0` - не отправлено\n* `1` - отправлено\n* `2` - прочитано",
+        "x-enumNames": [
+          "NoSend",
+          "Send",
+          "Read"
+        ],
+        "enum": [
+          0,
+          1,
+          2
+        ]
+      },
+      "LoadMeta": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "LoadMetaId": {
+            "type": "string",
+            "format": "guid",
+            "nullable": true
+          },
+          "MetaData": {
+            "type": "string"
+          }
+        }
+      },
+      "Periodicity": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "None",
+          "EveryDay",
+          "OnlyWorkingDays"
+        ],
+        "enum": [
+          0,
+          1,
+          100
+        ]
+      },
+      "LoadPoint": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "FiasId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "CityId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "Latitude": {
+            "type": "number",
+            "format": "decimal",
+            "nullable": true
+          },
+          "Longitude": {
+            "type": "number",
+            "format": "decimal",
+            "nullable": true
+          },
+          "Street": {
+            "type": "string"
+          },
+          "AddressId": {
+            "type": "string",
+            "description": "Id адреса в организации",
+            "format": "guid",
+            "nullable": true
+          },
+          "OrganizationId": {
+            "type": "string",
+            "description": "Id из справочника организаций",
+            "format": "guid",
+            "nullable": true
+          },
+          "TimeStart": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "TimeEnd": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "IsRoundTheClock": {
+            "type": "boolean"
+          },
+          "LargeCities": {
+            "type": "array",
+            "description": "Список ID'ников ближайший крупных городов",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "LargeCitiesWithDistance": {
+            "type": "array",
+            "description": "Список ID'ников ближайший крупных городов c расстояниями до них",
+            "items": {
+              "$ref": "#/components/schemas/LargeCityWithDistance"
+            }
+          },
+          "LoadingCargos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoadingCargo"
+            }
+          }
+        }
+      },
+      "LargeCityWithDistance": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "CityId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "Distance": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "LoadingCargo": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "LoadId": {
+            "type": "integer",
+            "description": "Id груза",
+            "format": "int32"
+          },
+          "NameId": {
+            "type": "integer",
+            "description": "Наименование груза",
+            "format": "int32"
+          },
+          "Name": {
+            "type": "string"
+          },
+          "PackagingType": {
+            "type": "integer",
+            "description": "Упаковка",
+            "format": "int32",
+            "nullable": true
+          },
+          "PackagingQuantity": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "Weight": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Volume": {
+            "type": "number",
+            "description": "Объем",
+            "format": "double",
+            "nullable": true
+          },
+          "Sizes": {
+            "description": "Габариты",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/LoadSize"
+              }
+            ]
+          }
+        }
+      },
+      "LoadSize": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "Length": {
+            "type": "number",
+            "format": "double"
+          },
+          "Width": {
+            "type": "number",
+            "format": "double"
+          },
+          "Height": {
+            "type": "number",
+            "format": "double"
+          },
+          "Diameter": {
+            "type": "number",
+            "format": "double"
+          },
+          "LengthHighlight": {
+            "type": "boolean"
+          },
+          "WidthHighlight": {
+            "type": "boolean"
+          },
+          "HeightHighlight": {
+            "type": "boolean"
+          }
+        }
+      },
+      "LoadExtraPoint": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "CityId": {
+            "type": "integer",
+            "description": "ID города",
+            "format": "int32"
+          },
+          "PointType": {
+            "description": "Тип точки, где 1 - загрузка, 2 - разгрузка, 3 - таможня, 8 - проехать через",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/PointType"
+              }
+            ]
+          },
+          "Latitude": {
+            "type": "number",
+            "description": "Долгота",
+            "format": "decimal",
+            "nullable": true
+          },
+          "Longitude": {
+            "type": "number",
+            "description": "Широта",
+            "format": "decimal",
+            "nullable": true
+          },
+          "Street": {
+            "type": "string",
+            "description": "Улица"
+          },
+          "OrganizationId": {
+            "type": "string",
+            "description": "Id из справочника организаций",
+            "format": "guid",
+            "nullable": true
+          },
+          "AddressId": {
+            "type": "string",
+            "description": "Id адреса в организации",
+            "format": "guid",
+            "nullable": true
+          },
+          "OrdinalId": {
+            "type": "integer",
+            "description": "Порядковый номер",
+            "format": "int32"
+          },
+          "IsRoundTheClock": {
+            "type": "boolean"
+          },
+          "LoadingDateStart": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "LoadingDateEnd": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "LoadingTimeStart": {
+            "type": "string",
+            "format": "duration",
+            "nullable": true
+          },
+          "LoadingTimeEnd": {
+            "type": "string",
+            "format": "duration",
+            "nullable": true
+          },
+          "LoadingCargos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoadingCargo"
+            }
+          },
+          "UnloadingCargos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UnloadingCargo"
+            }
+          }
+        }
+      },
+      "PointType": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "Loading",
+          "Unloading",
+          "Customs",
+          "LoadingLargeCity",
+          "UnloadingLargeCity",
+          "GoThrough"
+        ],
+        "enum": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          8
+        ]
+      },
+      "UnloadingCargo": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "LoadId": {
+            "type": "integer",
+            "description": "Id груза",
+            "format": "int32"
+          },
+          "Weight": {
+            "type": "number",
+            "description": "Вес",
+            "format": "double",
+            "nullable": true
+          },
+          "Volume": {
+            "type": "number",
+            "description": "Объём",
+            "format": "double",
+            "nullable": true
+          },
+          "PackagingQuantity": {
+            "type": "integer",
+            "description": "Выгружаемая часть упаковки",
+            "format": "int32",
+            "nullable": true
+          },
+          "IsDefinedByTtn": {
+            "type": "boolean",
+            "description": "Выгружаемая часть груза будет определена в ТТН"
+          }
+        }
+      },
+      "LoadCargo": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "Weight": {
+            "type": "number",
+            "description": "Вес",
+            "format": "double"
+          },
+          "Volume": {
+            "type": "number",
+            "description": "Объем",
+            "format": "double"
+          },
+          "ADR": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "CargoTypeId": {
+            "type": "integer",
+            "description": "ID наименования груза, может быть пустым",
+            "format": "int32"
+          },
+          "CargoType": {
+            "type": "string",
+            "description": "Строковое наименование груза. Выводится если ID не указан, либо равен 59",
+            "default": ""
+          },
+          "PackType": {
+            "type": "integer",
+            "description": "Тип упаковки(навалом, коробки, россыпью, запаллечен ... пирамида)",
+            "format": "int32"
+          },
+          "PalletCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "BeltCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "DogruzType": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "SborGruz": {
+            "type": "boolean"
+          },
+          "Size": {
+            "$ref": "#/components/schemas/LoadSize"
+          }
+        }
+      },
+      "LoadTransport": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "CarType": {
+            "type": "integer",
+            "description": "Битовая сумма ID кузовов",
+            "format": "int64"
+          },
+          "CarTypeString": {
+            "type": "string"
+          },
+          "LoadingType": {
+            "type": "integer",
+            "description": "битовая сумма ID типов загрузки. Брать из LoadType",
+            "format": "int32"
+          },
+          "UnloadingType": {
+            "type": "integer",
+            "description": "битовая сумма ID типов разгрузки. Брать из LoadType",
+            "format": "int32"
+          },
+          "TrucksQuantity": {
+            "type": "integer",
+            "description": "Количество машин",
+            "format": "int32"
+          },
+          "TemperatureFrom": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "TemperatureTo": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "Stsepka": {
+            "type": "boolean"
+          },
+          "Pnevmohod": {
+            "type": "boolean"
+          },
+          "Koniki": {
+            "type": "boolean"
+          },
+          "TIR": {
+            "type": "boolean"
+          },
+          "CMR": {
+            "type": "boolean"
+          },
+          "T1": {
+            "type": "boolean"
+          },
+          "SanPassport": {
+            "type": "boolean"
+          },
+          "IsTracking": {
+            "type": "boolean",
+            "description": "Трекинг через АТИ Водитель"
+          },
+          "RequiredCapacity": {
+            "type": "number",
+            "description": "Требуемая грузоподъемность в тоннах",
+            "format": "double",
+            "nullable": true
+          }
+        }
+      },
+      "LoadPayment": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "CurrencyId": {
+            "type": "integer",
+            "description": "ID валюты",
+            "format": "int32"
+          },
+          "HideResponses": {
+            "type": "boolean",
+            "description": "Встречные предложения видны только вам"
+          },
+          "MoneyType": {
+            "type": "integer",
+            "description": "Ставка (любая, на карту, нал)",
+            "format": "int32"
+          },
+          "RateSum": {
+            "type": "number",
+            "description": "Сама ставка",
+            "format": "decimal"
+          },
+          "SumWithNDS": {
+            "type": "number",
+            "description": "Ставка с НДС",
+            "format": "decimal"
+          },
+          "SumWithoutNDS": {
+            "type": "number",
+            "description": "Ставка без НДС",
+            "format": "decimal"
+          },
+          "PrepayPercent": {
+            "type": "integer",
+            "description": "Процент предоплаты",
+            "format": "int32"
+          },
+          "PrepayPercentEnabled": {
+            "type": "boolean"
+          },
+          "PayDays": {
+            "type": "integer",
+            "description": "Через сколько банковских дней оплата",
+            "format": "int32"
+          },
+          "PayDaysEnabled": {
+            "type": "boolean"
+          },
+          "FixedRate": {
+            "type": "boolean"
+          },
+          "Torg": {
+            "type": "boolean"
+          },
+          "DirectContract": {
+            "type": "boolean"
+          },
+          "InFuel": {
+            "type": "boolean"
+          },
+          "OnUnloading": {
+            "type": "boolean"
+          },
+          "AcceptPaymentTypes": {
+            "type": "integer",
+            "description": "Типы оплаты, которые он принимает (флаги: 1 - наличные, 2 - с ндс безнал, 4 - без ндс безнал )",
+            "format": "int32"
+          }
+        }
+      },
+      "LoadPriorityView": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "DailyLimit": {
+            "type": "number",
+            "description": "Суточный лимит списания по услуге\n            \n* Должен иметь длину не более 5 символов\n* Не более 2 символов после запятой\n* Должен быть больше либо равен значению ViewRate или быть равным нулю (если ограничения нет)\n* Должен быть равен 0 или отсутствовать, если параметр ViewRate отсутствует или равен 0",
+            "format": "decimal",
+            "nullable": true
+          },
+          "IsForPayedOnly": {
+            "type": "boolean",
+            "description": "Показывать приоритетный показ только платным пользователям"
+          },
+          "OrderLimit": {
+            "type": "number",
+            "description": "Лимит на заявку\n            \n* Должен иметь длину не более 5 символов\n* Не более 2 символов после запятой\n* Должен быть больше либо равен значению ViewRate или быть равным нулю (если ограничения нет)\n* Должен быть равен 0 или отсутствовать, если параметр ViewRate отсутствует или равен 0",
+            "format": "decimal"
+          },
+          "ViewRate": {
+            "type": "number",
+            "description": "Ставка за просмотр\n            \n* Минимальное значение 0,6\n* Не более 2 символов после запятой\n* Должен иметь длину не более 5 символов",
+            "format": "decimal"
+          },
+          "MoneySpentPerDay": {
+            "type": "number",
+            "description": "Количество денег, потраченное на заявку за день. Только для чтения ",
+            "format": "decimal"
+          },
+          "MoneySpentPerOrder": {
+            "type": "number",
+            "description": "Количество денег, потраченное на заявку в целом. Только для чтения",
+            "format": "decimal"
+          }
+        }
+      },
+      "LoadStealth": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "ListIdToHide": {
+            "type": "string",
+            "description": "Режим стэлс, ID списка для которого данный груз показываться не будет",
+            "format": "guid",
+            "nullable": true
+          },
+          "FirmRegDateToHide": {
+            "type": "string",
+            "description": "Режим стэлс, Для фирм с датой регистрации меньше данной груз показываться не будет",
+            "format": "date-time",
+            "nullable": true
+          },
+          "ScoreToHide": {
+            "type": "number",
+            "description": "Режим стэлс, Балл меньше которого груз показываться не будет",
+            "format": "double",
+            "nullable": true
+          },
+          "NextDatePay": {
+            "type": "string",
+            "description": "Дата, когда за изменение груза придется заплатить. UTC",
+            "format": "date-time",
+            "nullable": true
+          }
+        }
+      },
+      "LoadFile": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "guid"
+          },
+          "Name": {
+            "type": "string"
+          },
+          "Link": {
+            "type": "string"
+          }
+        }
+      },
+      "LoadBoardView": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "BoardId": {
+            "type": "string"
+          },
+          "PublicationTime": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "AuctionBetPublicationRestriction": {
+            "$ref": "#/components/schemas/AuctionBetPublicationRestriction"
+          },
+          "IsPublished": {
+            "type": "boolean"
+          },
+          "IsCommonBoard": {
+            "type": "boolean"
+          },
+          "IsTestingBoard": {
+            "type": "boolean"
+          },
+          "PublicationOption": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "AuctionBetPublicationRestriction": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "None",
+          "Selected",
+          "Applied"
+        ],
+        "enum": [
+          0,
+          1,
+          2
+        ]
+      },
+      "LotView": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "LotId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "LotNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "LoadsCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "Payment": {
+            "$ref": "#/components/schemas/LoadPayment"
+          },
+          "Loads": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LoadView"
+            }
+          },
+          "LoadIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "guid"
+            }
+          },
+          "AddedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        }
+      },
+      "SearchRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "filter": {
+            "description": "Фильтр",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Filter"
+              }
+            ]
+          },
+          "itemsPerPage": {
+            "type": "integer",
+            "description": "Количество грузов на странице",
+            "format": "int32",
+            "nullable": true
+          },
+          "page": {
+            "type": "integer",
+            "description": "Номер запрашиваемой страницы",
+            "format": "int32",
+            "nullable": true
+          }
+        }
+      },
+      "Filter": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "loadNumber": {
+            "type": "string",
+            "description": "Номер груза/лота/заказа",
+            "nullable": true
+          },
+          "contactId": {
+            "type": "integer",
+            "description": "Контакт, указанный в грузе",
+            "format": "int32",
+            "nullable": true
+          },
+          "boardIds": {
+            "type": "array",
+            "description": "Площадки, на которых опубликован груз",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "departmentIds": {
+            "type": "array",
+            "description": "Подразделение контакта, добавившего груз",
+            "nullable": true,
+            "items": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          "loading": {
+            "description": "Загрузка (Откуда)",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/LoadingParams"
+              }
+            ]
+          },
+          "unloading": {
+            "description": "Разгрузка (Куда)",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/LoadingParams"
+              }
+            ]
+          },
+          "volume": {
+            "description": "Объем",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/LoadParams"
+              }
+            ]
+          },
+          "weight": {
+            "description": "Вес",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/LoadParams"
+              }
+            ]
+          },
+          "withCounterOffers": {
+            "type": "boolean",
+            "description": "Отобразить встречные предложения",
+            "nullable": true
+          },
+          "isArchived": {
+            "type": "boolean",
+            "description": "Вывести грузы со страницы \"Архив грузов\"",
+            "nullable": true
+          },
+          "auctionStatus": {
+            "description": "Статус Торгов в грузе:\n* `0` - Все\n* `1` - Со ставками\n* `2` - Без ставок\n* `3` - Ожидающие выбор победителя\n* `4` - Неважно",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AuctionFilterStatusExternal"
+              }
+            ]
+          },
+          "loadStatus": {
+            "description": "Статус груза:\n* `0` - Все статусы грузов\n* `1` - Опубликован\n* `2` - Будет опубликован\n* `3` - Распределяются по контракту",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/LoadFilterStatusExternal"
+              }
+            ]
+          }
+        }
+      },
+      "LoadingParams": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "cityId": {
+            "type": "integer",
+            "description": "Id города/региона/страны из словаря",
+            "format": "int32",
+            "nullable": true
+          },
+          "geoType": {
+            "description": "Тип гео объекта:\n* `0` - Страна\n* `1` - Регион\n* `2` - Город (по умолчанию)",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/GeoTypes"
+              }
+            ]
+          },
+          "firstDate": {
+            "type": "string",
+            "description": "Дата начала",
+            "format": "date-time",
+            "nullable": true
+          },
+          "lastDate": {
+            "type": "string",
+            "description": "Дата окончания",
+            "format": "date-time",
+            "nullable": true
+          }
+        }
+      },
+      "GeoTypes": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "Country",
+          "Region",
+          "City"
+        ],
+        "enum": [
+          0,
+          1,
+          2
+        ]
+      },
+      "LoadParams": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "from": {
+            "type": "number",
+            "description": "от",
+            "format": "decimal",
+            "nullable": true
+          },
+          "to": {
+            "type": "number",
+            "description": "до",
+            "format": "decimal",
+            "nullable": true
+          }
+        }
+      },
+      "AuctionFilterStatusExternal": {
+        "type": "integer",
+        "description": "",
+        "x-enumFlags": true,
+        "x-enumNames": [
+          "All",
+          "WithRates",
+          "WithoutRates",
+          "ShouldSelectWinnerManually",
+          "NoMatters"
+        ],
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "LoadFilterStatusExternal": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "All",
+          "Published",
+          "WillPublished",
+          "ByContract"
+        ],
+        "enum": [
+          0,
+          1,
+          2,
+          3
+        ]
+      }
+    },
+    "securitySchemes": {
+      "ApiKey": {
+        "type": "apiKey",
+        "name": "X-API-Secret",
+        "in": "header"
+      }
+    }
+  },
+  "security": [
+    {
+      "ApiKey": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Frontend"
+    },
+    {
+      "name": "Internal"
+    },
+    {
+      "name": "Mobile"
+    }
+  ]
+}
