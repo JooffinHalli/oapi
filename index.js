@@ -22,6 +22,12 @@ fetch(link).catch(() => { throw new Error(1) }).then(r => r.json()).then((json) 
   var keyStr = (k, force) => (force || /[\- \/.\{]/.test(k) ? (`'` + k + `'`) : k);
   var propStr = (k, v, l, f) => (v ? (`${' '.repeat(l || 0)}  ${keyStr(k, f)}: ${v}\n`) : '');
   var objStr = (fields, l) => (fields ? ('{\n' + fields + ' '.repeat(l) + '}') : '');
+  var banner = `/**
+ *  ........................................
+ *  . этот файл сгенерирован автоматически .
+ *  ........................................
+ */\n\n`;
+  var see = ` * @see {@link ${link.replace('internal/swagger.json', 'index.html')} swagger}\n`;
 
   // schemas
   var initSchemaState = {
@@ -152,7 +158,7 @@ fetch(link).catch(() => { throw new Error(1) }).then(r => r.json()).then((json) 
 
   // endpoints
   var pathsReduce = (ctx, o, cb) => {var a = ''; for (var k in o) (a = cb(ctx, a, k, o[k]));return a;};
-  var pLengths = [], pParts = new Map, pI = new Map, validPs = {}, totalPs = 0;
+  var pLengths = [], pParts = new Map, pI = new Map, validPs = {}, validPsArr = [], totalPs = 0;
   var guardPath = (path) => {
     if (ignorePattern.test(path)) return false;
     totalPs++;
@@ -162,16 +168,9 @@ fetch(link).catch(() => { throw new Error(1) }).then(r => r.json()).then((json) 
       pI.set(part, i);
     });
     validPs[path] = json.paths[path];
+    validPsArr.push(path);
     return true;
   };
-
-  // get strings
-  var banner = `/**
- *  ........................................
- *  . этот файл сгенерирован автоматически .
- *  ........................................
- */\n\n`;
-  var see = ` * @see {@link ${link.replace('internal/swagger.json', 'index.html')} swagger}\n`;
 
   var namespace = `${banner}/**\n * Схемы для сервиса \`${title}\`\n${see} */\nexport namespace Schemas {\n`;
   for (var schemaName in schemas) {
@@ -185,20 +184,24 @@ fetch(link).catch(() => { throw new Error(1) }).then(r => r.json()).then((json) 
     (a, { 0: k, 1: v }) => ((v > (~~(-~(totalPs >> 1)))) && (a[pI.get(k)] = k), a), []
   ).join('/') + '/';
   var b = { get: 1, post: 2, put: 4, delete: 8, patch: 16, head: 32, trace: 64 };
+  var count = 0;
+  validPsArr.forEach((p, i, arr) => {
+    var newP = (p.startsWith(commonPathPart)
+      ? (count++, p.replace(commonPathPart, ''))
+      : p.replace('/', ''));
+    arr[i] = newP; validPs[newP] = validPs[p]; delete validPs[p];
+  });
+  if (count === validPsArr.length) {
+    validPsArr.reduce((acc, p) => (acc[p.length] = p, acc), (pLengths.length = 0, pLengths));
+  }
   var endpointsStr = objStr(
     pathsReduce(
       Object.assign(b, { propStr, longest: pLengths.pop().length }),
       validPs,
-      (ctx, a, k, v) => {
-        var newK = (k.startsWith(commonPathPart) ? k.replace(commonPathPart, '') : k.replace('/', ''));
-        var newStr = ctx.propStr(newK, (
-          ' '.repeat(ctx.longest - newK.length) +
-          '0b' +
-          pathsReduce(ctx, v, (ctx2, a1, k2) => (a1 |= ctx2[k2])).toString(2).padStart(8, 0) +
-          ','
-        ), 0, 1);
-        return (a + newStr);
-      }
+      (ctx, a, k, v) => a + ctx.propStr(k, (
+        ' '.repeat(ctx.longest - k.length) +
+        '0b' + pathsReduce(ctx, v, (ctx2, a1, k2) => (a1 |= ctx2[k2])).toString(2).padStart(8, 0) + ','
+      ), 0, 1)
     )
   );
 
