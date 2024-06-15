@@ -10,10 +10,10 @@
 var fs = require('node:fs'), path = require('node:path');
 
 var { argv: { 2: configPath, 3: serviceName } } = process;
-var config = require(configPath), sourcePath = config.sourcePath;
-console.log({ config });
+var projectPath = process.cwd();
+var config = require(path.join(projectPath, configPath)), sourcePath = config.sourcePath;
 var { link, pathBlackList } = config[serviceName];
-var dirPath = path.join(sourcePath, serviceName);
+var dirPath = path.join(projectPath, sourcePath, serviceName);
 
 fetch(link).catch(() => { throw new Error(1) }).then(r => r.json()).then((json) => {
   var { info: { title }, paths, components: { schemas } } = json;
