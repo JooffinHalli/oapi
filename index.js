@@ -19,7 +19,7 @@ var dirPath = path.join(projectPath, sourcePath, serviceName);
 fetch(link).catch(() => { throw new Error(1) }).then(r => r.json()).then((json) => {
   var { info: { title }, paths, components: { schemas } } = json;
   
-  // common
+  // common logic
   var isForbidden = (v) => pathBlackList ? new RegExp(pathBlackList.join('|')).test(v) : false;
   var keyStr = (k, force) => (force || /[\- \/.\{]/.test(k) ? (`'` + k + `'`) : k);
   var propStr = (k, v, l, f) => (v ? (`${' '.repeat(l || 0)}  ${keyStr(k, f)}: ${v}\n`) : '');
@@ -31,7 +31,7 @@ fetch(link).catch(() => { throw new Error(1) }).then(r => r.json()).then((json) 
  */\n\n`;
   var see = ` * @see {@link ${link.replace('internal/swagger.json', 'index.html')} swagger}\n`;
 
-  // schemas
+  // schemas logic
   var initSchemaState = {
     description: (a, schema, l) => {
       var s = ' '.repeat(l);
@@ -93,7 +93,7 @@ fetch(link).catch(() => { throw new Error(1) }).then(r => r.json()).then((json) 
     return (acc || 'unknown');
   }
 
-  // paths
+  // paths logic
   var commented = (a, v, l) => {
     var s = ' '.repeat(l), e = `\n${s}`, comm = '';
     if (v.description || v.summary) {
@@ -158,7 +158,7 @@ fetch(link).catch(() => { throw new Error(1) }).then(r => r.json()).then((json) 
     return objStr(acc, l);
   };
 
-  // endpoints
+  // endpoints logic
   var pathsReduce = (ctx, o, cb) => {var a = ''; for (var k in o) (a = cb(ctx, a, k, o[k]));return a;};
   var pLengths = [], pParts = new Map, pI = new Map, validPs = {}, validPsArr = [], totalPs = 0;
   var guardPath = (path) => {
@@ -174,6 +174,7 @@ fetch(link).catch(() => { throw new Error(1) }).then(r => r.json()).then((json) 
     return true;
   };
 
+  // results
   var namespace = `${banner}/**\n * Схемы для сервиса \`${title}\`\n${see} */\nexport namespace Schemas {\n`;
   for (var schemaName in schemas) {
     var schema = schemas[schemaName], type = schemaStr(schemas[schemaName], 2);
@@ -182,14 +183,14 @@ fetch(link).catch(() => { throw new Error(1) }).then(r => r.json()).then((json) 
 
   var pathsTypeStr = pathsStr(paths, 0, pathsState, guardPath);
 
-  var commonPathPart = Array.from(pParts).reduce(
+  var commonPath = Array.from(pParts).reduce(
     (a, { 0: k, 1: v }) => ((v > (~~(-~(totalPs >> 1)))) && (a[pI.get(k)] = k), a), []
   ).join('/') + '/';
   var b = { get: 1, post: 2, put: 4, delete: 8, patch: 16, head: 32, trace: 64 };
   var count = 0;
   validPsArr.forEach((p, i, arr) => {
-    var isCut = p.startsWith(commonPathPart);
-    var newP = (isCut ? (count++, p.replace(commonPathPart, '')) : p);
+    var isCut = p.startsWith(commonPath);
+    var newP = (isCut ? (count++, p.replace(commonPath, '')) : p);
     arr[i] = newP;
     (isCut && (validPs[newP] = validPs[p], (delete validPs[p])));
   });
@@ -206,6 +207,10 @@ fetch(link).catch(() => { throw new Error(1) }).then(r => r.json()).then((json) 
       ), 0, 1)
     )
   );
+
+  var configStr = `const config = <const>{
+  basePath: '${commonPath}'
+}`;
 
   // write files
   if (!fs.existsSync(dirPath)) fs.mkdirSync(dirPath);
@@ -237,6 +242,11 @@ fetch(link).catch(() => { throw new Error(1) }).then(r => r.json()).then((json) 
  */\n` +
       'export const endpoints = ' + endpointsStr
     ),
+    () => {}
+  );
+  fs.writeFile(
+    path.join(dirPath, 'config.ts'),
+    banner + configStr,
     () => {}
   );
 });
