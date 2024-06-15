@@ -188,10 +188,10 @@ fetch(link).catch(() => { throw new Error(1) }).then(r => r.json()).then((json) 
   var b = { get: 1, post: 2, put: 4, delete: 8, patch: 16, head: 32, trace: 64 };
   var count = 0;
   validPsArr.forEach((p, i, arr) => {
-    var newP = (p.startsWith(commonPathPart)
-      ? (count++, p.replace(commonPathPart, ''))
-      : p);
-    arr[i] = newP; validPs[newP] = validPs[p]; delete validPs[p];
+    var isCut = p.startsWith(commonPathPart);
+    var newP = (isCut ? (count++, p.replace(commonPathPart, '')) : p);
+    arr[i] = newP;
+    (isCut && (validPs[newP] = validPs[p], (delete validPs[p])));
   });
   if (count === validPsArr.length) {
     validPsArr.reduce((acc, p) => (acc[p.length] = p, acc), (pLengths.length = 0, pLengths));
