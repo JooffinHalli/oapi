@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-process.on('uncaughtException', (e) => {
-  var errs = [', проверьте входные данные', ' при запросе json документа'];
-  console.log('\x1b[31m%s\x1b[0m', `\nПроизошла ошибка${errs[e.message] || errs[0]}\n`); // red
-});
+// process.on('uncaughtException', (e) => {
+//   var errs = [', проверьте входные данные', ' при запросе json документа'];
+//   console.log('\x1b[31m%s\x1b[0m', `\nПроизошла ошибка${errs[e.message] || errs[0]}\n`); // red
+// });
 
 // a - acc, k - key, v - value, s - space, l - level of nesting, p = path, f - force
 
@@ -11,6 +11,7 @@ var fs = require('node:fs'), path = require('node:path');
 
 var { argv: { 2: configPath, 3: serviceName } } = process;
 var config = require(configPath), sourcePath = config.sourcePath;
+console.log({ config });
 var { link, pathBlackList } = config[serviceName];
 var dirPath = path.join(sourcePath, serviceName);
 
