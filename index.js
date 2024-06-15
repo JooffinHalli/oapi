@@ -208,7 +208,8 @@ fetch(link).catch(() => { throw new Error(1) }).then(r => r.json()).then((json) 
     )
   );
 
-  var configStr = `const config = <const>{
+  var configStr = `/** Объект для передачи в функцию \`buildApi\` */\nconst config = <const>{
+  /** Большенство эндпойнтов начинаются с этого пути */
   basePath: '${commonPath}'
 }`;
 
