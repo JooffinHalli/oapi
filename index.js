@@ -11,7 +11,8 @@ var fs = require('node:fs'), path = require('node:path');
 
 var { argv: { 2: configPath, 3: serviceName } } = process;
 var projectPath = process.cwd();
-var config = require(path.join(projectPath, configPath)), sourcePath = config.sourcePath;
+var config = require(path.join(projectPath, configPath))
+var sourcePath = config.sourcePath;
 var { link, pathBlackList } = config[serviceName];
 var dirPath = path.join(projectPath, sourcePath, serviceName);
 
@@ -189,7 +190,7 @@ fetch(link).catch(() => { throw new Error(1) }).then(r => r.json()).then((json) 
   validPsArr.forEach((p, i, arr) => {
     var newP = (p.startsWith(commonPathPart)
       ? (count++, p.replace(commonPathPart, ''))
-      : p.replace('/', ''));
+      : p);
     arr[i] = newP; validPs[newP] = validPs[p]; delete validPs[p];
   });
   if (count === validPsArr.length) {
