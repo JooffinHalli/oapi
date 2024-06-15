@@ -20,7 +20,7 @@ fetch(link).catch(() => { throw new Error(1) }).then(r => r.json()).then((json) 
   var { info: { title }, paths, components: { schemas } } = json;
   
   // common
-  var isAllowed = (v) => pathBlackList ? new RegExp(pathBlackList.join('|')).test(v) : true;
+  var isForbidden = (v) => pathBlackList ? new RegExp(pathBlackList.join('|')).test(v) : false;
   var keyStr = (k, force) => (force || /[\- \/.\{]/.test(k) ? (`'` + k + `'`) : k);
   var propStr = (k, v, l, f) => (v ? (`${' '.repeat(l || 0)}  ${keyStr(k, f)}: ${v}\n`) : '');
   var objStr = (fields, l) => (fields ? ('{\n' + fields + ' '.repeat(l) + '}') : '');
@@ -162,7 +162,7 @@ fetch(link).catch(() => { throw new Error(1) }).then(r => r.json()).then((json) 
   var pathsReduce = (ctx, o, cb) => {var a = ''; for (var k in o) (a = cb(ctx, a, k, o[k]));return a;};
   var pLengths = [], pParts = new Map, pI = new Map, validPs = {}, validPsArr = [], totalPs = 0;
   var guardPath = (path) => {
-    if (!isAllowed(path)) return false;
+    if (isForbidden(path)) return false;
     totalPs++;
     pLengths[path.length] = path;
     path.split('/').forEach((part, i) => {
