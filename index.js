@@ -5,8 +5,10 @@ process.on('uncaughtException', (e) => {
   console.log('\x1b[31m%s\x1b[0m', `\nПроизошла ошибка${errs[e.message] || errs[0]}\n`); // red
 });
 
-var { 2: configFileName } = process.argv;
-var config = require(configFileName);
-var fetchApi = require('./src/fetch');
-console.log(config);
-config.forEach(fetchApi);
+console.log(process.argv);
+
+// var { 2: configFileName } = process.argv;
+// var config = require(configFileName);
+
+// var fetchApi = require('./src/fetch');
+// config.forEach(fetchApi);
