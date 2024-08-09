@@ -20,7 +20,7 @@ module.exports = class OpenapiTranspiler {
         tab: '  ',
         alphabet: {
           '*': (state, { 0: id, 1: value }) => {
-            if (!this.config.pathBlackList.some((str) => id.startsWith(str))) {
+            if (!this.config.pathBlackList?.some((str) => id.startsWith(str))) {
               var { tab, acc, temp, comments } = this.reduce(
                 value,
                 this.state.one(state.tab, [], this.method.acc())
@@ -126,7 +126,7 @@ module.exports = class OpenapiTranspiler {
       if (!value.length) return state;
       var names = state.temp, l1 = names?.length;
       for (var i = 0; i < l1; i++) (names[i] += value[i]);
-      state.comments.push(state.tab + ' * @names' + '\n' + names?.join('\n'));
+      names.length && state.comments.push(state.tab + ' * @names' + '\n' + names?.join('\n'));
       state.acc = value.join(' | ');
       state.isDone = true;
       return state;
