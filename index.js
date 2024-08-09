@@ -8,4 +8,5 @@ process.on('uncaughtException', (e) => {
 var { 2: configFileName } = process.argv;
 var config = require(configFileName);
 var fetchApi = require('./src/fetch');
+console.log(config);
 config.forEach(fetchApi);
