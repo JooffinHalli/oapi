@@ -66,7 +66,7 @@ type SimpleSchemaObject = {
   /** only when `type` is `object` and can not empty */
   required?: string[]
   /** when `type` is `object` */
-  additionalProperties?: true | {}
+  additionalProperties?: false | {}
   /** the default value must conform to the specified schema. */
   default?: unknown
   /** @deprecated */
