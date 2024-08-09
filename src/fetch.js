@@ -3,7 +3,8 @@ const OpenapiTranspiler = require('./transpiler');
 const strings = require('./strings');
 
 var createFetch = (fs) => (OpenapiTranspiler) => (strings) => (config) => {
-  var output = config.output;
+  var output = cwd + '..' + config.output;
+  console.log({ output });
   fs.mkdirSync(output, { recursive: true });
 
   fetch(config.url)
@@ -28,4 +29,4 @@ var createFetch = (fs) => (OpenapiTranspiler) => (strings) => (config) => {
 
 }
 
-module.exports = createFetch(fs)(OpenapiTranspiler)(strings);
+module.exports = createFetch(process.cwd())(fs)(OpenapiTranspiler)(strings);
