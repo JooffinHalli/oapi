@@ -53,8 +53,8 @@ module.exports = class OpenapiTranspiler {
     'patch':   (state, statement) => this.reducers.method(state, statement),
     'trace':   (state, statement) => this.reducers.method(state, statement),
 
-    'responses':   (state, statement) => this.reducers.withKey(state, statement, 'res'),
-    'requestBody': (state, statement) => this.reducers.withKey(state, statement, 'body'),
+    'responses':   (state, statement) => this.reducers.withKey(state, statement, 'res', ''),
+    'requestBody': (state, statement) => this.reducers.withKey(state, statement, 'body', '?'),
     'parameters': (state, { 1: value }) => {
       var newTab = state.tab + '  ';
       var acc = value.reduce(this.parameters.reduce(newTab), { path: [], query: [] });
@@ -214,11 +214,11 @@ module.exports = class OpenapiTranspiler {
       state.acc = ((value.length > 1) ? ('(' + type + ')') : type);
       return state;
     },
-    withKey: (state, { 1: value }, key) => {
+    withKey: (state, { 1: value }, key, q) => {
       var newState = this.reduce(value, this.state.one(state.tab + '  ', 'unknown'));
       var { tab, acc, comments, required } = newState;
       var comment = this.joinComments(comments, tab);
-      var question = required.length ? '' : '?';
+      var question = required.length ? '' : q;
       var identifier = this.identifier(key, question);
       state.acc.push(comment + tab + identifier + ': ' + acc);
       return state;
