@@ -4,8 +4,5 @@
   "files": [
     "*.js",
     "**/*.js"
-  ],
-  "scripts": {
-    "git": "git add . && git commit -m 'comm' && git push && git remote -v"
-  }
+  ]
 }

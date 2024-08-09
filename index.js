@@ -5,13 +5,16 @@ process.on('uncaughtException', (e) => {
   console.log('\x1b[31m%s\x1b[0m', `\nПроизошла ошибка${errs[e.message] || errs[0]}\n`); // red
 });
 
-const path = require('path');
-
 var { 2: configFileName } = process.argv;
-// var x = path.join(process.cwd() + configFileName);
-console.log(1);
 
-// var config = require();
+var basePath = process.cwd();
 
-// var fetchApi = require('./src/fetch');
-// config.forEach(fetchApi);
+const path = require('node:path');
+
+var configPath = path.join(basePath, path.normalize(configFileName));
+
+var config = require(configPath);
+
+var fetchApi = require('./src/fetch');
+
+config.forEach(fetchApi(basePath));
