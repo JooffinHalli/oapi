@@ -3,8 +3,11 @@ var path = require('node:path');
 const OpenapiTranspiler = require('./transpiler');
 const strings = require('./strings');
 
-var createFetch = (basePath) => (config) => {
+var fetchApi = (basePath) => (config) => {
+
+  var gen = config.generate;
   var output = path.join(basePath, path.normalize(config.output));
+
   fs.mkdirSync(output, { recursive: true });
 
   fetch(config.url)
@@ -15,18 +18,22 @@ var createFetch = (basePath) => (config) => {
 
       var { schemas, paths, endpoints } = transpiler.reduce(
         OpenapiTranspiler.prepare(openapiDoc),
-        { schemas: '', paths: '', endpoints: '' }
+        {
+          schemas:   (gen?.schemas === false)   ? false : '',
+          paths:     (gen?.paths === false)     ? false : '',
+          endpoints: (gen?.endpoints === false) ? false : ''
+        }
       );
 
       var { banner, see, imports, bits } = strings;
       var fn = () => {};
-      fs.writeFile(output + '/schemas.ts', banner + see + schemas, null, fn);
-      fs.writeFile(output + '/paths.ts', banner + imports + see + paths, null, fn);
-      fs.writeFile(output + '/endpoints.ts', banner + bits + endpoints, null, fn);
+      schemas && fs.writeFile(output + '/schemas.ts', banner + see + schemas, null, fn);
+      paths && fs.writeFile(output + '/paths.ts', banner + imports + see + paths, null, fn);
+      endpoints && fs.writeFile(output + '/endpoints.ts', banner + bits + endpoints, null, fn);
 
     })
     .catch(() => { throw new Error(1); });
 
 }
 
-module.exports = createFetch;
+module.exports = fetchApi;

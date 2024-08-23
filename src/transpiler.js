@@ -2,17 +2,18 @@ module.exports = class OpenapiTranspiler {
 
   constructor(openapiDoc, config) {
     this.openapiDoc = openapiDoc;
-    this.config = config;
+    this.ignoreBy = config.ignoreBy;
   }
 
   alphabet = {
 
     'openapi': (state, { 1: value }) => {
-      if (parseInt(value) < 3) throw 1;
+      if (parseInt(value) < 3) throw new Error(2);
       return state;
     },
 
     'paths': (state, { 1: value }) => {
+      if ((state.paths === false) && (state.endpoints === false)) return state;
       var { acc, acc2, temp, tab } = this.reduce(value, {
         acc: [],
         acc2: [],
@@ -20,7 +21,7 @@ module.exports = class OpenapiTranspiler {
         tab: '  ',
         alphabet: {
           '*': (state, { 0: id, 1: value }) => {
-            if (!this.config.pathBlackList?.some((str) => id.startsWith(str))) {
+            if (!this.ignoreBy?.path?.some((regexp) => new RegExp(regexp).test(id))) {
               var { tab, acc, temp, comments } = this.reduce(
                 value,
                 this.state.one(state.tab, [], this.method.acc())
@@ -39,7 +40,9 @@ module.exports = class OpenapiTranspiler {
         }
       });
       var endpoints = this.method.join(temp[temp.length - 1], tab)(acc2);
+      if (state.paths === false) return state;
       state.paths = 'export type Paths = ' + this.obj(acc, '', '\n\n');
+      if (state.endpoints === false) return state;
       state.endpoints = 'export const endpoints = <const>' + this.obj(endpoints, '', '\n', ',');
       return state;
     },
@@ -86,6 +89,7 @@ module.exports = class OpenapiTranspiler {
       return this.reduce(value, Object.assign(state, {
         alphabet: {
           'schemas': (state, { 1: value }) => {
+            if (state.schemas === false) return state;
             var { acc } = this.reduce(value, {
               acc: this.arr(value.length),
               alphabet: {
