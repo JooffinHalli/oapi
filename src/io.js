@@ -19,8 +19,8 @@ var fetchAndPrint = (basePath) => (config) => {
       var { schemas, paths } = transpiler.reduce(
         OpenapiTranspiler.prepare(openapiDoc),
         {
-          schemas:   (gen?.schemas === false)   ? false : '',
-          paths:     (gen?.paths === false)     ? false : ''
+          schemas: (gen?.schemas === false) ? false : '',
+          paths:   (gen?.paths === false)   ? false : ''
         }
       );
 
