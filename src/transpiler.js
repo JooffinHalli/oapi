@@ -30,7 +30,6 @@ module.exports = class OpenapiTranspiler {
           }
         }
       });
-      if (state.paths === false) return state;
       state.paths = 'export type Paths = ' + this.obj(acc, '', '\n\n');
       return state;
     },
