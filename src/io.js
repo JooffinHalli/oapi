@@ -11,7 +11,7 @@ var fetchAndPrint = (basePath) => (config) => {
   fs.mkdirSync(output, { recursive: true });
 
   fetch(config.url)
-    .then(r => r.json())
+    .then((r) => r.json())
     .then((openapiDoc) => {
 
       var transpiler = new OpenapiTranspiler(openapiDoc, config);

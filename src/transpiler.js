@@ -118,8 +118,9 @@ module.exports = class OpenapiTranspiler {
       var names = state.temp, l1 = names?.length;
       for (var i = 0; i < l1; i++) (names[i] += value[i]);
       names.length && state.comments.push(state.tab + ' * @names' + '\n' + names?.join('\n'));
-      state.acc = value.join(' | ');
-      state.isDone = true;
+      var isValidType = value.every((x) => (typeof x === 'string') || (typeof x === 'number'));
+      state.acc = value.map((x) => ((typeof x) === 'string') ? (`'` + x + `'`) : x).join(' | ');
+      state.isDone = isValidType;
       return state;
     },
 
