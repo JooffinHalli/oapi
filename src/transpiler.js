@@ -1,18 +1,25 @@
 module.exports = class OpenapiTranspiler {
 
-  constructor(openapiDoc, config) {
+  constructor(openapiDoc, config, log) {
     this.openapiDoc = openapiDoc;
     this.ignoreBy = config.ignoreBy;
+    this.log = log;
   }
 
   alphabet = {
 
     'swagger': (state, { 1: value }) => {
-      if (parseInt(value) < 3) throw new Error(2);
+      if (parseInt(value) < 3) {
+        this.log('версия openapi должна быть 3 и выше');
+        state.isDone = true;
+      };
       return state;
     },
     'openapi': (state, { 1: value }) => {
-      if (parseInt(value) < 3) throw new Error(2);
+      if (parseInt(value) < 3) {
+        this.log('версия openapi должна быть 3 и выше');
+        state.isDone = true;
+      };
       return state;
     },
 
