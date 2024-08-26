@@ -13,37 +13,25 @@ module.exports = class OpenapiTranspiler {
     },
 
     'paths': (state, { 1: value }) => {
-      if ((state.paths === false) && (state.endpoints === false)) return state;
-      var { acc, acc2, temp, tab } = this.reduce(value, {
+      if (state.paths === false) return state;
+      var { acc } = this.reduce(value, {
         acc: [],
-        acc2: [],
-        temp: [],
         tab: '  ',
         alphabet: {
           '*': (state, { 0: id, 1: value }) => {
             if (!this.ignoreBy?.path?.some((regexp) => new RegExp(regexp).test(id))) {
-              var { tab, acc, temp, comments } = this.reduce(
-                value,
-                this.state.one(state.tab, [], this.method.acc())
-              );
+              var { tab, acc, comments } = this.reduce(value, this.state(state.tab, []));
               var comment = this.joinComments(comments, tab);
               var identifier = this.identifier(id, '');
               var type = this.obj(acc, tab, '\n\n');
               state.acc.push(comment + tab + '' + identifier + ': ' + type);
-              var stack = state.temp;
-              var head = stack[stack.length - 1];
-              (!stack.length || (id.length > head)) && stack.push(id.length);
-              state.acc2.push([id, '0b' + temp.join('')]);
             }
             return state;
           }
         }
       });
-      var endpoints = this.method.join(temp[temp.length - 1], tab)(acc2);
       if (state.paths === false) return state;
       state.paths = 'export type Paths = ' + this.obj(acc, '', '\n\n');
-      if (state.endpoints === false) return state;
-      state.endpoints = 'export const endpoints = <const>' + this.obj(endpoints, '', '\n', ',');
       return state;
     },
 
@@ -193,11 +181,10 @@ module.exports = class OpenapiTranspiler {
       return state;
     },
     method: (state, { 0: word, 1: value }) => {
-      var { comments, tab, acc } = this.reduce(value, this.state.one(state.tab + '  ', []));
+      var { comments, tab, acc } = this.reduce(value, this.state(state.tab + '  ', []));
       var comment = this.joinComments(comments, tab);
       var type = this.obj(acc, tab, '\n');
       state.acc.push(comment + tab + word + ': ' + type);
-      state.temp[this.method.index[word]] = 1;
       return state;
     },
     schema: (state, { 0: id, 1: value }, i) => {
@@ -219,7 +206,7 @@ module.exports = class OpenapiTranspiler {
       return state;
     },
     withKey: (state, { 1: value }, key, q) => {
-      var newState = this.reduce(value, this.state.one(state.tab + '  ', 'unknown'));
+      var newState = this.reduce(value, this.state(state.tab + '  ', 'unknown'));
       var { tab, acc, comments, required } = newState;
       var comment = this.joinComments(comments, tab);
       var question = required.length ? '' : q;
@@ -240,7 +227,7 @@ module.exports = class OpenapiTranspiler {
     reduce: (newTab) => (a, value) => {
       var v = this.parameters.get(value);
       var p = new Map(v);
-      var { tab, acc, comments } = this.reduce(v, this.state.one(newTab + '  '));
+      var { tab, acc, comments } = this.reduce(v, this.state(newTab + '  '));
       var comment = this.joinComments(comments, tab);
       var question = p.get('required') ? '' : '?';
       var identifier = this.identifier(p.get('name'), question);
@@ -290,30 +277,20 @@ module.exports = class OpenapiTranspiler {
       return (res || 'unknown');
     },
     type: (value, tab) => this.schema.join(this.schema.reduce(value, tab)),
-    reduce: (value, tab) => this.reduce(this.schema.sort(value), this.state.one(tab))
+    reduce: (value, tab) => this.reduce(this.schema.sort(value), this.state(tab))
   }
 
-  method = {
-    index: { get: 6, post: 5, put: 4, delete: 3, patch: 2, head: 1, trace: 0 },
-    acc: () => [0, 0, 0, 0, 0, 0, 0],
-    join: (l, tab) => (arr) => arr.map(({ 0: id, 1: bits }) => {
-      return tab + this.identifier(id, '') + ': ' + ' '.repeat(l - id?.length) + bits;
-    })
-  }
-
-  state = {
-    one: (tab, acc, temp) => ({
-      tab,
-      isDone: false,
-      skip: new Set,
-      required: [],
-      acc: acc || '', // accumulator for values
-      additionalAcc: '', // accumulator for additionalProperties
-      nullAcc: '', // accumulator for null
-      comments: [], // accumulator for comments
-      temp: temp || [], // temp for anything
-    })
-  }
+  state = (tab, acc) => ({
+    tab,
+    isDone: false,
+    skip: new Set,
+    required: [],
+    acc: acc || '', // accumulator for values
+    additionalAcc: '', // accumulator for additionalProperties
+    nullAcc: '', // accumulator for null
+    comments: [], // accumulator for comments
+    temp: [], // temp for anything
+  });
 
   joinComments = (c, t) => (c.length ? (t + '/**\n' + c.join('\n') + '\n' + t + ' */\n') : '');
   question = (r, id) => (!r ? '' : r.includes(id) ? '' : '?');
