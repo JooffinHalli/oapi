@@ -1,7 +1,7 @@
 var fs = require('node:fs');
 var path = require('node:path');
-const OpenapiTranspiler = require('./transpiler');
-const strings = require('./strings');
+var OpenapiTranspiler = require('./transpiler');
+var strings = require('./strings');
 
 var fetchAndPrint = (basePath) => (config) => {
 
