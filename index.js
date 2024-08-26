@@ -13,10 +13,11 @@ process.on('uncaughtException', (e) => {
 var basePath = process.cwd();
 
 var path = require('node:path');
-var fetchApi = require('./src/fetch');
 
 var config = configFilePathOrUrl.startsWith('http')
   ? [{ url: configFilePathOrUrl, output: 'TEST_API_FOLDER/test-service' }]
   : require(path.join(basePath, path.normalize(configFilePathOrUrl)));
 
-config.forEach(fetchApi(basePath));
+var fetchAndPrint = require('./src/io');
+
+config.forEach(fetchAndPrint(basePath));

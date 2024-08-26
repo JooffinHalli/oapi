@@ -3,7 +3,7 @@ var path = require('node:path');
 const OpenapiTranspiler = require('./transpiler');
 const strings = require('./strings');
 
-var fetchApi = (basePath) => (config) => {
+var fetchAndPrint = (basePath) => (config) => {
 
   var gen = config.generate;
   var output = path.join(basePath, path.normalize(config.output));
@@ -34,4 +34,4 @@ var fetchApi = (basePath) => (config) => {
 
 }
 
-module.exports = fetchApi;
+module.exports = fetchAndPrint;
