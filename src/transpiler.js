@@ -7,6 +7,10 @@ module.exports = class OpenapiTranspiler {
 
   alphabet = {
 
+    'swagger': (state, { 1: value }) => {
+      if (parseInt(value) < 3) throw new Error(2);
+      return state;
+    },
     'openapi': (state, { 1: value }) => {
       if (parseInt(value) < 3) throw new Error(2);
       return state;

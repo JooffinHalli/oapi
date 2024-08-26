@@ -8,10 +8,9 @@ var fetchAndPrint = (basePath) => (config) => {
   var gen = config.generate;
   var output = path.join(basePath, path.normalize(config.output));
 
-  fs.mkdirSync(output, { recursive: true });
-
   fetch(config.url)
     .then((r) => r.json())
+    .catch(() => { throw new Error(1); })
     .then((openapiDoc) => {
 
       var transpiler = new OpenapiTranspiler(openapiDoc, config);
@@ -26,11 +25,11 @@ var fetchAndPrint = (basePath) => (config) => {
 
       var { banner, see, imports } = strings;
       var fn = () => {};
+      (schemas || paths) && fs.mkdirSync(output, { recursive: true });
       schemas && fs.writeFile(output + '/schemas.ts', banner + see + schemas, null, fn);
       paths && fs.writeFile(output + '/paths.ts', banner + imports + see + paths, null, fn);
 
-    })
-    .catch(() => { throw new Error(1); });
+    });
 
 }
 
