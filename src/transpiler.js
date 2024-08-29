@@ -1,9 +1,10 @@
 module.exports = class OpenapiTranspiler {
 
-  constructor(openapiDoc, config, log) {
+  constructor(openapiDoc, config, log, hook) {
     this.openapiDoc = openapiDoc;
     this.ignoreBy = config.ignoreBy;
     this.log = log;
+    this.hook = hook;
   }
 
   alphabet = {
@@ -316,6 +317,7 @@ module.exports = class OpenapiTranspiler {
         var word = statement[0];
         var alphabet = (state?.alphabet || this.alphabet);
         var reducer = (alphabet?.[word] || alphabet?.['*'] || ((x) => (x)));
+        this.hook(statement);
         return state.isDone ? state : reducer(state, statement, i);
       },
       initState

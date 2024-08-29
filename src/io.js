@@ -9,6 +9,8 @@ var fetchAndPrint = (basePath) => (config) => {
   var output = path.join(basePath, path.normalize(config.output));
   var url = config.url;
 
+  var hook = require(path.join(basePath, path.normalize(config.hook)));
+
   var log = (msg) => {
     console.log('\x1b[31m%s\x1b[0m', `\n-------\nurl - ${url}\n${msg}\n-------\n`);
   }
@@ -19,7 +21,7 @@ var fetchAndPrint = (basePath) => (config) => {
     .then((openapiDoc) => {
       if (!openapiDoc) return;
 
-      var transpiler = new OpenapiTranspiler(openapiDoc, config, log);
+      var transpiler = new OpenapiTranspiler(openapiDoc, config, log, hook);
 
       var { schemas, paths } = transpiler.reduce(
         OpenapiTranspiler.prepare(openapiDoc),
