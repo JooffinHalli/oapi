@@ -6,10 +6,9 @@ var strings = require('./strings');
 var fetchAndPrint = (basePath) => (config) => {
 
   var gen = config.generate;
-  var output = path.join(basePath, path.normalize(config.output));
+  var output = config.output ? path.join(basePath, path.normalize(config.output)) : '_API_FOLDER_';
   var url = config.url;
-
-  var hook = require(path.join(basePath, path.normalize(config.hook)));
+  var hook = config.hook ? require(path.join(basePath, path.normalize(config.hook))) : (() => {});
 
   var log = (msg) => {
     console.log('\x1b[31m%s\x1b[0m', `\n-------\nurl - ${url}\n${msg}\n-------\n`);

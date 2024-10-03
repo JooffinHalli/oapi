@@ -9,20 +9,8 @@ module.exports = class OpenapiTranspiler {
 
   alphabet = {
 
-    'swagger': (state, { 1: value }) => {
-      if (parseInt(value) < 3) {
-        this.log('версия openapi должна быть 3 и выше');
-        state.isDone = true;
-      };
-      return state;
-    },
-    'openapi': (state, { 1: value }) => {
-      if (parseInt(value) < 3) {
-        this.log('версия openapi должна быть 3 и выше');
-        state.isDone = true;
-      };
-      return state;
-    },
+    'swagger': this.version.check,
+    'openapi': this.version.check,
 
     'paths': (state, { 1: value }) => {
       if (state.paths === false) return state;
@@ -183,6 +171,16 @@ module.exports = class OpenapiTranspiler {
     }
 
   };
+
+  version = {
+    check: (state, { 1: value }) => {
+      if (parseInt(value) < 3) {
+        this.log('версия openapi должна быть 3 и выше');
+        state.isDone = true;
+      };
+      return state;
+    }
+  }
 
   reducers = {
     comment: (state, { 0: word, 1: value }, noValue) => {
