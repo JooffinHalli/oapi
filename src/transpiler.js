@@ -9,8 +9,8 @@ module.exports = class OpenapiTranspiler {
 
   alphabet = {
 
-    'swagger': this.version.check,
-    'openapi': this.version.check,
+    'swagger': (state, statement) => this.version.check(state, statement),
+    'openapi': (state, statement) => this.version.check(state, statement),
 
     'paths': (state, { 1: value }) => {
       if (state.paths === false) return state;
