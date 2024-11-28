@@ -6,8 +6,12 @@ var banner = `/**
 
 var imports = `import { Schemas } from './schemas';\n\n`;
 
-var see = (url) => `/**
- * @see {@link ${url} swagger}
- */\n`;
+var jsDoc = (url, info) => (
+  '/**' +
+  `\n * @see {@link ${url} swagger}` +
+  (info?.description ? `\n * @description ${info?.description}` : '') +
+  (info?.summary ? `\n * @summary ${info?.summary}` : '') +
+  '\n */\n'
+);
 
-module.exports = { banner, imports, see };
+module.exports = { banner, imports, jsDoc };

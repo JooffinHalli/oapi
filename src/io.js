@@ -30,11 +30,13 @@ var fetchAndPrint = (basePath) => (config) => {
         }
       );
 
-      var { banner, see, imports } = strings;
+      var { banner, jsDoc, imports } = strings;
       var fn = () => {};
+      var comment = jsDoc(url, openapiDoc.info);
+
       (schemas || paths) && fs.mkdirSync(output, { recursive: true });
-      schemas && fs.writeFile(output + '/schemas.ts', banner + see(url) + schemas, null, fn);
-      paths && fs.writeFile(output + '/paths.ts', banner + imports + see(url) + paths, null, fn);
+      schemas && fs.writeFile(output + '/schemas.ts', banner + comment + schemas, null, fn);
+      paths && fs.writeFile(output + '/paths.ts', banner + imports + comment + paths, null, fn);
     })
     .catch(() => log('произошла ошибка, проверьте входные данные'));
 
