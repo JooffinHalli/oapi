@@ -125,7 +125,8 @@ module.exports = class OpenapiTranspiler {
     },
 
     '$ref': (state, { 1: value }) => {
-      state.acc = value.replace('#/components/schemas/', `Schemas.`);
+      var { 1: schemaName } = value.split('#/components/schemas/');
+      state.acc = `Schemas.` + this.identifier(schemaName, '', true);
       return state;
     },
 
@@ -201,7 +202,7 @@ module.exports = class OpenapiTranspiler {
       var newState = this.schema.reduce(value, state.tab);
       var comment = this.joinComments(newState.comments, newState.tab);
       var question = this.question(state.required, id);
-      var identifier = this.identifier(id, question);
+      var identifier = this.identifier(id, question, true);
       var type = this.schema.join(newState);
       state.acc[i] = (comment + newState.tab + state.keyword + identifier + state.binder + type);
       return state;
@@ -304,7 +305,12 @@ module.exports = class OpenapiTranspiler {
 
   joinComments = (c, t) => (c.length ? (t + '/**\n' + c.join('\n') + '\n' + t + ' */\n') : '');
   question = (r, id) => (!r ? '' : r.includes(id) ? '' : '?');
-  identifier = (id, q) => ((/[\- \/.\{]/.test(id) ? (`'` + id + `'`) : id) + q);
+  identifier = (id, q, shouldJoin) => {
+    const res = shouldJoin
+      ? (id.replace(/[^\p{N}\p{L}0-9$_]/gu, ''))
+      : (/[^\p{N}\p{L}0-9$_]/gu.test(id) ? (`'` + id + `'`) : id);
+    return res + q;
+  };
   obj = (properties, t, n, j) => ('{' + n + properties.join((j || '') + n) + n + t + '}');
   str = () => '';
   arr = (length) => Array.from({ length }, this.str);
