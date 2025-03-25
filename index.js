@@ -16,8 +16,6 @@ var config = configFilePathOrUrl.startsWith('http')
   ? [{ url: configFilePathOrUrl, output: 'TEST_API_FOLDER/test-service' }]
   : require(configPath = path.join(process.cwd(), path.normalize(configFilePathOrUrl)));
 
-console.log({ config, configPath });
-
 var fetchAndPrint = require('./src/io');
 
 config.forEach(fetchAndPrint(configPath ? path.dirname(configPath) : configPath));
