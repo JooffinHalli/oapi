@@ -42,7 +42,7 @@ var fetchAndPrint = (configPath) => (config) => {
     .catch(() => {
       child_process.exec(`curl -v ${url}`, (err, res) => {
         if (err) log('произошла ошибка при запросе по сети');
-        else handleDoc(JSON.parse(res));
+        else handleDoc(JSON.parse(res || '{}'));
       });
     })
     .catch((e) => log(e, 'произошла ошибка, проверьте входные данные'));
