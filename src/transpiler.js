@@ -119,7 +119,8 @@ module.exports = class OpenapiTranspiler {
       for (var i = 0; i < l1; i++) (names[i] += value[i]);
       names.length && state.comments.push(state.tab + ' * @names' + '\n' + names?.join('\n'));
       var isValidType = value.every((x) => (typeof x === 'string') || (typeof x === 'number'));
-      state.acc = value.map((x) => ((typeof x) === 'string') ? (`'` + x + `'`) : x).join(' | ');
+      if (!isValidType) return state;
+      state.acc = value.map((x) => (state.type === 'string') ? (`'` + x + `'`) : x).join(' | ');
       state.isDone = isValidType;
       return state;
     },
@@ -162,7 +163,8 @@ module.exports = class OpenapiTranspiler {
     },
 
     'type': OpenapiTranspiler.skippable((state, { 1: value }) => {
-      (value in this.schema.typeMap) && (state.acc = (this.schema.typeMap[value]));
+      state.type = value;
+      (value in this.schema.typeMap) && (state.acc = this.schema.typeMap[value]);
       return state;
     }),
 
@@ -265,12 +267,12 @@ module.exports = class OpenapiTranspiler {
       'oneOf',
       'anyOf',
       'x-enumNames',
-      'enum',
       '$ref',
       'items',
       'properties',
       'additionalProperties',
       'type',
+      'enum',
       'nullable'
     ],
     sort: (value) => this.schema.order.reduce(
