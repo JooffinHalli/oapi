@@ -205,6 +205,10 @@ function t(lvl) {
     return '  '.repeat(lvl);
 };
 
+function log(message) {
+    console.warn(`\x1b[33m\n${message}\x1b[0m\n`);
+}
+
 String.prototype.toId = function(isOptional) {
     return this.replace(/[^\p{N}\p{L}$_]/gu, '').concat(isOptional ? '?' : '');
 }
@@ -230,8 +234,4 @@ Array.prototype.unify = function() {
         return map;
     }, new Map).values());
     return Array.from(unionMap.values());
-}
-
-function log(message) {
-    console.warn(`\x1b[33m\n${message}\x1b[0m\n`);
 }
