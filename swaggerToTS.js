@@ -1,6 +1,6 @@
 'use strict';
 
-var openapi, hook, filter, comment;
+var openapi, hook, filter, comment, Paths, Schemas;
 
 module.exports = function(program) {
     if ((parseInt(program.openapi) || 0) < 3) {
@@ -11,7 +11,8 @@ module.exports = function(program) {
     hook     = this.hook || (() => {});
     filter   = this.filter || null;
     comment  = runComment(program.info, ` * @see {@link ${this.src} swagger}\n`);
-    return run.call(null, program);
+    run.call(null, program);
+    return { Paths, Schemas };
 };
 
 function run(program) {
@@ -36,7 +37,7 @@ var alphabet = {
     'components'(components) {
         var types = run.call({ command: '@anySchemas' }, components);
         var joined = types.join('\n\n');
-        return `${comment}export namespace Schemas {\n\n${joined}\n\n}`;
+        Schemas = `${comment}export namespace Schemas {\n\n${joined}\n\n}`;
     },
     '@anySchemas'(schemas, field) {
         if (!schemasFields.includes(field)) return;
@@ -80,7 +81,7 @@ var alphabet = {
     },
     'paths'(paths) {
         var types = run.call({ command: '@anyPath' }, paths).join('\n\n');
-        return `${comment}export type Paths = {\n\n${types}\n\n}`;
+        Paths = `${comment}export type Paths = {\n\n${types}\n\n}`;
     },
     '@anyPath'(path, name) {
         if (filter && !filter.test(name)) return;

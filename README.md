@@ -52,7 +52,7 @@ npx https://github.com/JooffinHalli/oapi <path-to-config-file>
     cat > api.config.json << 'EOF'
     [
       {
-        "src": "https://api.example.com/swagger.json",
+        "src": "https://raw.githubusercontent.com/stripe/openapi/master/openapi/spec3.json",
         "output": "./src/api/example"
       }
     ]
@@ -63,7 +63,7 @@ npx https://github.com/JooffinHalli/oapi <path-to-config-file>
     ```json
     [
       {
-        "src": "https://api.example.com/swagger.json",
+        "src": "https://raw.githubusercontent.com/stripe/openapi/master/openapi/spec3.json",
         "output": "./src/api/example"
       }
     ]
@@ -294,13 +294,10 @@ If you have conflicting schema names (e.g., `Pet` in both `responses` and `reque
 ```javascript
 // hooks/resolve-conflicts.js
 module.exports = function(data, key) {
-  if (key === 'components') {
-    // write any logic, find duplicates, rename them 
+  if (key === 'requestBodies') {
+    data.PetBody = data.Pet;
+    delete data.Pet;
   }
-  if (key === 'Pet') {
-    // Or catch known fields
-  }
-  // Mutate data directly - don't return anything
 };
 ```
 
