@@ -53,9 +53,7 @@ npx https://github.com/JooffinHalli/oapi <path-to-config-file>
     [
       {
         "src": "https://api.example.com/swagger.json",
-        "output": "./src/api/example",
-        "hook": "./hooks/example.js",
-        "filter": "^(?!.*internal).*$"
+        "output": "./src/api/example"
       }
     ]
     EOF
@@ -66,9 +64,7 @@ npx https://github.com/JooffinHalli/oapi <path-to-config-file>
     [
       {
         "src": "https://api.example.com/swagger.json",
-        "output": "./src/api/example",
-        "hook": "./hooks/example.js",
-        "filter": "^(?!.*internal).*$"
+        "output": "./src/api/example"
       }
     ]
     ```
