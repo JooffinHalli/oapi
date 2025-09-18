@@ -50,7 +50,7 @@ function doWrite({ 0: Paths, 1: Schemas }) {
     }
 
     if (Schemas) {
-        var imports = `import type { Schemas } from './schemas';`;
+        var imports = `import type { Schemas } from './Schemas.ts';`;
         fs.writeFile(`${outputDir}/Schemas.ts`, Schemas, null, f);
     }
     if (Paths) {
