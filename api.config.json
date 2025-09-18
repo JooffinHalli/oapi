@@ -1,6 +1,0 @@
-[
-  {
-    "src": "https://api.example.com/swagger.json",
-    "output": "./src/api/example"
-  }
-]
