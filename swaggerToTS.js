@@ -23,10 +23,10 @@ module.exports = function(program) {
 
 function run(program) {
     var acc = [];
+    var ctx = { lvl: this?.lvl || 1, src: this.src };
     for (var command in program) {
         var exec = alphabet[this?.command || command];
         if (!exec) continue;
-        var ctx = { lvl: this?.lvl || 1, src: this.src };
         var data = program[command];
         try { hook(data, command); } catch(e) {
             log(`Attention! Your hook failed:\n${e}`);
