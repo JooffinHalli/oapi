@@ -45,9 +45,8 @@ var alphabet = {
         return jsdoc.meta({ key: 'jsdoc' });
     },
     'components'(components) {
-        var types = run.call({ command: '@anySchemas' }, components);
-        var joined = types.join('\n\n');
-        return `export namespace Schemas {\n\n${joined}\n\n}`.meta({ key: 'Schemas' });
+        var types = run.call({ command: '@anySchemas' }, components).join('\n\n');
+        return `export namespace Schemas {\n\n${types}\n\n}`.meta({ key: 'Schemas' });
     },
     '@anySchemas'(schemas, field) {
         if (!schemasFields.includes(field)) return;

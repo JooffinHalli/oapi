@@ -1,0 +1,6 @@
+[
+  {
+    "src": "https://raw.githubusercontent.com/stripe/openapi/master/openapi/spec3.json",
+    "output": "./src/api/example"
+  }
+]
