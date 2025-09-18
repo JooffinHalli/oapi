@@ -81,8 +81,8 @@ npx https://github.com/JooffinHalli/oapi api.config.json
 3. **Check your generated files**:
 ```
 src/api/example
-├── Schemas.ts    # TypeScript types for schemas
-└── Paths.ts      # TypeScript types for paths
+├── schemas.ts    # TypeScript types for schemas
+└── paths.ts      # TypeScript types for paths
 ```
 
 ## VS Code Settings
