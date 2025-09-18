@@ -45,11 +45,9 @@ function doWrite({ Paths, Schemas }) {
     var outputDir = path.resolve(configDir, path.normalize(this));
     var f = (e) => (e && log(`Error while writing to ${outputDir}: ${e}`));
     var banner = [
-        '/**********************************',
-        '*                                 *',
-        '*   this file is auto-generated   *',
-        '*                                 *',
-        '***********************************/'
+        '// -------------------------------',
+        '// | this file is auto-generated |',
+        '// -------------------------------',
     ].join('\n');
 
     if (!fs.existsSync(outputDir)) {
