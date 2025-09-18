@@ -58,11 +58,11 @@ function doWrite({ 0: Paths, 1: Schemas }) {
     }
 
     if (Schemas) {
-        var imports = `import type { Schemas } from './Schemas';`;
-        fs.writeFile(`${outputDir}/Schemas.ts`, [banner, Schemas].join('\n\n'), null, f);
+        var imports = `import type { Schemas } from './schemas';`;
+        fs.writeFile(`${outputDir}/schemas.ts`, [banner, Schemas].join('\n\n'), null, f);
     }
     if (Paths) {
-        fs.writeFile(`${outputDir}/Paths.ts`, [banner, imports || '', Paths].join('\n\n'), null, f);
+        fs.writeFile(`${outputDir}/paths.ts`, [banner, imports || '', Paths].join('\n\n'), null, f);
     }
 }
 
