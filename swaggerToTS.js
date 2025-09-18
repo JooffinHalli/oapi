@@ -176,6 +176,7 @@ function getRawSchema(schema) {
 };
 
 function normalizedSchema(schema) {
+    normalizedSchemaEnum(schema);
     if (schemaTypeFields.some(schema.hasOwnProperty, schema)) {
         delete schema.type;
     }
@@ -187,6 +188,17 @@ function normalizedSchema(schema) {
         requiredSchema.isRequired = true;
     });
     return schema;
+};
+
+function normalizedSchemaEnum(schema) {
+    if (
+        ['number', 'integer'].includes(schema.type) &&
+        Array.isArray(schema.enum)
+    ) schema.enum.forEach((value, i, enums) => {
+        if (value && !Number.isNaN(Number(value))) {
+            enums[i] = Number(value);
+        }
+    });
 };
 
 function t(lvl) {
