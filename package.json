@@ -1,13 +1,10 @@
 {
     "name": "oapi-transpiler",
-    "version": "1.0.0",
+    "version": "0.0.0",
     "description": "OpenAPI/Swagger to TypeScript transpiler with hooks and filtering",
     "main": "index.js",
     "bin": {
         "oapi": "./index.js"
-    },
-    "scripts": {
-        "start": "node index.js"
     },
     "keywords": [
         "openapi",
