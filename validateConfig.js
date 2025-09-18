@@ -37,7 +37,9 @@ function validateConfig(configPath) {
         dieIf(isNot(filter, 'string'), `"filter" must be a string, got "${typeOf(filter)}"`);
     });
 
-    return { config, isJs, isJson };
+    var configDir = path.dirname(path.resolve(configPath));
+
+    return { config, isJs, isJson, configDir };
 }
 
 function die(message) {

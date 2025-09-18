@@ -10,7 +10,7 @@ var { 2: configPath } = process.argv;
 var validateConfig = require('./validateConfig');
 var swaggerToTS = require('./swaggerToTS');
 
-var { config, isJson } = validateConfig(configPath);
+var { config, isJson, configDir } = validateConfig(configPath);
 
 config.forEach((item) => {
     getSwagger(item.src)
@@ -42,15 +42,14 @@ function doFetch(url) {
 function doWrite({ 0: Paths, 1: Schemas }) {
     if (!Paths && !Schemas) return;
 
-    var outputDir = path.join(process.cwd(), path.normalize(this));
-    console.log(this, outputDir);
+    var outputDir = path.resolve(configDir, path.normalize(this));
     var f = (e) => (e && log(`Error while writing to ${outputDir}: ${e}`));
     var banner = [
         '/**',
         '*  ........................................',
-        '*  . этот файл сгенерирован автоматически .',
+        '*  . this file is auto-generated          .',
         '*  ........................................',
-        '*/`'
+        '*/'
     ].join('\n');
 
 
