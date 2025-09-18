@@ -43,7 +43,16 @@ function doWrite({ 0: Paths, 1: Schemas }) {
     if (!Paths && !Schemas) return;
 
     var outputDir = path.join(process.cwd(), path.normalize(this));
+    console.log(this, outputDir);
     var f = (e) => (e && log(`Error while writing to ${outputDir}: ${e}`));
+    var banner = [
+        '/**',
+        '*  ........................................',
+        '*  . этот файл сгенерирован автоматически .',
+        '*  ........................................',
+        '*/`'
+    ].join('\n');
+
 
     if (!fs.existsSync(outputDir)) {
         fs.mkdirSync(outputDir, { recursive: true });
@@ -51,10 +60,10 @@ function doWrite({ 0: Paths, 1: Schemas }) {
 
     if (Schemas) {
         var imports = `import type { Schemas } from './Schemas';`;
-        fs.writeFile(`${outputDir}/Schemas.ts`, Schemas, null, f);
+        fs.writeFile(`${outputDir}/Schemas.ts`, [banner, Schemas].join('\n\n'), null, f);
     }
     if (Paths) {
-        fs.writeFile(`${outputDir}/Paths.ts`, [imports || '', Paths].join('\n\n'), null, f);
+        fs.writeFile(`${outputDir}/Paths.ts`, [banner, imports || '', Paths].join('\n\n'), null, f);
     }
 }
 
