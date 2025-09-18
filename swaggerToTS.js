@@ -1,15 +1,16 @@
 'use strict';
 
-var openapi, hook, filter;
+var openapi, hook, filter, comment;
 
 module.exports = function(program) {
     if ((parseInt(program.openapi) || 0) < 3) {
         log(`src: ${this.src}\nopenapi version should be 3.0.0 and higher`);
         return [];
     };
-    openapi = program;
-    hook    = this.hook || (() => {});
-    filter  = this.filter || null;
+    openapi  = program;
+    hook     = this.hook || (() => {});
+    filter   = this.filter || null;
+    comment  = runComment(program.info, ` * @see {@link ${this.src} swagger}\n`);
     return run.call(null, program);
 };
 
@@ -35,7 +36,7 @@ var alphabet = {
     'components'(components) {
         var types = run.call({ command: '@anySchemas' }, components);
         var joined = types.join('\n\n');
-        return `export namespace Schemas {\n\n${joined}\n\n}`;
+        return `${comment}export namespace Schemas {\n\n${joined}\n\n}`;
     },
     '@anySchemas'(schemas, field) {
         if (!schemasFields.includes(field)) return;
@@ -79,7 +80,7 @@ var alphabet = {
     },
     'paths'(paths) {
         var types = run.call({ command: '@anyPath' }, paths).join('\n\n');
-        return `export type Paths = {\n\n${types}\n\n}`;
+        return `${comment}export type Paths = {\n\n${types}\n\n}`;
     },
     '@anyPath'(path, name) {
         if (filter && !filter.test(name)) return;
@@ -128,15 +129,15 @@ var types = {
 
 var schemasFields = ['schemas', 'requestBodies', 'responses', 'parameters', 'pathItems'];
 var schemaTypeFields = ['properties', 'items', 'additionalProperties', 'enum'];
-var commentFields = ['description', 'summary', 'operationId'];
+var commentFields = ['title', 'description', 'summary', 'operationId'];
 
-function runComment(schema) {
-    var tab = t(this.lvl);
+function runComment(schema, extraRow = '') {
+    var tab = t(this?.lvl);
     return commentFields
         .filter((field) => schema[field])
         .map((field) => `${tab} * @${field} ${schema[field].replaceAll('\n', `\n${tab} * `)}`)
         .join('\n')
-        .wrap('/**\n', `\n${tab} */\n${tab}`);
+        .wrap(`/**\n${extraRow}`, `\n${tab} */\n${tab}`);
 };
 
 function runComposition(devider) {
@@ -189,7 +190,7 @@ function normalizedSchema(schema) {
 };
 
 function t(lvl) {
-    return '\t'.repeat(lvl);
+    return '  '.repeat(lvl);
 };
 
 String.prototype.toId = function(isOptional) {
