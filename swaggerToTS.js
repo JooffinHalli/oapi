@@ -1,18 +1,24 @@
 'use strict';
 
-var openapi, hook, filter, comment, Paths, Schemas;
+var openapi, hook, filter;
 
 module.exports = function(program) {
     if ((parseInt(program.openapi) || 0) < 3) {
         log(`src: ${this.src}\nopenapi version should be 3.0.0 and higher`);
-        return [];
+        return {};
     };
-    openapi  = program;
-    hook     = this.hook || (() => {});
-    filter   = this.filter || null;
-    comment  = runComment(program.info, ` * @see {@link ${this.src} swagger}\n`);
-    run.call(null, program);
-    return { Paths, Schemas };
+    openapi     = program;
+    hook        = this.hook || (() => {});
+    filter      = this.filter || null;
+    var types   = run.call(this, program);
+    var jsdoc   = types.find((type) => type.key === 'jsdoc');
+    var Paths   = types.find((type) => type.key === 'Paths');
+    var Schemas = types.find((type) => type.key === 'Schemas');
+
+    return {
+        Paths:   [jsdoc, Paths].join(''),
+        Schemas: [jsdoc, Schemas].join('')
+    };
 };
 
 function run(program) {
@@ -20,7 +26,7 @@ function run(program) {
     for (var command in program) {
         var exec = alphabet[this?.command || command];
         if (!exec) continue;
-        var ctx = { lvl: this?.lvl || 1 };
+        var ctx = { lvl: this?.lvl || 1, src: this.src };
         var data = program[command];
         try { hook(data, command); } catch(e) {
             log(`Attention! Your hook failed:\n${e}`);
@@ -34,10 +40,14 @@ function run(program) {
 };
 
 var alphabet = {
+    'info'(info) {
+        var jsdoc = runComment(info, ` * @see {@link ${this.src} swagger}\n`);
+        return jsdoc.meta({ key: 'jsdoc' });
+    },
     'components'(components) {
         var types = run.call({ command: '@anySchemas' }, components);
         var joined = types.join('\n\n');
-        Schemas = `${comment}export namespace Schemas {\n\n${joined}\n\n}`;
+        return `export namespace Schemas {\n\n${joined}\n\n}`.meta({ key: 'Schemas' });
     },
     '@anySchemas'(schemas, field) {
         if (!schemasFields.includes(field)) return;
@@ -81,7 +91,7 @@ var alphabet = {
     },
     'paths'(paths) {
         var types = run.call({ command: '@anyPath' }, paths).join('\n\n');
-        Paths = `${comment}export type Paths = {\n\n${types}\n\n}`;
+        return `export type Paths = {\n\n${types}\n\n}`.meta({ key: 'Paths' });
     },
     '@anyPath'(path, name) {
         if (filter && !filter.test(name)) return;
@@ -225,6 +235,10 @@ String.prototype.or = function(value) {
 }
 String.prototype.wrap = function(a, b) {
     return this ? (a + this + b) : this;
+}
+String.prototype.meta = function(meta) {
+    var obj = new String(this);
+    return Object.assign(obj, meta);
 }
 Array.prototype.join2 = function(separator) {
     return (this.length > 1) ? `(${this.join(separator)})` : this.join(separator);
