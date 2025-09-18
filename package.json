@@ -1,8 +1,40 @@
 {
-  "name": "oapi",
-  "bin": "./index.js",
-  "files": [
-    "*.js",
-    "**/*.js"
-  ]
+    "name": "oapi-transpiler",
+    "version": "1.0.0",
+    "description": "OpenAPI/Swagger to TypeScript transpiler with hooks and filtering",
+    "main": "index.js",
+    "bin": {
+        "oapi": "./index.js"
+    },
+    "scripts": {
+        "start": "node index.js"
+    },
+    "keywords": [
+        "openapi",
+        "swagger",
+        "typescript",
+        "transpiler",
+        "codegen",
+        "api"
+    ],
+    "author": "JooffinHalli",
+    "license": "MIT",
+    "engines": {
+        "node": ">=14.0.0"
+    },
+    "files": [
+        "index.js",
+        "swaggerToTS.js",
+        "validateConfig.js",
+        "config.schema.json",
+        "README.md"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/JooffinHalli/oapi.git"
+    },
+    "bugs": {
+        "url": "https://github.com/JooffinHalli/oapi/issues"
+    },
+    "homepage": "https://github.com/JooffinHalli/oapi#readme"
 }

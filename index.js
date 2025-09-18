@@ -1,21 +1,79 @@
 #!/usr/bin/env node
+'use strict';
+var fs = require('node:fs');
+var util = require('node:util');
+var exec = util.promisify(require('node:child_process').exec);
+var path = require('path');
 
-var { 2: configFilePathOrUrl } = process.argv;
+var { 2: configPath } = process.argv;
 
-var args = process.argv.reduce((a, x) => ((a[x] = +(x in a)), a), { '--debug': 0, '--d': 0 });
+var validateConfig = require('./validateConfig');
+var swaggerToTS = require('./swaggerToTS');
 
-process.on('uncaughtException', (e) => {
-  (args['--debug'] || args['--d']) && console.log(e);
-  console.log('\x1b[31m%s\x1b[0m', `\nпроизошла ошибка, проверьте входные данные\n`); // red
+var { config, isJson } = validateConfig(configPath);
+
+config.forEach((item) => {
+    getSwagger(item.src)
+        .then(swaggerToTS.bind(normalizeItem(item)))
+        .then(doWrite.bind(item.output))
+        .catch((e) => log(`Error while getting openapi file: ${item.src}\n${e}`));
 });
 
-var path = require('node:path');
+function getSwagger(src) {
+    return fs.existsSync(src)
+        ? doRead(src)
+        : src.includes('http')
+            ? doFetch(src)
+            : Promise.reject('Source is not a path or http url');
+}
 
-var configPath;
-var config = configFilePathOrUrl.startsWith('http')
-  ? [{ url: configFilePathOrUrl, output: 'TEST_API_FOLDER/test-service' }]
-  : require(configPath = path.join(process.cwd(), path.normalize(configFilePathOrUrl)));
+function doRead(src) {
+    return fs.promises.readFile(src)
+        .then(content => content.toString())
+        .then(JSON.parse);
+}
 
-var fetchAndPrint = require('./src/io');
+function doFetch(url) {
+    return fetch(url, { headers: { 'Accept': 'application/json' } })
+        .then(r => r.json())
+        .catch(() => exec(`curl -v ${url}`).then(r => r.stdout).then(JSON.parse));
+}
 
-config.forEach(fetchAndPrint(configPath ? path.dirname(configPath) : configPath));
+function doWrite({ 0: Paths, 1: Schemas }) {
+    if (!Paths && !Schemas) return;
+
+    var outputDir = path.join(process.cwd(), path.normalize(this));
+    var f = (e) => (e && log(`Error while writing to ${outputDir}: ${e}`));
+
+    if (!fs.existsSync(outputDir)) {
+        fs.mkdirSync(outputDir, { recursive: true });
+    }
+
+    if (Schemas) {
+        var imports = `import type { Schemas } from './schemas';`;
+        fs.writeFile(`${outputDir}/Schemas.ts`, Schemas, null, f);
+    }
+    if (Paths) {
+        fs.writeFile(`${outputDir}/Paths.ts`, [imports || '', Paths].join('\n\n'), null, f);
+    }
+}
+
+function log(message) {
+    console.warn(`\x1b[38;5;220m\n${message}\x1b[0m\n`);
+}
+
+function normalizeItem(item) {
+    var { hook = () => {}, filter, src } = item;
+    if (isJson && hook) {
+        hook = doTry(() => require(path.join(process.cwd(), path.normalize(hook))), () => {});
+    }
+    if (filter) {
+        filter = doTry(() => new RegExp(filter), null);
+    }
+    return { hook, filter, src };
+}
+
+function doTry(doTry, fallback) {
+    try { return doTry(); }
+    catch (e) { return fallback; }
+}
