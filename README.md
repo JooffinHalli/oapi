@@ -6,7 +6,7 @@
 
 ## Philosophy
 
-This utility generates types and **only types**.
+This tool generates types and **only types**.
 
 You can stop here and be satisfied that you no longer need to create them manually.
 
@@ -16,7 +16,7 @@ Or you can write your own abstraction for backend requests and use these types.
 
 This tool is designed to work with **real-world Swagger/OpenAPI files** that are already in production use. As a consequence, these files are assumed to be **syntactically correct** and **well-formed**.
 
-Therefore, this utility **does not validate** the input OpenAPI files - it focuses purely on type generation from already-valid specifications.
+Therefore, this tool **does not validate** the input OpenAPI files - it focuses purely on type generation from already-valid specifications.
 
 All invalid fields will be ignored, and if there's insufficient information to generate a correct type, `unknown` will be silently returned as the default.
 
