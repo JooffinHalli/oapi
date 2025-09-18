@@ -219,7 +219,7 @@ module.exports = [
 
 ## Generated Output
 
-### Schemas.ts
+### schemas.ts
 ```typescript
 export namespace Schemas {
 
@@ -238,7 +238,7 @@ export namespace Schemas {
 }
 ```
 
-### Paths.ts
+### paths.ts
 ```typescript
 import type { Schemas } from './Schemas';
 
