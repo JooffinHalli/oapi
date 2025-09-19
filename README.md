@@ -2,8 +2,6 @@
 
 [![GitHub](https://img.shields.io/badge/GitHub-JooffinHalli%2Foapi-blue?style=flat-square&logo=github)](https://github.com/JooffinHalli/oapi)
 [![OpenAPI 3.0+](https://img.shields.io/badge/OpenAPI-3.0%2B-brightgreen)](https://spec.openapis.org/oas/latest.html)
-[![Zero Dependencies](https://img.shields.io/badge/dependencies-0-brightgreen)](https://github.com/JooffinHalli/oapi/blob/main/package.json)
-[![Size](https://img.shields.io/badge/size-16KB-blue)](#-specifications)
 
 **OpenAPI/Swagger to TypeScript transpiler** with hooks, filtering, and flexible configuration.
 
