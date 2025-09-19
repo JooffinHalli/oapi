@@ -48,7 +48,6 @@ npx https://github.com/JooffinHalli/oapi <path-to-config-file>
 
     **Run in terminal:**
     ```bash
-    # Create config file
     cat > api.config.json << 'EOF'
     [
       {
@@ -59,15 +58,7 @@ npx https://github.com/JooffinHalli/oapi <path-to-config-file>
     EOF
     ```
 
-    **Or manually create `api.config.json`:**
-    ```json
-    [
-      {
-        "src": "https://raw.githubusercontent.com/stripe/openapi/master/openapi/spec3.json",
-        "output": "./src/api/example"
-      }
-    ]
-    ```
+    **Or manually create `./api.config.json` using the JSON above**
 
 2. **Run the transpiler**:
 ```bash
@@ -85,7 +76,10 @@ src/api/example
 
 For enhanced autocomplete and validation, create `.vscode/settings.json` in your project:
 
-```json
+**Run in terminal:**
+```bash
+mkdir -p .vscode
+cat > .vscode/settings.json << 'EOF'
 {
   "json.schemas": [
     {
@@ -94,7 +88,10 @@ For enhanced autocomplete and validation, create `.vscode/settings.json` in your
     }
   ]
 }
+EOF
 ```
+
+**Or manually create `.vscode/settings.json` using the JSON above:**
 
 **Note:** Replace `"api.config.json"` with your actual config filename (e.g., `"my-config.json"`).
 
