@@ -248,7 +248,7 @@ String.prototype.nullable = function(bool) {
     return bool ? `${this} | null` : this;
 }
 String.prototype.or = function(value) {
-    return this || value;
+    return this.length ? this : value;
 }
 String.prototype.wrap = function(a, b) {
     return this.length ? (a + this + b) : this;
