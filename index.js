@@ -14,9 +14,11 @@ var { config, isJson, configDir } = validateConfig(configPath);
 
 config.forEach((item) => {
     getSwagger(item.src)
+        .catch((e) => log(`Error while getting openapi file: ${item.src}\n${e}`))
         .then(swaggerToTS.bind(normalizeItem(item)))
+        .catch((e) => log(`Error while parsing openapi file: ${item.src}\n${e}`))
         .then(doWrite.bind(item.output))
-        .catch((e) => log(`Error while getting openapi file: ${item.src}\n${e}`));
+        .catch((e) => log(`Error while writing to ${item.output}: ${e}`));
 });
 
 function getSwagger(src) {
@@ -24,7 +26,7 @@ function getSwagger(src) {
         ? doRead(src)
         : src.includes('http')
             ? doFetch(src)
-            : Promise.reject('Source is not a path or http url');
+            : Promise.reject('Source should be a path or http url');
 }
 
 function doRead(src) {

@@ -1,11 +1,11 @@
-'use strict';
-
 module.exports = function(program) {
+    if (!program) return {};
     if ((parseInt(program.openapi) || 0) < 3) {
         log(`src: ${this.src}\nopenapi version should be 3.0.0 and higher`);
         return {};
     };
 
+    Reflect.setPrototypeOf(this, { openapi: program });
     Reflect.setPrototypeOf(context, this);
 
     var types   = run.call(context, program);
@@ -104,7 +104,7 @@ var alphabet = {
         return `${t(this.lvl)}${jsdoc}${method}: ${joined}`;
     },
     'parameters'(data) {
-        var run = runParams.bind(this, data.map(getRawSchema));
+        var run = runParams.bind(this, data.map(getRawSchema, this));
         return [run('path'), run('query')].filter(Boolean);
     },
     'requestBody'(data) {
@@ -141,6 +141,7 @@ var schemaTypeFields = ['properties', 'items', 'additionalProperties', 'enum'];
 var commentFields = ['title', 'description', 'summary', 'operationId'];
 
 function runComment(schema, extraRow = '') {
+    schema = getRawSchema.call(this, schema);
     var tab = t(this?.lvl);
     return commentFields
         .filter((field) => schema[field])
@@ -175,13 +176,13 @@ function runSchema(schema) {
     return types.join(' & ').or('unknown').nullable(schema.nullable);
 };
 
-function unrefSchema(ref) {
-    var { 2: field, 3: name } = ref.split('/');
-    return this.openapi?.components?.[field]?.[name];
+function unrefSchema(schema) {
+    var { 2: field, 3: name } = schema.$ref.split('/');
+    return this.openapi?.components?.[field]?.[name] || schema;
 };
 
 function getRawSchema(schema) {
-    return schema.$ref ? unrefSchema(schema.$ref) : schema;
+    return schema.$ref ? unrefSchema.call(this, schema) : schema;
 };
 
 function normalizedSchema(schema) {
@@ -215,15 +216,15 @@ function t(lvl) {
 };
 
 function log(message) {
-    console.warn(`\x1b[33m\n${message}\x1b[0m\n`);
+    console.warn(`\x1b[38;5;220m\n${message}\x1b[0m\n`);
 }
 
 var context = {
     lvl: 1,
     incLvl() {
-        var obj = { lvl: this.lvl + 1 };
-        Reflect.setPrototypeOf(obj, context);
-        return obj;
+        var newCtx = { lvl: this.lvl + 1 };
+        Reflect.setPrototypeOf(newCtx, context);
+        return newCtx;
     },
     command(name) {
         this.commandName = name;
@@ -250,7 +251,7 @@ String.prototype.or = function(value) {
     return this || value;
 }
 String.prototype.wrap = function(a, b) {
-    return this ? (a + this + b) : this;
+    return this.length ? (a + this + b) : this;
 }
 String.prototype.meta = function(meta) {
     var obj = new String(this);
