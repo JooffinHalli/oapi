@@ -41,7 +41,7 @@ function doFetch(url) {
         .catch(() => exec(`curl -v ${url}`).then(r => r.stdout).then(JSON.parse));
 }
 
-function doWrite({ Paths, Schemas }) {
+function doWrite({ Paths, Schemas } = {}) {
     if (!Paths && !Schemas) return;
 
     var outputDir = path.resolve(configDir, path.normalize(this));
