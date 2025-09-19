@@ -20,15 +20,15 @@ function validateConfig(configPath) {
     dieIf(!config.length,         `Config must be an array with at least one item`);
 
     config.forEach((item) => {
-        dieIf(!item,                 `Item must be an object, got "${typeOf(item)}"`);
-        dieIf(isNot(item, 'object'), `Item must be an object, got "${typeOf(item)}"`);
+        dieIf(!item,                 `Each config item must be an object, got "${typeOf(item)}"`);
+        dieIf(isNot(item, 'object'), `Each config item must be an object, got "${typeOf(item)}"`);
 
         var { src, output, hook, filter } = item;
 
-        dieIf(!src,                 `Item must have a "src" field`);
+        dieIf(!src,                 `Each config item must have a "src" field`);
         dieIf(isNot(src, 'string'), `"src" must be a string, got "${typeOf(src)}"`);
 
-        dieIf(!output,                 `Item must have an "output" field`);
+        dieIf(!output,                 `Each config item must have an "output" field`);
         dieIf(isNot(output, 'string'), `"output" must be a string, got "${typeOf(output)}"`);
 
         dieIf(isJs   && isNot(hook, 'function'), `in js file "hook" must be a function, got "${typeOf(hook)}"`);
