@@ -1,16 +1,14 @@
 'use strict';
 
-var openapi, hook, filter;
-
 module.exports = function(program) {
     if ((parseInt(program.openapi) || 0) < 3) {
         log(`src: ${this.src}\nopenapi version should be 3.0.0 and higher`);
         return {};
     };
-    openapi     = program;
-    hook        = this.hook || (() => {});
-    filter      = this.filter || null;
-    var types   = run.call(this, program);
+
+    Reflect.setPrototypeOf(context, this);
+
+    var types   = run.call(context, program);
     var jsdoc   = types.find((type) => type.key === 'jsdoc');
     var Paths   = types.find((type) => type.key === 'Paths');
     var Schemas = types.find((type) => type.key === 'Schemas');
@@ -22,18 +20,18 @@ module.exports = function(program) {
 };
 
 function run(program) {
+    var ctxCommand = this.getCommand();
     var acc = [];
-    var ctx = { lvl: this?.lvl || 1, src: this.src };
     for (var command in program) {
-        var exec = alphabet[this?.command || command];
+        var exec = alphabet[ctxCommand || command];
         if (!exec) continue;
         var data = program[command];
-        try { hook(data, command); } catch(e) {
+        try { this.hook(data, command); } catch(e) {
             log(`Attention! Your hook failed:\n${e}`);
         }
-        var ret = exec.call(ctx, data, command);
-        if (!ret) continue;
-        acc.push(ret);
+        var types = exec.call(this, data, command);
+        if (!types) continue;
+        acc.push(types);
     }
     acc = acc.flat().unify();
     return acc;
@@ -45,20 +43,21 @@ var alphabet = {
         return jsdoc.meta({ key: 'jsdoc' });
     },
     'components'(components) {
-        var types = run.call({ command: '@anySchemas' }, components).join('\n\n');
+        var types = run.call(this.command('@anySchemas'), components).join('\n\n');
         return `export namespace Schemas {\n\n${types}\n\n}`.meta({ key: 'Schemas' });
     },
     '@anySchemas'(schemas, field) {
         if (!schemasFields.includes(field)) return;
-        return run.call({ command: '@anySchema' }, schemas).join('\n\n');
+        var types = run.call(this.command('@anySchema'), schemas).join('\n\n');
+        return types;
     },
     '@anySchema'(schema, name) {
-        var types = runSchema.call(this, schema);
         var jsdoc = runComment.call(this, schema);
+        var types = runSchema.call(this, schema);
         return `${t(this.lvl)}${jsdoc}export type ${name.toId()} = ${types}`;
     },
     'properties'(props) {
-        var ctx = { command: '@anyProperty', lvl: this.lvl + 1 };
+        var ctx = this.incLvl().command('@anyProperty');
         return run.call(ctx, props).join('\n').wrap(`{\n`, `\n${t(this.lvl)}}`);
     },
     '@anyProperty'(schema, name) {
@@ -89,17 +88,17 @@ var alphabet = {
         return name ? `Schemas.${name.toId()}` : 'unknown';
     },
     'paths'(paths) {
-        var types = run.call({ command: '@anyPath' }, paths).join('\n\n');
+        var types = run.call(this.command('@anyPath'), paths).join('\n\n');
         return `export type Paths = {\n\n${types}\n\n}`.meta({ key: 'Paths' });
     },
     '@anyPath'(path, name) {
-        if (filter && !filter.test(name)) return;
-        var ctx = { command: '@anyHttpMethod', lvl: this.lvl + 1 };
+        if (this.filter && !this.filter.test(name)) return;
+        var ctx = this.incLvl().command('@anyHttpMethod');
         var types = run.call(ctx, path).join('\n\n').wrap('{\n\n', `\n\n${t(this.lvl)}}`);
         return `${t(this.lvl)}'${name}': ${types}`;
     },
     '@anyHttpMethod'(data, method) {
-        var types = run.call({ lvl: this.lvl + 1 }, data);
+        var types = run.call(this.incLvl(), data);
         var joined = types.join('\n').wrap('{\n', `\n${t(this.lvl)}}`);
         var jsdoc = runComment.call(this, data);
         return `${t(this.lvl)}${jsdoc}${method}: ${joined}`;
@@ -166,7 +165,7 @@ function runParams(rawParams, place) {
     var params = rawParams.filter((param) => (param.in === place));
     if (!params.length) return;
     var isOptional = params.some((param) => (!param.required));
-    var types = params.map(runParam, { lvl: this.lvl + 1 });
+    var types = params.map(runParam, this.incLvl());
     var joined = types.join('\n').wrap('{\n', `\n${t(this.lvl)}}`).or('unknown');
     return `${t(this.lvl)}${`${place}Params`.toId(isOptional)}: ${joined}`;
 };
@@ -178,7 +177,7 @@ function runSchema(schema) {
 
 function unrefSchema(ref) {
     var { 2: field, 3: name } = ref.split('/');
-    return openapi?.components?.[field]?.[name];
+    return this.openapi?.components?.[field]?.[name];
 };
 
 function getRawSchema(schema) {
@@ -217,6 +216,24 @@ function t(lvl) {
 
 function log(message) {
     console.warn(`\x1b[33m\n${message}\x1b[0m\n`);
+}
+
+var context = {
+    lvl: 1,
+    incLvl() {
+        var obj = { lvl: this.lvl + 1 };
+        Reflect.setPrototypeOf(obj, context);
+        return obj;
+    },
+    command(name) {
+        this.commandName = name;
+        return this;
+    },
+    getCommand() {
+        var commandName = this.commandName;
+        delete this.commandName;
+        return commandName;
+    }
 }
 
 String.prototype.toId = function(isOptional) {
