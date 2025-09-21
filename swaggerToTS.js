@@ -5,7 +5,7 @@ module.exports = function(program) {
         return {};
     };
 
-    Reflect.setPrototypeOf(this, { openapi: program });
+    Reflect.setPrototypeOf(this, { openapi: program, tab: ' '.repeat(this.tabSize) });
     Reflect.setPrototypeOf(context, this);
 
     var types   = run.call(context, program);
@@ -221,6 +221,9 @@ function log(message) {
 
 var context = {
     lvl: 1,
+    t() {
+        return this.tab.repeat(this.lvl);
+    },
     incLvl() {
         var newCtx = { lvl: this.lvl + 1 };
         Reflect.setPrototypeOf(newCtx, context);

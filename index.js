@@ -12,7 +12,7 @@ var swaggerToTS = require('./swaggerToTS');
 
 var { config, isJson, configDir } = validateConfig(configPath);
 
-config.forEach((item) => {
+config.services.forEach((item) => {
     getSwagger(item.src)
         .catch((e) => log(`Error while getting openapi file: ${item.src}\n${e}`))
         .then(swaggerToTS.bind(normalizeItem(item)))
@@ -77,7 +77,7 @@ function normalizeItem(item) {
     if (filter) {
         filter = doTry(() => new RegExp(filter), null);
     }
-    return { hook, filter, src };
+    return { hook, filter, src, tabSize: config.tabSize };
 }
 
 function doTry(doTry, fallback) {

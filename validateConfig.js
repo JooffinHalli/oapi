@@ -7,7 +7,7 @@ function validateConfig(configPath) {
 
     dieIf(!configPath, `Path to config file is required`);
 
-    var ext = path.extname(configPath);
+    var ext    = path.extname(configPath);
     var isJs   = ext === '.js';
     var isJson = ext === '.json';
 
@@ -16,28 +16,44 @@ function validateConfig(configPath) {
 
     var config = tryOrDie(() => require(path.resolve(configPath)), `Error while loading config: <e>`);
 
-    dieIf(!Array.isArray(config), `Config must be an array, got "${typeOf(config)}"`);
-    dieIf(!config.length,         `Config must be an array with at least one item`);
+    dieIf(is(config, 'undefined'), `There is no config`);
+    dieIf(isNot(config, 'object'), `Config must be an object, got "${typeOf(config)}"`);
 
-    config.forEach((item) => {
-        dieIf(!item,                 `Each config item must be an object, got "${typeOf(item)}"`);
-        dieIf(isNot(item, 'object'), `Each config item must be an object, got "${typeOf(item)}"`);
+    var { generateClient, tabSize, output, services } = config;
 
-        var { src, output, hook, filter } = item;
+    dieIf(isNot(generateClient, 'boolean'), `"generateClient" must be a boolean, got "${typeOf(generateClient)}"`);
 
-        dieIf(!src,                 `Each config item must have a "src" field`);
+    dieIf(isNot(tabSize,         'number'), `"tabSize" must be a number, got "${typeOf(tabSize)}"`);
+    dieIf(((tabSize < 1) || (tabSize > 8)), `"tabSize" must be in range 1-8`);
+
+    dieIf(is(output,    'undefined'), `Config must have an "output" field`);
+    dieIf(isNot(output,    'string'), `"output" must be an string, got "${typeOf(output)}"`);
+
+    dieIf(is(services, 'undefined'), `Config must have a "services" field`);
+    dieIf(isNot(services,  'array'), `"services" must be an array, got "${typeOf(services)}"`);
+    dieIf((!services.length       ), `"services" must be an array with at least one item`);
+
+    services.forEach((item) => {
+        dieIf(is(item, 'undefined'), `Each item of "services" must be an object, got "${typeOf(item)}"`);
+        dieIf(isNot(item, 'object'), `Each item of "services" must be an object, got "${typeOf(item)}"`);
+
+        var { src, dirname, hook, filter } = item;
+
+        dieIf(is(src, 'undefined'), `Each item of "services" must have a "src" field`);
         dieIf(isNot(src, 'string'), `"src" must be a string, got "${typeOf(src)}"`);
 
-        dieIf(!output,                 `Each config item must have an "output" field`);
-        dieIf(isNot(output, 'string'), `"output" must be a string, got "${typeOf(output)}"`);
+        dieIf(is(dirname, 'undefined'), `Each item of "services" must have a "dirname" field`);
+        dieIf(isNot(dirname, 'string'), `"dirname" must be a string, got "${typeOf(dirname)}"`);
 
         dieIf(isJs   && isNot(hook, 'function'), `in js file "hook" must be a function, got "${typeOf(hook)}"`);
-        dieIf(isJson && isNot(hook, 'string'),   `in json file "hook" must be a string, got "${typeOf(hook)}"`);
+        dieIf(isJson && isNot(hook,   'string'), `in json file "hook" must be a string, got "${typeOf(hook)}"`);
 
         dieIf(isNot(filter, 'string'), `"filter" must be a string, got "${typeOf(filter)}"`);
+
+        item.output = path.join(output, path.normalize(dirname));
     });
 
-    var configDir = path.dirname(path.resolve(configPath));
+    var configDir = path.dirname(path.resolve(path.normalize(configPath)));
 
     return { config, isJs, isJson, configDir };
 }
@@ -57,10 +73,13 @@ function tryOrDie(doTry, message) {
 }
 
 function isNot(value, type) {
-    if (Array.isArray(type)) return type.some((t) => isNot(value, t));
-    return value && (typeOf(value)) !== type;
+    return (value !== undefined) && (typeOf(value)) !== type;
+}
+
+function is(value, type) {
+    return typeOf(value) === type;
 }
 
 function typeOf(value) {
-    return Array.isArray(value) ? 'array' : typeof value;
+    return Array.isArray(value) ? 'array' : (value === null) ? 'null' : typeof value;
 }
