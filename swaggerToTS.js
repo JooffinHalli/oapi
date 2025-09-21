@@ -5,7 +5,7 @@ module.exports = function(program) {
         return {};
     };
 
-    Reflect.setPrototypeOf(this, { openapi: program, tab: ' '.repeat(this.tabSize) });
+    Reflect.setPrototypeOf(this, { openapi: program, tab: ' '.repeat(this.tabSize || 2) });
     Reflect.setPrototypeOf(context, this);
 
     var types   = run.call(context, program);
@@ -54,16 +54,16 @@ var alphabet = {
     '@anySchema'(schema, name) {
         var jsdoc = runComment.call(this, schema);
         var types = runSchema.call(this, schema);
-        return `${t(this.lvl)}${jsdoc}export type ${name.toId()} = ${types}`;
+        return `${jsdoc}export type ${name.toId()} = ${types}`;
     },
     'properties'(props) {
         var ctx = this.incLvl().command('@anyProperty');
-        return run.call(ctx, props).join('\n').wrap(`{\n`, `\n${t(this.lvl)}}`);
+        return run.call(ctx, props).join('\n').wrap(`{\n`, `\n${this.t()}}`);
     },
     '@anyProperty'(schema, name) {
         var types = runSchema.call(this, schema);
         var jsdoc = runComment.call(this, schema);
-        return `${t(this.lvl)}${jsdoc}${name.toKey(!schema.isRequired)}: ${types}`;
+        return `${jsdoc}${name.toKey(!schema.isRequired)}: ${types}`;
     },
     'items'(schema) {
         return runSchema.call(this, schema).concat('[]');
@@ -94,14 +94,14 @@ var alphabet = {
     '@anyPath'(path, name) {
         if (this.filter && !this.filter.test(name)) return;
         var ctx = this.incLvl().command('@anyHttpMethod');
-        var types = run.call(ctx, path).join('\n\n').wrap('{\n\n', `\n\n${t(this.lvl)}}`);
-        return `${t(this.lvl)}'${name}': ${types}`;
+        var types = run.call(ctx, path).join('\n\n').wrap('{\n\n', `\n\n${this.t()}}`);
+        return `${this.t()}'${name}': ${types}`;
     },
     '@anyHttpMethod'(data, method) {
         var types = run.call(this.incLvl(), data);
-        var joined = types.join('\n').wrap('{\n', `\n${t(this.lvl)}}`);
+        var joined = types.join('\n').wrap('{\n', `\n${this.t()}}`);
         var jsdoc = runComment.call(this, data);
-        return `${t(this.lvl)}${jsdoc}${method}: ${joined}`;
+        return `${jsdoc}${method}: ${joined}`;
     },
     'parameters'(data) {
         var run = runParams.bind(this, data.map(getRawSchema, this));
@@ -110,11 +110,11 @@ var alphabet = {
     'requestBody'(data) {
         var types = run.call(this, data).join(' | ').or('unknown');
         var jsdoc = runComment.call(this, data);
-        return `${t(this.lvl)}${jsdoc}${'body'.toId(!data.required)}: ${types}`;
+        return `${jsdoc}${'body'.toId(!data.required)}: ${types}`;
     },
     'responses'(data) {
         var types = run.call(this, data).join(' | ').or('unknown');
-        return `${t(this.lvl)}res: ${types}`;
+        return `${this.t()}res: ${types}`;
     },
     '200': run,
     '201': run,
@@ -142,12 +142,13 @@ var commentFields = ['title', 'description', 'summary', 'operationId'];
 
 function runComment(schema, extraRow = '') {
     schema = getRawSchema.call(this, schema);
-    var tab = t(this?.lvl);
+    var tab = this?.t?.() || '';
     return commentFields
         .filter((field) => schema[field])
         .map((field) => `${tab} * @${field} ${schema[field].replaceAll('\n', `\n${tab} * `)}`)
         .join('\n')
-        .wrap(`/**\n${extraRow}`, `\n${tab} */\n${tab}`);
+        .wrap(`${tab}/**\n${extraRow}`, `\n${tab} */\n${tab}`)
+        .or(tab);
 };
 
 function runComposition(devider) {
@@ -159,7 +160,7 @@ function runComposition(devider) {
 function runParam(param) {
     var types = run.call(this, param).join(' | ').or('unknown');
     var jsdoc = runComment.call(this, param);
-    return `${t(this.lvl)}${jsdoc}${param.name.toKey(!param.required)}: ${types}`;
+    return `${jsdoc}${param.name.toKey(!param.required)}: ${types}`;
 };
 
 function runParams(rawParams, place) {
@@ -167,8 +168,8 @@ function runParams(rawParams, place) {
     if (!params.length) return;
     var isOptional = params.some((param) => (!param.required));
     var types = params.map(runParam, this.incLvl());
-    var joined = types.join('\n').wrap('{\n', `\n${t(this.lvl)}}`).or('unknown');
-    return `${t(this.lvl)}${`${place}Params`.toId(isOptional)}: ${joined}`;
+    var joined = types.join('\n').wrap('{\n', `\n${this.t()}}`).or('unknown');
+    return `${this.t()}${`${place}Params`.toId(isOptional)}: ${joined}`;
 };
 
 function runSchema(schema) {
@@ -209,10 +210,6 @@ function normalizedSchemaEnum(schema) {
             enums[i] = Number(value);
         }
     });
-};
-
-function t(lvl) {
-    return '  '.repeat(lvl);
 };
 
 function log(message) {
