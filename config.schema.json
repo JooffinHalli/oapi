@@ -40,7 +40,7 @@
                 "type": "object",
                 "required": [
                     "src",
-                    "dirName"
+                    "dirname"
                 ],
                 "properties": {
                     "src": {
@@ -51,7 +51,7 @@
                             "./openapi.json"
                         ]
                     },
-                    "dirName": {
+                    "dirname": {
                         "type": "string",
                         "description": "Directory name for generated files for this service",
                         "examples": [
