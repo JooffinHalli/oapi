@@ -9,9 +9,9 @@ module.exports = function(program) {
     Reflect.setPrototypeOf(context, this);
 
     var types   = run.call(context, program);
-    var jsdoc   = types.find((type) => type.key === 'jsdoc');
-    var Paths   = types.find((type) => type.key === 'Paths');
-    var Schemas = types.find((type) => type.key === 'Schemas');
+    var jsdoc   = types.find((type) => (type.key === 'jsdoc'));
+    var Paths   = types.find((type) => (type.key === 'Paths'));
+    var Schemas = types.find((type) => (type.key === 'Schemas'));
 
     return {
         Paths:   [jsdoc, Paths].join(''),
@@ -48,8 +48,7 @@ var alphabet = {
     },
     '@anySchemas'(schemas, field) {
         if (!schemasFields.includes(field)) return;
-        var types = run.call(this.command('@anySchema'), schemas).join('\n\n');
-        return types;
+        return run.call(this.command('@anySchema'), schemas).join('\n\n');
     },
     '@anySchema'(schema, name) {
         var jsdoc = runComment.call(this, schema);
@@ -187,7 +186,7 @@ function getRawSchema(schema) {
 };
 
 function normalizedSchema(schema) {
-    normalizedSchemaEnum(schema);
+    normalizeSchemaEnum(schema);
     if (schemaTypeFields.some(schema.hasOwnProperty, schema)) {
         delete schema.type;
     }
@@ -201,7 +200,7 @@ function normalizedSchema(schema) {
     return schema;
 };
 
-function normalizedSchemaEnum(schema) {
+function normalizeSchemaEnum(schema) {
     if (
         ['number', 'integer'].includes(schema.type) &&
         Array.isArray(schema.enum)
