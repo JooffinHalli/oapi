@@ -1,14 +1,14 @@
-module.exports = function(program) {
-    if (!program) return {};
-    if ((parseInt(program.openapi) || 0) < 3) {
+module.exports = function(openapi) {
+    if (!openapi) return {};
+    if ((parseInt(openapi.openapi) || 0) < 3) {
         log(`src: ${this.src}\nopenapi version should be 3.0.0 and higher`);
         return {};
     };
 
-    Reflect.setPrototypeOf(this, { openapi: program, tab: ' '.repeat(this.tabSize || 2) });
-    Reflect.setPrototypeOf(context, this);
+    Object.setPrototypeOf(this, { openapi, tab: ' '.repeat(this.tabSize || 2) });
+    Object.setPrototypeOf(context, this);
 
-    var types   = run.call(context, program);
+    var types   = run.call(context, openapi);
     var jsdoc   = types.find((type) => (type.key === 'jsdoc'));
     var Paths   = types.find((type) => (type.key === 'Paths'));
     var Schemas = types.find((type) => (type.key === 'Schemas'));
@@ -221,9 +221,7 @@ var context = {
         return this.tab.repeat(this.lvl);
     },
     incLvl() {
-        var newCtx = { lvl: this.lvl + 1 };
-        Reflect.setPrototypeOf(newCtx, context);
-        return newCtx;
+        return Object.setPrototypeOf({ lvl: this.lvl + 1 }, context);
     },
     command(name) {
         this.commandName = name;
@@ -257,7 +255,8 @@ String.prototype.meta = function(meta) {
     return Object.assign(obj, meta);
 }
 Array.prototype.join2 = function(separator) {
-    return (this.length > 1) ? `(${this.join(separator)})` : this.join(separator);
+    var arr = this.unify();
+    return (arr.length > 1) ? `(${arr.join(separator)})` : arr.join(separator);
 }
 Array.prototype.unify = function() {
     return Array.from(this.reduce(
