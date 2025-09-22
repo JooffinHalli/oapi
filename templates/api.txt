@@ -1,0 +1,9 @@
+// -------------------------------
+// | this file is auto-generated |
+// -------------------------------
+
+<imports>
+
+export const api = {
+<fields>
+}

@@ -10,16 +10,22 @@ var { 2: configPath } = process.argv;
 var validateConfig = require('./validateConfig');
 var swaggerToTS = require('./swaggerToTS');
 
-var { config, isJson, configDir } = validateConfig(configPath);
+var { config, isJson } = validateConfig(configPath);
 
-config.services.forEach((item) => {
-    getSwagger(item.src)
-        .catch((e) => log(`Error while getting openapi file: ${item.src}\n${e}`))
-        .then(swaggerToTS.bind(normalizeItem(item)))
-        .catch((e) => log(`Error while parsing openapi file: ${item.src}\n${e}`))
-        .then(doWrite.bind(item.output))
-        .catch((e) => log(`Error while writing to ${item.output}: ${e}`));
-});
+if (config.generateClient) {
+    generateClient(config.output);
+}
+
+Promise.all(
+    config.services.map((item) => {
+        return getSwagger(item.src)
+            .catch((e) => log(`Error while getting openapi file: ${item.src}\n${e}`))
+            .then(swaggerToTS.bind(normalizeItem(item)))
+            .catch((e) => log(`Error while parsing openapi file: ${item.src}\n${e}`))
+            .then(doWrite.bind(item))
+            .catch((e) => log(`Error while writing to ${item.output}: ${e}`))
+    })
+).then(doWriteApiIndex);
 
 function getSwagger(src) {
     return fs.existsSync(src)
@@ -43,26 +49,58 @@ function doFetch(url) {
 
 function doWrite({ Paths, Schemas } = {}) {
     if (!Paths && !Schemas) return;
+    var { output } = this;
 
-    var outputDir = path.resolve(configDir, path.normalize(this));
-    var f = (e) => (e && log(`Error while writing to ${outputDir}: ${e}`));
+    var f = (e) => (e && log(`Error while writing to ${output}: ${e}`));
     var banner = [
         '// -------------------------------',
         '// | this file is auto-generated |',
         '// -------------------------------',
     ].join('\n');
 
-    if (!fs.existsSync(outputDir)) {
-        fs.mkdirSync(outputDir, { recursive: true });
+    if (!fs.existsSync(output)) {
+        fs.mkdirSync(output, { recursive: true });
     }
 
     if (Schemas) {
         var imports = `import type { Schemas } from './schemas';`;
-        fs.writeFile(`${outputDir}/schemas.ts`, [banner, Schemas].join('\n\n'), null, f);
+        fs.writeFile(`${output}/schemas.ts`, [banner, Schemas].join('\n\n'), null, f);
     }
     if (Paths) {
-        fs.writeFile(`${outputDir}/paths.ts`, [banner, imports || '', Paths].join('\n\n'), null, f);
+        fs.writeFile(`${output}/paths.ts`, [banner, imports || '', Paths].join('\n\n'), null, f);
+        if (!config.generateClient) return;
+        fs.readFile('./templates/index.txt', (err, data) => {
+            if (err) return f(err);
+            fs.writeFile(`${output}/index.ts`, data.toString().replaceAll('<name>', this.dirname), null, f);
+        });
     }
+
+    return this.dirname;
+}
+
+function doWriteApiIndex(services) {
+    services = services.filter(Boolean);
+    if (!config.generateClient || !services.length) return;
+
+    var f = (e) => (e && log(`Error while writing to ${config.output}/index.ts: ${e}`));
+
+    var imports = services.map((service) => `import { ${service} } from './${service}';`).join('\n');
+    var fields = services.map((service) => `${' '.repeat(config.tabSize || 2)}${service},`).join('\n');
+
+    fs.readFile('./templates/api.txt', (err, data) => {
+        if (err) return f(err);
+        var content = data.toString().replace('<imports>', imports).replace('<fields>', fields);
+        fs.writeFile(`${config.output}/index.ts`, content, null, f);
+    });
+}
+
+function generateClient(output) {
+    if (!fs.existsSync(output)) fs.mkdirSync(output);
+    var f = (path) => (e) => {
+        (e && log(`Error while generating client to ${output}/${path}: ${e}`))
+    }
+    fs.copyFile('./templates/createClient.txt', `${output}/createClient.ts`, f('createClient.ts'));
+    fs.copyFile('./templates/types.txt',        `${output}/types.ts`, f('types.ts'));
 }
 
 function log(message) {

@@ -15,6 +15,7 @@ function validateConfig(configPath) {
     dieIf(!fs.existsSync(configPath),      `Config file not found: ${configPath}`);
 
     var config = tryOrDie(() => require(path.resolve(configPath)), `Error while loading config: <e>`);
+    var configDir = path.dirname(path.resolve(path.normalize(configPath)));
 
     dieIf(is(config, 'undefined'), `There is no config`);
     dieIf(isNot(config, 'object'), `Config must be an object, got "${typeOf(config)}"`);
@@ -28,6 +29,7 @@ function validateConfig(configPath) {
 
     dieIf(is(output,    'undefined'), `Config must have an "output" field`);
     dieIf(isNot(output,    'string'), `"output" must be an string, got "${typeOf(output)}"`);
+    config.output = path.join(configDir, path.normalize(output));
 
     dieIf(is(services, 'undefined'), `Config must have a "services" field`);
     dieIf(isNot(services,  'array'), `"services" must be an array, got "${typeOf(services)}"`);
@@ -50,12 +52,10 @@ function validateConfig(configPath) {
 
         dieIf(isNot(filter, 'string'), `"filter" must be a string, got "${typeOf(filter)}"`);
 
-        item.output = path.join(output, path.normalize(dirname));
+        item.output = path.join(config.output, path.normalize(dirname));
     });
 
-    var configDir = path.dirname(path.resolve(path.normalize(configPath)));
-
-    return { config, isJs, isJson, configDir };
+    return { config, isJson };
 }
 
 function die(message) {
