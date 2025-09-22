@@ -260,9 +260,7 @@ Array.prototype.join2 = function(separator) {
     return (this.length > 1) ? `(${this.join(separator)})` : this.join(separator);
 }
 Array.prototype.unify = function() {
-    var unionMap = Array.from(this.reduce((map, value) => {
-        map.set(value.toString(), value);
-        return map;
-    }, new Map).values());
-    return Array.from(unionMap.values());
+    return Array.from(this.reduce(
+        (map, value) => (map.set(`${value}`, value), map), new Map
+    ).values());
 }

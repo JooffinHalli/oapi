@@ -1,8 +1,0 @@
-{
-  "json.schemas": [
-    {
-      "fileMatch": ["api.config.json"], // Replace with your config filename (can be any name)
-      "url": "https://raw.githubusercontent.com/JooffinHalli/oapi/main/config.schema.json"
-    }
-  ]
-}
