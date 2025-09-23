@@ -41,7 +41,11 @@
 - [Requirements](#requirements)
 - [Summary](#summary)
 
+<a id="philosophy"></a>
+
 ## Philosophy [↑](#table-of-contents)
+
+<a id="the-problem"></a>
 
 ### The Problem [↑](#table-of-contents)
 Every project has unique requirements for API communication:
@@ -52,11 +56,15 @@ Every project has unique requirements for API communication:
 
 **Generic solutions fail** because they try to solve everything for everyone, resulting in bloated, opinionated code that doesn't fit your needs.
 
+<a id="the-solution"></a>
+
 ### The Solution [↑](#table-of-contents)
 This tool provides **two essential things**:
 
 1. **TypeScript types** - Generated from your OpenAPI spec
 2. **Minimal abstraction** - A thin wrapper that accepts these types and returns a typed client
+
+<a id="key-principles"></a>
 
 ### Key Principles [↑](#table-of-contents)
 
@@ -82,6 +90,8 @@ This tool provides **two essential things**:
 - Review, modify, and commit the generated code
 - Full control over the final output
 
+<a id="how-it-works"></a>
+
 ### How It Works [↑](#table-of-contents)
 
 ```typescript
@@ -105,13 +115,18 @@ const users = await client.get('/users') // ✅ User[]
 
 **The generated code is yours to own, modify, and integrate however you want.**
 
+<a id="what-you-get"></a>
+
 ## What You Get [↑](#table-of-contents)
+<a id="generated-files"></a>
 
 ### Generated Files [↑](#table-of-contents)
 - **`types.ts`** - TypeScript types for all API schemas
 - **`paths.ts`** - TypeScript types for all API endpoints  
 - **`createClient.ts`** - Minimal client factory with utilities
 - **`index.ts`** - Main API export (optional)
+
+<a id="key-features"></a>
 
 ### Key Features [↑](#table-of-contents)
 - ✅ **OpenAPI 3.0+** support (Swagger 2.0 not supported)
@@ -122,11 +137,15 @@ const users = await client.get('/users') // ✅ User[]
 - ✅ **JSDoc comments** generation
 - ✅ **Configurable output** formatting
 
+<a id="what-makes-it-different"></a>
+
 ### What Makes It Different [↑](#table-of-contents)
 - **No runtime dependencies** - just TypeScript types and utilities
 - **Your code, your rules** - modify generated files as needed
 - **Minimal footprint** - only generates what you actually use
 - **Maximum flexibility** - use any HTTP library or custom implementation
+
+<a id="usage"></a>
 
 ## Usage [↑](#table-of-contents)
 
@@ -136,7 +155,9 @@ This tool is currently in **testing phase**, so it's only available via **npx** 
 npx https://github.com/JooffinHalli/oapi <path-to-config-file>
 ```
 
-## Quick Start
+<a id="quick-start"></a>
+
+## Quick Start [↑](#table-of-contents)
 
 1. **Create a config file** (`api.config.json`):
 
@@ -175,7 +196,9 @@ src/
     └── index.ts      # Service export
 ```
 
-## VS Code Settings
+<a id="vs-code-settings"></a>
+
+## VS Code Settings [↑](#table-of-contents)
 
 For enhanced autocomplete and validation, create `.vscode/settings.json` in your project:
 
@@ -198,7 +221,11 @@ EOF
 
 **Note:** Replace `"api.config.json"` with your actual config filename (e.g., `"my-config.json"`).
 
+<a id="configuration-options"></a>
+
 ## Configuration Options [↑](#table-of-contents)
+
+<a id="global-options"></a>
 
 ### Global Options [↑](#table-of-contents)
 
@@ -209,6 +236,8 @@ EOF
 | `tabSize` | number | false | Tab size for generated files (1-8, default: 2) |
 | `services` | array | true | Array of OpenAPI services to process |
 
+<a id="service-options"></a>
+
 ### Service Options [↑](#table-of-contents)
 
 | Option | Type | Required | Description |
@@ -217,6 +246,8 @@ EOF
 | `dirname` | string | true | Directory name for this service |
 | `hook` | string or function | false | In .js files should be a function, in .json files should be a path to hook function |
 | `filter` | string | false | Regular expression to filter paths |
+
+<a id="hooks"></a>
 
 ## Hooks [↑](#table-of-contents)
 
@@ -269,6 +300,8 @@ module.exports = function(data, key) {
 };
 ```
 
+<a id="filtering"></a>
+
 ## Filtering [↑](#table-of-contents)
 
 Use regular expressions to filter paths:
@@ -314,6 +347,8 @@ Use regular expressions to filter paths:
   ]
 }
 ```
+
+<a id="config-examples"></a>
 
 ## Config examples [↑](#table-of-contents)
 
@@ -372,9 +407,15 @@ module.exports = {
 }
 ```
 
+<a id="usage-examples"></a>
+
 ## Usage Examples [↑](#table-of-contents)
 
+
+<a id="basic-usage-default-implementation"></a>
+
 ### Basic Usage (Default Implementation) [↑](#table-of-contents)
+
 ```typescript
 import { createClient } from './createClient';
 import type { Paths } from './stripe/paths';
@@ -389,7 +430,10 @@ const user = await client.post('/users', {
 }); // ✅ User
 ```
 
+<a id="custom-implementation-axios"></a>
+
 ### Custom Implementation (Axios) [↑](#table-of-contents)
+
 ```typescript
 import axios from 'axios';
 import { createClient } from './createClient';
@@ -408,7 +452,10 @@ const client = createClient<Paths>((method, path, options) => {
 const users = await client.get('/users'); // ✅ User[]
 ```
 
+<a id="custom-implementation-your-own-logic"></a>
+
 ### Custom Implementation (Your Own Logic) [↑](#table-of-contents)
+
 ```typescript
 import { createClient } from './createClient';
 import type { Paths } from './stripe/paths';
@@ -430,7 +477,10 @@ const client = createClient<Paths>((method, path, options) => {
 });
 ```
 
+<a id="using-utilities-optional"></a>
+
 ### Using Utilities (Optional) [↑](#table-of-contents)
+
 ```typescript
 const client = createClient<Paths>((method, path, options) => {
   // Access utilities via 'this' context
@@ -445,7 +495,10 @@ const client = createClient<Paths>((method, path, options) => {
 });
 ```
 
+<a id="multiple-services"></a>
+
 ### Multiple Services [↑](#table-of-contents)
+
 ```typescript
 import { api } from './src';
 
@@ -454,27 +507,43 @@ const stripeUsers = await api.stripe.get('/customers');
 const githubRepos = await api.github.get('/user/repos');
 ```
 
+<a id="why-not-use-alternatives"></a>
+
 ## Why Not Use Alternatives? [↑](#table-of-contents)
+
+
+<a id="vs-openapi-generator"></a>
 
 ### vs. OpenAPI Generator [↑](#table-of-contents)
 - **❌ OpenAPI Generator**: Generates 1000+ lines of complex code
 - **✅ OAPI**: Generates ~100 lines of clean, minimal code
 
+<a id="vs-orval"></a>
+
 ### vs. Orval [↑](#table-of-contents)
 - **❌ Orval**: Opinionated, hard to customize, runtime dependencies
 - **✅ OAPI**: Your code, your rules, zero runtime dependencies
+
+<a id="vs-swagger-codegen"></a>
 
 ### vs. Swagger Codegen [↑](#table-of-contents)
 - **❌ Swagger Codegen**: Bloated templates, hard to modify
 - **✅ OAPI**: Simple templates, easy to understand and modify
 
+<a id="vs-manual-types"></a>
+
 ### vs. Manual Types [↑](#table-of-contents)
 - **❌ Manual**: Time-consuming, error-prone, hard to maintain
 - **✅ OAPI**: Automatic, type-safe, always up-to-date
 
+<a id="generated-output"></a>
+
 ## Generated Output [↑](#table-of-contents)
 
-### schemas.ts [↑](#table-of-contents)
+
+### schemas.ts
+[to the top](#table-of-contents)
+
 ```typescript
 export namespace Schemas {
 
@@ -493,7 +562,9 @@ export namespace Schemas {
 }
 ```
 
-### paths.ts [↑](#table-of-contents)
+### paths.ts
+[to the top](#table-of-contents)
+
 ```typescript
 import type { Schemas } from './Schemas';
 
@@ -532,13 +603,22 @@ export type Paths = {
 }
 ```
 
+<a id="important-limitations"></a>
+
 ## ⚠️ Important Limitations [↑](#table-of-contents)
 
+
+<a id="openapi-version-support"></a>
+
 ### OpenAPI Version Support [↑](#table-of-contents)
+
 - **✅ Supported:** OpenAPI 3.0+
 - **❌ Not Supported:** Swagger 2.0
 
+<a id="schema-name-conflicts"></a>
+
 ### Schema Name Conflicts [↑](#table-of-contents)
+
 **⚠️ Warning:** This transpiler assumes each schema has a unique name across all namespaces.
 
 If you have conflicting schema names (e.g., `Pet` in both `responses` and `requestBodies`), they will be duplicated in the same namespace, causing TypeScript errors.
@@ -555,12 +635,18 @@ module.exports = function(data, key) {
 };
 ```
 
+<a id="requirements"></a>
+
 ## Requirements [↑](#table-of-contents)
+
 
 - Node.js >= 14.0.0
 - OpenAPI 3.0+ (Swagger 2.0 not supported)
 
-## Summary
+<a id="summary"></a>
+
+## Summary [↑](#table-of-contents)
+
 
 **OAPI** gives you the best of both worlds:
 
