@@ -461,19 +461,19 @@ const githubRepos = await api.github.get('/user/repos');
 
 ## Why Not Use Alternatives? [↑](#toc-why-not-use-alternatives) <a id="why-not-use-alternatives"></a>
 
-### vs. OpenAPI Generator [↑](#toc-vs-openapi-generator) <a id="vs-openapi-generator"></a>
+### vs. OpenAPI Generator <a id="vs-openapi-generator"></a>
 - **❌ OpenAPI Generator**: Generates 1000+ lines of complex code
 - **✅ OAPI**: Generates ~100 lines of clean, minimal code
 
-### vs. Orval [↑](#toc-vs-orval) <a id="vs-orval"></a>
+### vs. Orval <a id="vs-orval"></a>
 - **❌ Orval**: Opinionated, hard to customize, runtime dependencies
 - **✅ OAPI**: Your code, your rules, zero runtime dependencies
 
-### vs. Swagger Codegen [↑](#toc-vs-swagger-codegen) <a id="vs-swagger-codegen"></a>
+### vs. Swagger Codegen <a id="vs-swagger-codegen"></a>
 - **❌ Swagger Codegen**: Bloated templates, hard to modify
 - **✅ OAPI**: Simple templates, easy to understand and modify
 
-### vs. Manual Types [↑](#toc-vs-manual-types) <a id="vs-manual-types"></a>
+### vs. Manual Types <a id="vs-manual-types"></a>
 - **❌ Manual**: Time-consuming, error-prone, hard to maintain
 - **✅ OAPI**: Automatic, type-safe, always up-to-date
 
