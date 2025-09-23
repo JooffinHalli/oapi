@@ -7,47 +7,43 @@
 
 ## Table of Contents
 
-- [Philosophy](#philosophy)
-  - [The Problem](#the-problem)
-  - [The Solution](#the-solution)
-  - [Key Principles](#key-principles)
-  - [How It Works](#how-it-works)
-- [What You Get](#what-you-get)
-  - [Generated Files](#generated-files)
-  - [Key Features](#key-features)
-  - [What Makes It Different](#what-makes-it-different)
-- [Usage](#usage)
-- [Quick Start](#quick-start)
-- [VS Code Settings](#vs-code-settings)
-- [Configuration Options](#configuration-options)
-  - [Global Options](#global-options)
-  - [Service Options](#service-options)
-- [Hooks](#hooks)
-- [Filtering](#filtering)
-- [Config examples](#config-examples)
-- [Usage Examples](#usage-examples)
-  - [Basic Usage (Default Implementation)](#basic-usage-default-implementation)
-  - [Custom Implementation (Axios)](#custom-implementation-axios)
-  - [Custom Implementation (Your Own Logic)](#custom-implementation-your-own-logic)
-  - [Using Utilities (Optional)](#using-utilities-optional)
-  - [Multiple Services](#multiple-services)
-- [Why Not Use Alternatives?](#why-not-use-alternatives)
-- [Generated Output](#generated-output)
-  - [schemas.ts](#schemasts)
-  - [paths.ts](#pathsts)
-- [Important Limitations](#important-limitations)
-  - [OpenAPI Version Support](#openapi-version-support)
-  - [Schema Name Conflicts](#schema-name-conflicts)
-- [Requirements](#requirements)
-- [Summary](#summary)
+- [Philosophy](#philosophy) <a id="toc-philosophy"></a>
+  - [The Problem](#the-problem) <a id="toc-the-problem"></a>
+  - [The Solution](#the-solution) <a id="toc-the-solution"></a>
+  - [Key Principles](#key-principles) <a id="toc-key-principles"></a>
+  - [How It Works](#how-it-works) <a id="toc-how-it-works"></a>
+- [What You Get](#what-you-get) <a id="toc-what-you-get"></a>
+  - [Generated Files](#generated-files) <a id="toc-generated-files"></a>
+  - [Key Features](#key-features) <a id="toc-key-features"></a>
+  - [What Makes It Different](#what-makes-it-different) <a id="toc-what-makes-it-different"></a>
+- [Usage](#usage) <a id="toc-usage"></a>
+- [Quick Start](#quick-start) <a id="toc-quick-start"></a>
+- [VS Code Settings](#vs-code-settings) <a id="toc-vs-code-settings"></a>
+- [Configuration Options](#configuration-options) <a id="toc-configuration-options"></a>
+  - [Global Options](#global-options) <a id="toc-global-options"></a>
+  - [Service Options](#service-options) <a id="toc-service-options"></a>
+- [Hooks](#hooks) <a id="toc-hooks"></a>
+- [Filtering](#filtering) <a id="toc-filtering"></a>
+- [Config examples](#config-examples) <a id="toc-config-examples"></a>
+- [Usage Examples](#usage-examples) <a id="toc-usage-examples"></a>
+  - [Basic Usage (Default Implementation)](#basic-usage-default-implementation) <a id="toc-basic-usage-default-implementation"></a>
+  - [Custom Implementation (Axios)](#custom-implementation-axios) <a id="toc-custom-implementation-axios"></a>
+  - [Custom Implementation (Your Own Logic)](#custom-implementation-your-own-logic) <a id="toc-custom-implementation-your-own-logic"></a>
+  - [Using Utilities (Optional)](#using-utilities-optional) <a id="toc-using-utilities-optional"></a>
+  - [Multiple Services](#multiple-services) <a id="toc-multiple-services"></a>
+- [Why Not Use Alternatives?](#why-not-use-alternatives) <a id="toc-why-not-use-alternatives"></a>
+- [Generated Output](#generated-output) <a id="toc-generated-output"></a>
+  - [schemas.ts](#schemasts) <a id="toc-schemasts"></a>
+  - [paths.ts](#pathsts) <a id="toc-pathsts"></a>
+- [Important Limitations](#important-limitations) <a id="toc-important-limitations"></a>
+  - [OpenAPI Version Support](#openapi-version-support) <a id="toc-openapi-version-support"></a>
+  - [Schema Name Conflicts](#schema-name-conflicts) <a id="toc-schema-name-conflicts"></a>
+- [Requirements](#requirements) <a id="toc-requirements"></a>
+- [Summary](#summary) <a id="toc-summary"></a>
 
-<a id="philosophy"></a>
+## Philosophy [↑](#toc-philosophy) <a id="philosophy"></a>
 
-## Philosophy [↑](#table-of-contents)
-
-<a id="the-problem"></a>
-
-### The Problem [↑](#table-of-contents)
+### The Problem [↑](#toc-the-problem) <a id="the-problem"></a>
 Every project has unique requirements for API communication:
 - Custom authentication (JWT, API keys, OAuth)
 - Special headers and prefixes
@@ -56,17 +52,13 @@ Every project has unique requirements for API communication:
 
 **Generic solutions fail** because they try to solve everything for everyone, resulting in bloated, opinionated code that doesn't fit your needs.
 
-<a id="the-solution"></a>
-
-### The Solution [↑](#table-of-contents)
+### The Solution [↑](#toc-the-solution) <a id="the-solution"></a>
 This tool provides **two essential things**:
 
 1. **TypeScript types** - Generated from your OpenAPI spec
 2. **Minimal abstraction** - A thin wrapper that accepts these types and returns a typed client
 
-<a id="key-principles"></a>
-
-### Key Principles [↑](#table-of-contents)
+### Key Principles [↑](#toc-key-principles) <a id="key-principles"></a>
 
 **🎯 Maximum Customization**
 - You control the HTTP implementation completely
@@ -90,9 +82,7 @@ This tool provides **two essential things**:
 - Review, modify, and commit the generated code
 - Full control over the final output
 
-<a id="how-it-works"></a>
-
-### How It Works [↑](#table-of-contents)
+### How It Works [↑](#toc-how-it-works) <a id="how-it-works"></a>
 
 ```typescript
 // You get types
@@ -115,20 +105,15 @@ const users = await client.get('/users') // ✅ User[]
 
 **The generated code is yours to own, modify, and integrate however you want.**
 
-<a id="what-you-get"></a>
+## What You Get [↑](#toc-what-you-get) <a id="what-you-get"></a>
 
-## What You Get [↑](#table-of-contents)
-<a id="generated-files"></a>
-
-### Generated Files [↑](#table-of-contents)
+### Generated Files [↑](#toc-generated-files) <a id="generated-files"></a>
 - **`types.ts`** - TypeScript types for all API schemas
 - **`paths.ts`** - TypeScript types for all API endpoints  
 - **`createClient.ts`** - Minimal client factory with utilities
 - **`index.ts`** - Main API export (optional)
 
-<a id="key-features"></a>
-
-### Key Features [↑](#table-of-contents)
+### Key Features [↑](#toc-key-features) <a id="key-features"></a>
 - ✅ **OpenAPI 3.0+** support (Swagger 2.0 not supported)
 - ✅ **Zero dependencies** - pure Node.js (~300 lines)
 - ✅ **Custom hooks** for data transformation
@@ -137,17 +122,13 @@ const users = await client.get('/users') // ✅ User[]
 - ✅ **JSDoc comments** generation
 - ✅ **Configurable output** formatting
 
-<a id="what-makes-it-different"></a>
-
-### What Makes It Different [↑](#table-of-contents)
+### What Makes It Different [↑](#toc-what-makes-it-different) <a id="what-makes-it-different"></a>
 - **No runtime dependencies** - just TypeScript types and utilities
 - **Your code, your rules** - modify generated files as needed
 - **Minimal footprint** - only generates what you actually use
 - **Maximum flexibility** - use any HTTP library or custom implementation
 
-<a id="usage"></a>
-
-## Usage [↑](#table-of-contents)
+## Usage [↑](#toc-usage) <a id="usage"></a>
 
 This tool is currently in **testing phase**, so it's only available via **npx** from GitHub. NPM package will be available later.
 
@@ -155,9 +136,7 @@ This tool is currently in **testing phase**, so it's only available via **npx** 
 npx https://github.com/JooffinHalli/oapi <path-to-config-file>
 ```
 
-<a id="quick-start"></a>
-
-## Quick Start [↑](#table-of-contents)
+## Quick Start [↑](#toc-quick-start) <a id="quick-start"></a>
 
 1. **Create a config file** (`api.config.json`):
 
@@ -196,9 +175,7 @@ src/
     └── index.ts      # Service export
 ```
 
-<a id="vs-code-settings"></a>
-
-## VS Code Settings [↑](#table-of-contents)
+## VS Code Settings [↑](#toc-vs-code-settings) <a id="vs-code-settings"></a>
 
 For enhanced autocomplete and validation, create `.vscode/settings.json` in your project:
 
@@ -221,13 +198,9 @@ EOF
 
 **Note:** Replace `"api.config.json"` with your actual config filename (e.g., `"my-config.json"`).
 
-<a id="configuration-options"></a>
+## Configuration Options [↑](#toc-configuration-options) <a id="configuration-options"></a>
 
-## Configuration Options [↑](#table-of-contents)
-
-<a id="global-options"></a>
-
-### Global Options [↑](#table-of-contents)
+### Global Options [↑](#toc-global-options) <a id="global-options"></a>
 
 | Option | Type | Required | Description |
 |--------|------|----------|-------------|
@@ -236,9 +209,7 @@ EOF
 | `tabSize` | number | false | Tab size for generated files (1-8, default: 2) |
 | `services` | array | true | Array of OpenAPI services to process |
 
-<a id="service-options"></a>
-
-### Service Options [↑](#table-of-contents)
+### Service Options [↑](#toc-service-options) <a id="service-options"></a>
 
 | Option | Type | Required | Description |
 |--------|------|----------|-------------|
@@ -247,9 +218,7 @@ EOF
 | `hook` | string or function | false | In .js files should be a function, in .json files should be a path to hook function |
 | `filter` | string | false | Regular expression to filter paths |
 
-<a id="hooks"></a>
-
-## Hooks [↑](#table-of-contents)
+## Hooks [↑](#toc-hooks) <a id="hooks"></a>
 
 Create custom hooks to transform data during processing. **Important:** You must mutate the data object directly:
 
@@ -300,9 +269,7 @@ module.exports = function(data, key) {
 };
 ```
 
-<a id="filtering"></a>
-
-## Filtering [↑](#table-of-contents)
+## Filtering [↑](#toc-filtering) <a id="filtering"></a>
 
 Use regular expressions to filter paths:
 
@@ -348,9 +315,7 @@ Use regular expressions to filter paths:
 }
 ```
 
-<a id="config-examples"></a>
-
-## Config examples [↑](#table-of-contents)
+## Config examples [↑](#toc-config-examples) <a id="config-examples"></a>
 
 ### Basic Config
 ```json
@@ -407,14 +372,9 @@ module.exports = {
 }
 ```
 
-<a id="usage-examples"></a>
+## Usage Examples [↑](#toc-usage-examples) <a id="usage-examples"></a>
 
-## Usage Examples [↑](#table-of-contents)
-
-
-<a id="basic-usage-default-implementation"></a>
-
-### Basic Usage (Default Implementation) [↑](#table-of-contents)
+### Basic Usage (Default Implementation) [↑](#toc-basic-usage-default-implementation) <a id="basic-usage-default-implementation"></a>
 
 ```typescript
 import { createClient } from './createClient';
@@ -430,9 +390,7 @@ const user = await client.post('/users', {
 }); // ✅ User
 ```
 
-<a id="custom-implementation-axios"></a>
-
-### Custom Implementation (Axios) [↑](#table-of-contents)
+### Custom Implementation (Axios) [↑](#toc-custom-implementation-axios) <a id="custom-implementation-axios"></a>
 
 ```typescript
 import axios from 'axios';
@@ -452,9 +410,7 @@ const client = createClient<Paths>((method, path, options) => {
 const users = await client.get('/users'); // ✅ User[]
 ```
 
-<a id="custom-implementation-your-own-logic"></a>
-
-### Custom Implementation (Your Own Logic) [↑](#table-of-contents)
+### Custom Implementation (Your Own Logic) [↑](#toc-custom-implementation-your-own-logic) <a id="custom-implementation-your-own-logic"></a>
 
 ```typescript
 import { createClient } from './createClient';
@@ -477,9 +433,7 @@ const client = createClient<Paths>((method, path, options) => {
 });
 ```
 
-<a id="using-utilities-optional"></a>
-
-### Using Utilities (Optional) [↑](#table-of-contents)
+### Using Utilities (Optional) [↑](#toc-using-utilities-optional) <a id="using-utilities-optional"></a>
 
 ```typescript
 const client = createClient<Paths>((method, path, options) => {
@@ -495,9 +449,7 @@ const client = createClient<Paths>((method, path, options) => {
 });
 ```
 
-<a id="multiple-services"></a>
-
-### Multiple Services [↑](#table-of-contents)
+### Multiple Services [↑](#toc-multiple-services) <a id="multiple-services"></a>
 
 ```typescript
 import { api } from './src';
@@ -507,42 +459,27 @@ const stripeUsers = await api.stripe.get('/customers');
 const githubRepos = await api.github.get('/user/repos');
 ```
 
-<a id="why-not-use-alternatives"></a>
+## Why Not Use Alternatives? [↑](#toc-why-not-use-alternatives) <a id="why-not-use-alternatives"></a>
 
-## Why Not Use Alternatives? [↑](#table-of-contents)
-
-
-<a id="vs-openapi-generator"></a>
-
-### vs. OpenAPI Generator [↑](#table-of-contents)
+### vs. OpenAPI Generator [↑](#toc-vs-openapi-generator) <a id="vs-openapi-generator"></a>
 - **❌ OpenAPI Generator**: Generates 1000+ lines of complex code
 - **✅ OAPI**: Generates ~100 lines of clean, minimal code
 
-<a id="vs-orval"></a>
-
-### vs. Orval [↑](#table-of-contents)
+### vs. Orval [↑](#toc-vs-orval) <a id="vs-orval"></a>
 - **❌ Orval**: Opinionated, hard to customize, runtime dependencies
 - **✅ OAPI**: Your code, your rules, zero runtime dependencies
 
-<a id="vs-swagger-codegen"></a>
-
-### vs. Swagger Codegen [↑](#table-of-contents)
+### vs. Swagger Codegen [↑](#toc-vs-swagger-codegen) <a id="vs-swagger-codegen"></a>
 - **❌ Swagger Codegen**: Bloated templates, hard to modify
 - **✅ OAPI**: Simple templates, easy to understand and modify
 
-<a id="vs-manual-types"></a>
-
-### vs. Manual Types [↑](#table-of-contents)
+### vs. Manual Types [↑](#toc-vs-manual-types) <a id="vs-manual-types"></a>
 - **❌ Manual**: Time-consuming, error-prone, hard to maintain
 - **✅ OAPI**: Automatic, type-safe, always up-to-date
 
-<a id="generated-output"></a>
+## Generated Output [↑](#toc-generated-output) <a id="generated-output"></a>
 
-## Generated Output [↑](#table-of-contents)
-
-
-### schemas.ts
-[to the top](#table-of-contents)
+### schemas.ts [↑](#toc-schemasts) <a id="schemasts"></a>
 
 ```typescript
 export namespace Schemas {
@@ -562,8 +499,7 @@ export namespace Schemas {
 }
 ```
 
-### paths.ts
-[to the top](#table-of-contents)
+### paths.ts [↑](#toc-pathsts) <a id="pathsts"></a>
 
 ```typescript
 import type { Schemas } from './Schemas';
@@ -603,21 +539,14 @@ export type Paths = {
 }
 ```
 
-<a id="important-limitations"></a>
+## ⚠️ Important Limitations [↑](#toc-important-limitations) <a id="important-limitations"></a>
 
-## ⚠️ Important Limitations [↑](#table-of-contents)
-
-
-<a id="openapi-version-support"></a>
-
-### OpenAPI Version Support [↑](#table-of-contents)
+### OpenAPI Version Support [↑](#toc-openapi-version-support) <a id="openapi-version-support"></a>
 
 - **✅ Supported:** OpenAPI 3.0+
 - **❌ Not Supported:** Swagger 2.0
 
-<a id="schema-name-conflicts"></a>
-
-### Schema Name Conflicts [↑](#table-of-contents)
+### Schema Name Conflicts [↑](#toc-schema-name-conflicts) <a id="schema-name-conflicts"></a>
 
 **⚠️ Warning:** This transpiler assumes each schema has a unique name across all namespaces.
 
@@ -635,18 +564,12 @@ module.exports = function(data, key) {
 };
 ```
 
-<a id="requirements"></a>
-
-## Requirements [↑](#table-of-contents)
-
+## Requirements [↑](#toc-requirements) <a id="requirements"></a>
 
 - Node.js >= 14.0.0
 - OpenAPI 3.0+ (Swagger 2.0 not supported)
 
-<a id="summary"></a>
-
-## Summary [↑](#table-of-contents)
-
+## Summary [↑](#toc-summary) <a id="summary"></a>
 
 **OAPI** gives you the best of both worlds:
 
