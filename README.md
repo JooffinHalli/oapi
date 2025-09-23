@@ -3,17 +3,17 @@
 [![GitHub](https://img.shields.io/badge/GitHub-JooffinHalli%2Foapi-blue?style=flat-square&logo=github)](https://github.com/JooffinHalli/oapi)
 [![OpenAPI 3.0+](https://img.shields.io/badge/OpenAPI-3.0%2B-brightgreen)](https://spec.openapis.org/oas/latest.html)
 
-**OpenAPI/Swagger to TypeScript transpiler** with hooks, filtering, and flexible configuration.
+**OpenAPI/Swagger to TypeScript transpiler** with hooks, filtering, flexible configuration, and **built-in HTTP client generation**.
 
 ## Philosophy
 
-This tool generates types and **only types**.
+This tool generates **types AND a ready-to-use HTTP client**.
 
-You can stop here and be satisfied that you no longer need to create them manually.
-
-Or you can write your own abstraction for backend requests and use these types.
-
-**Client generation out of the box will be added in the future.**
+You get:
+- **TypeScript types** for all your API endpoints and schemas
+- **Typed HTTP client** with autocomplete and type safety
+- **Zero configuration** - works out of the box
+- **Customizable** - hooks, filtering, and flexible output options
 
 This tool is designed to work with **real-world Swagger/OpenAPI files** that are already in production use. As a consequence, these files are assumed to be **syntactically correct** and **well-formed**.
 
@@ -25,10 +25,12 @@ All invalid fields will be ignored, and if there's insufficient information to g
 
 - ✅ **OpenAPI 3.0+** support (Swagger 2.0 not supported)
 - ✅ **TypeScript generation** for paths and schemas
+- ✅ **HTTP client generation** with full type safety
 - ✅ **Custom hooks** for data transformation
 - ✅ **Path filtering** with regular expressions
 - ✅ **Multiple sources** (URLs and local files)
 - ✅ **JSDoc comments** generation
+- ✅ **Configurable tab size** for generated files
 
 ## 📊 Specifications
 
@@ -50,12 +52,16 @@ npx https://github.com/JooffinHalli/oapi <path-to-config-file>
     **Run in terminal:**
     ```bash
     cat > api.config.json << 'EOF'
-    [
-      {
-        "src": "https://raw.githubusercontent.com/stripe/openapi/master/openapi/spec3.json",
-        "output": "./src/api/example"
-      }
-    ]
+    {
+      "generateClient": true,
+      "output": "src",
+      "services": [
+        {
+          "src": "https://raw.githubusercontent.com/stripe/openapi/master/openapi/spec3.json",
+          "dirname": "stripe"
+        }
+      ]
+    }
     EOF
     ```
 
@@ -68,9 +74,14 @@ npx https://github.com/JooffinHalli/oapi api.config.json
 
 3. **Check your generated files**:
 ```
-src/api/example
-├── schemas.ts    # TypeScript types for schemas
-└── paths.ts      # TypeScript types for paths
+src/
+├── createClient.ts   # HTTP client builder
+├── types.ts          # Client types
+├── index.ts          # Main API export
+└── stripe/           # Service directory
+    ├── schemas.ts    # TypeScript types for schemas
+    ├── paths.ts      # TypeScript types for paths
+    └── index.ts      # Service export
 ```
 
 ## VS Code Settings
@@ -98,11 +109,22 @@ EOF
 
 ## Configuration Options
 
+### Global Options
+
+| Option | Type | Required | Description |
+|--------|------|----------|-------------|
+| `generateClient` | boolean | false | Generate HTTP client (default: false) |
+| `output` | string | true | Global output directory for all files |
+| `tabSize` | number | false | Tab size for generated files (1-8, default: 2) |
+| `services` | array | true | Array of OpenAPI services to process |
+
+### Service Options
+
 | Option | Type | Required | Description |
 |--------|------|----------|-------------|
 | `src` | string | true | OpenAPI/Swagger source (URL or file path) |
-| `output` | string | true | Output directory for generated files |
-| `hook` | string or function | false | In .js files should be a function, in .json files should be a path to hook function (see [Hooks](#hooks) for details) |
+| `dirname` | string | true | Directory name for this service |
+| `hook` | string or function | false | In .js files should be a function, in .json files should be a path to hook function |
 | `filter` | string | false | Regular expression to filter paths |
 
 ## Hooks
@@ -112,24 +134,34 @@ Create custom hooks to transform data during processing. **Important:** You must
 ### JSON config (path to hook file):
 ```json
 {
-  "hook": "./hooks/api.js"
+  "output": "src",
+  "services": [
+    {
+      "src": "https://api.example.com/swagger.json",
+      "dirname": "myApi",
+      "hook": "./hooks/api.js"
+    }
+  ]
 }
 ```
 
 ### JS config (function directly):
 ```javascript
-module.exports = [
-  {
-    src: "https://api.example.com/swagger.json",
-    output: "./generated",
-    hook: function(data, key) {
-      if (key === 'paths') {
-        console.log('Processing path:', data);
+module.exports = {
+  output: "src",
+  services: [
+    {
+      src: "https://api.example.com/swagger.json",
+      dirname: "myApi",
+      hook: function(data, key) {
+        if (key === 'paths') {
+          console.log('Processing path:', data);
+        }
+        // Mutate data directly - don't return anything
       }
-      // Mutate data directly - don't return anything
     }
-  }
-];
+  ]
+};
 ```
 
 ### Hook file example:
@@ -153,21 +185,42 @@ Use regular expressions to filter paths:
 ### Exclude internal paths
 ```json
 {
-  "filter": "^(?!.*internal).*$"
+  "output": "src",
+  "services": [
+    {
+      "src": "https://api.example.com/swagger.json",
+      "dirname": "myApi",
+      "filter": "^(?!.*internal).*$"
+    }
+  ]
 }
 ```
 
 ### Include only specific paths
 ```json
 {
-  "filter": "^/api/v1/.*$"
+  "output": "src",
+  "services": [
+    {
+      "src": "https://api.example.com/swagger.json",
+      "dirname": "myApi",
+      "filter": "^/api/v1/.*$"
+    }
+  ]
 }
 ```
 
 ### Exclude multiple patterns
 ```json
 {
-  "filter": "^(?!.*(?:internal|private|admin)).*$"
+  "output": "src",
+  "services": [
+    {
+      "src": "https://api.example.com/swagger.json",
+      "dirname": "myApi",
+      "filter": "^(?!.*(?:internal|private|admin)).*$"
+    }
+  ]
 }
 ```
 
@@ -175,44 +228,87 @@ Use regular expressions to filter paths:
 
 ### Basic Config
 ```json
-[
-  {
-    "src": "https://api.example.com/swagger.json",
-    "output": "./api"
-  }
-]
+{
+  "output": "src",
+  "services": [
+    {
+      "src": "https://api.example.com/swagger.json",
+      "dirname": "myApi"
+    }
+  ]
+}
 ```
 
 ### Advanced Config
 ```json
-[
-  {
-    "src": "https://api.example.com/swagger.json",
-    "output": "./src/api/example",
-    "hook": "./hooks/example.js",
-    "filter": "^(?!.*internal).*$"
-  },
-  {
-    "src": "./local-swagger.json",
-    "output": "./src/api/local"
-  }
-]
+{
+  "generateClient": true,
+  "output": "src",
+  "tabSize": 4,
+  "services": [
+    {
+      "src": "https://api.example.com/swagger.json",
+      "dirname": "example",
+      "hook": "./hooks/example.js",
+      "filter": "^(?!.*internal).*$"
+    },
+    {
+      "src": "./local-swagger.json",
+      "dirname": "local"
+    }
+  ]
+}
 ```
 
-### js file config
+### JS file config
 ```js
-module.exports = [
-  {
-    src: "https://api.example.com/swagger.json",
-    output: "./src/api/example",
-    hook: (data, key) => {},
-    filter: "^(?!.*internal).*$"
-  },
-  {
-    src: "./local-swagger.json",
-    output: "./src/api/local"
-  }
-]
+module.exports = {
+  generateClient: true,
+  output: "src",
+  tabSize: 2,
+  services: [
+    {
+      src: "https://api.example.com/swagger.json",
+      dirname: "example",
+      hook: (data, key) => {},
+      filter: "^(?!.*internal).*$"
+    },
+    {
+      src: "./local-swagger.json",
+      dirname: "local"
+    }
+  ]
+}
+```
+
+## Using the Generated Client
+
+After running the transpiler, you can use the generated client in your code:
+
+```typescript
+import { api } from './src';
+
+// Typed API calls with autocomplete
+api.stripe.get('/customers/{id}', {
+  pathParams: { id: 'cus_123' },
+  queryParams: { expand: ['subscriptions'] }
+}).then((user) => console.log(user.email)); // ✅ Autocomplete works
+```
+
+### createClient.ts
+```typescript
+import { createClient } from './createClient';
+import type { Paths } from './stripe/paths';
+
+// Create a custom client instance
+const client = createClient<Paths>((method, path, options) => {
+  // Custom fetch implementation
+  return fetch(path, {
+    method,
+    headers: { 'Authorization': 'Bearer token' },
+    body: options?.body
+  });
+});
 ```
 
 ## Generated Output
