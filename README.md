@@ -3,41 +3,132 @@
 [![GitHub](https://img.shields.io/badge/GitHub-JooffinHalli%2Foapi-blue?style=flat-square&logo=github)](https://github.com/JooffinHalli/oapi)
 [![OpenAPI 3.0+](https://img.shields.io/badge/OpenAPI-3.0%2B-brightgreen)](https://spec.openapis.org/oas/latest.html)
 
-**OpenAPI/Swagger to TypeScript transpiler** with hooks, filtering, flexible configuration, and **built-in HTTP client generation**.
+**OpenAPI/Swagger to TypeScript transpiler** that generates clean, minimal code with maximum customization.
 
-## Philosophy
+## Table of Contents
 
-This tool generates **types AND a ready-to-use HTTP client**.
+- [Philosophy](#philosophy)
+  - [The Problem](#the-problem)
+  - [The Solution](#the-solution)
+  - [Key Principles](#key-principles)
+  - [How It Works](#how-it-works)
+- [What You Get](#what-you-get)
+  - [Generated Files](#generated-files)
+  - [Key Features](#key-features)
+  - [What Makes It Different](#what-makes-it-different)
+- [Usage](#usage)
+- [Quick Start](#quick-start)
+- [VS Code Settings](#vs-code-settings)
+- [Configuration Options](#configuration-options)
+  - [Global Options](#global-options)
+  - [Service Options](#service-options)
+- [Hooks](#hooks)
+- [Filtering](#filtering)
+- [Config examples](#config-examples)
+- [Usage Examples](#usage-examples)
+  - [Basic Usage (Default Implementation)](#basic-usage-default-implementation)
+  - [Custom Implementation (Axios)](#custom-implementation-axios)
+  - [Custom Implementation (Your Own Logic)](#custom-implementation-your-own-logic)
+  - [Using Utilities (Optional)](#using-utilities-optional)
+  - [Multiple Services](#multiple-services)
+- [Why Not Use Alternatives?](#why-not-use-alternatives)
+- [Generated Output](#generated-output)
+  - [schemas.ts](#schemasts)
+  - [paths.ts](#pathsts)
+- [Important Limitations](#important-limitations)
+  - [OpenAPI Version Support](#openapi-version-support)
+  - [Schema Name Conflicts](#schema-name-conflicts)
+- [Requirements](#requirements)
+- [Summary](#summary)
 
-You get:
-- **TypeScript types** for all your API endpoints and schemas
-- **Typed HTTP client** with autocomplete and type safety
-- **Zero configuration** - works out of the box
-- **Customizable** - hooks, filtering, and flexible output options
+## Philosophy [↑](#table-of-contents)
 
-This tool is designed to work with **real-world Swagger/OpenAPI files** that are already in production use. As a consequence, these files are assumed to be **syntactically correct** and **well-formed**.
+### The Problem [↑](#table-of-contents)
+Every project has unique requirements for API communication:
+- Custom authentication (JWT, API keys, OAuth)
+- Special headers and prefixes
+- Different HTTP libraries (axios, fetch, custom implementations)
+- Project-specific error handling and retry logic
 
-Therefore, this tool **does not validate** the input OpenAPI files - it focuses purely on type generation from already-valid specifications.
+**Generic solutions fail** because they try to solve everything for everyone, resulting in bloated, opinionated code that doesn't fit your needs.
 
-All invalid fields will be ignored, and if there's insufficient information to generate a correct type, `unknown` will be silently returned as the default.
+### The Solution [↑](#table-of-contents)
+This tool provides **two essential things**:
 
-## Features
+1. **TypeScript types** - Generated from your OpenAPI spec
+2. **Minimal abstraction** - A thin wrapper that accepts these types and returns a typed client
 
+### Key Principles [↑](#table-of-contents)
+
+**🎯 Maximum Customization**
+- You control the HTTP implementation completely
+- Use axios, fetch, or any custom function
+- Add your own authentication, headers, error handling
+- Keep your existing patterns and conventions
+
+**🧹 Minimal Generated Code**
+- No bloated abstractions or unnecessary objects
+- Clean, readable TypeScript
+- Only what you actually need
+- Easy to understand and modify
+
+**🔧 Optional Everything**
+- Use the default implementation or provide your own
+- Access utility functions when needed (`this.interpolate`, `this.getUrl`, etc.)
+- Or ignore them completely and do everything yourself
+
+**📦 Source Code Generation**
+- You get actual TypeScript files, not runtime magic
+- Review, modify, and commit the generated code
+- Full control over the final output
+
+### How It Works [↑](#table-of-contents)
+
+```typescript
+// You get types
+type Paths = {
+  '/users': {
+    get: { res: User[] }
+    post: { body: CreateUser, res: User }
+  }
+}
+
+// You get a minimal abstraction
+const client = createClient<Paths>((method, path, options) => {
+  // Your custom implementation
+  return axios({ method, url: path, data: options.body })
+})
+
+// You get type safety
+const users = await client.get('/users') // ✅ User[]
+```
+
+**The generated code is yours to own, modify, and integrate however you want.**
+
+## What You Get [↑](#table-of-contents)
+
+### Generated Files [↑](#table-of-contents)
+- **`types.ts`** - TypeScript types for all API schemas
+- **`paths.ts`** - TypeScript types for all API endpoints  
+- **`createClient.ts`** - Minimal client factory with utilities
+- **`index.ts`** - Main API export (optional)
+
+### Key Features [↑](#table-of-contents)
 - ✅ **OpenAPI 3.0+** support (Swagger 2.0 not supported)
-- ✅ **TypeScript generation** for paths and schemas
-- ✅ **HTTP client generation** with full type safety
+- ✅ **Zero dependencies** - pure Node.js (~300 lines)
 - ✅ **Custom hooks** for data transformation
 - ✅ **Path filtering** with regular expressions
 - ✅ **Multiple sources** (URLs and local files)
 - ✅ **JSDoc comments** generation
-- ✅ **Configurable tab size** for generated files
+- ✅ **Configurable output** formatting
 
-## 📊 Specifications
+### What Makes It Different [↑](#table-of-contents)
+- **No runtime dependencies** - just TypeScript types and utilities
+- **Your code, your rules** - modify generated files as needed
+- **Minimal footprint** - only generates what you actually use
+- **Maximum flexibility** - use any HTTP library or custom implementation
 
-- **Zero dependencies** - pure Node.js
-- **~300 lines of code** (~16KB total) - lightweight and fast
-
-## Usage
+## Usage [↑](#table-of-contents)
 
 This tool is currently in **testing phase**, so it's only available via **npx** from GitHub. NPM package will be available later.
 
@@ -107,9 +198,9 @@ EOF
 
 **Note:** Replace `"api.config.json"` with your actual config filename (e.g., `"my-config.json"`).
 
-## Configuration Options
+## Configuration Options [↑](#table-of-contents)
 
-### Global Options
+### Global Options [↑](#table-of-contents)
 
 | Option | Type | Required | Description |
 |--------|------|----------|-------------|
@@ -118,7 +209,7 @@ EOF
 | `tabSize` | number | false | Tab size for generated files (1-8, default: 2) |
 | `services` | array | true | Array of OpenAPI services to process |
 
-### Service Options
+### Service Options [↑](#table-of-contents)
 
 | Option | Type | Required | Description |
 |--------|------|----------|-------------|
@@ -127,7 +218,7 @@ EOF
 | `hook` | string or function | false | In .js files should be a function, in .json files should be a path to hook function |
 | `filter` | string | false | Regular expression to filter paths |
 
-## Hooks
+## Hooks [↑](#table-of-contents)
 
 Create custom hooks to transform data during processing. **Important:** You must mutate the data object directly:
 
@@ -178,7 +269,7 @@ module.exports = function(data, key) {
 };
 ```
 
-## Filtering
+## Filtering [↑](#table-of-contents)
 
 Use regular expressions to filter paths:
 
@@ -224,7 +315,7 @@ Use regular expressions to filter paths:
 }
 ```
 
-## Config examples
+## Config examples [↑](#table-of-contents)
 
 ### Basic Config
 ```json
@@ -281,39 +372,109 @@ module.exports = {
 }
 ```
 
-## Using the Generated Client
+## Usage Examples [↑](#table-of-contents)
 
-After running the transpiler, you can use the generated client in your code:
-
-```typescript
-import { api } from './src';
-
-// Typed API calls with autocomplete
-api.stripe.get('/customers/{id}', {
-  pathParams: { id: 'cus_123' },
-  queryParams: { expand: ['subscriptions'] }
-}).then((user) => console.log(user.email)); // ✅ Autocomplete works
-```
-
-### createClient.ts
+### Basic Usage (Default Implementation) [↑](#table-of-contents)
 ```typescript
 import { createClient } from './createClient';
 import type { Paths } from './stripe/paths';
 
-// Create a custom client instance
+// Use the default fetch implementation
+const client = createClient<Paths>();
+
+// Typed API calls
+const users = await client.get('/users'); // ✅ User[]
+const user = await client.post('/users', { 
+  body: { name: 'John', email: 'john@example.com' } 
+}); // ✅ User
+```
+
+### Custom Implementation (Axios) [↑](#table-of-contents)
+```typescript
+import axios from 'axios';
+import { createClient } from './createClient';
+import type { Paths } from './stripe/paths';
+
 const client = createClient<Paths>((method, path, options) => {
-  // Custom fetch implementation
-  return fetch(path, {
+  return axios({
     method,
-    headers: { 'Authorization': 'Bearer token' },
+    url: path,
+    data: options?.body,
+    headers: { 'Authorization': 'Bearer token' }
+  }).then(res => res.data);
+});
+
+// Same typed API, but with your custom logic
+const users = await client.get('/users'); // ✅ User[]
+```
+
+### Custom Implementation (Your Own Logic) [↑](#table-of-contents)
+```typescript
+import { createClient } from './createClient';
+import type { Paths } from './stripe/paths';
+
+const client = createClient<Paths>((method, path, options) => {
+  // Your custom implementation
+  const url = `https://api.example.com${path}`;
+  const headers = {
+    'Authorization': `Bearer ${getToken()}`,
+    'X-API-Version': 'v2'
+  };
+  
+  return myCustomHttpClient.request({
+    method,
+    url,
+    headers,
     body: options?.body
   });
 });
 ```
 
-## Generated Output
+### Using Utilities (Optional) [↑](#table-of-contents)
+```typescript
+const client = createClient<Paths>((method, path, options) => {
+  // Access utilities via 'this' context
+  const url = this.getUrl(path, options); // Handles path params and query params
+  const body = this.getBody(options?.body); // JSON stringify with error handling
+  
+  return fetch(url, {
+    method,
+    headers: this.headers, // Default headers
+    body
+  }).then(this.handleRes); // Error handling
+});
+```
 
-### schemas.ts
+### Multiple Services [↑](#table-of-contents)
+```typescript
+import { api } from './src';
+
+// Each service has its own typed client
+const stripeUsers = await api.stripe.get('/customers');
+const githubRepos = await api.github.get('/user/repos');
+```
+
+## Why Not Use Alternatives? [↑](#table-of-contents)
+
+### vs. OpenAPI Generator [↑](#table-of-contents)
+- **❌ OpenAPI Generator**: Generates 1000+ lines of complex code
+- **✅ OAPI**: Generates ~100 lines of clean, minimal code
+
+### vs. Orval [↑](#table-of-contents)
+- **❌ Orval**: Opinionated, hard to customize, runtime dependencies
+- **✅ OAPI**: Your code, your rules, zero runtime dependencies
+
+### vs. Swagger Codegen [↑](#table-of-contents)
+- **❌ Swagger Codegen**: Bloated templates, hard to modify
+- **✅ OAPI**: Simple templates, easy to understand and modify
+
+### vs. Manual Types [↑](#table-of-contents)
+- **❌ Manual**: Time-consuming, error-prone, hard to maintain
+- **✅ OAPI**: Automatic, type-safe, always up-to-date
+
+## Generated Output [↑](#table-of-contents)
+
+### schemas.ts [↑](#table-of-contents)
 ```typescript
 export namespace Schemas {
 
@@ -332,7 +493,7 @@ export namespace Schemas {
 }
 ```
 
-### paths.ts
+### paths.ts [↑](#table-of-contents)
 ```typescript
 import type { Schemas } from './Schemas';
 
@@ -371,14 +532,13 @@ export type Paths = {
 }
 ```
 
+## ⚠️ Important Limitations [↑](#table-of-contents)
 
-## ⚠️ Important Limitations
-
-### OpenAPI Version Support
+### OpenAPI Version Support [↑](#table-of-contents)
 - **✅ Supported:** OpenAPI 3.0+
 - **❌ Not Supported:** Swagger 2.0
 
-### Schema Name Conflicts
+### Schema Name Conflicts [↑](#table-of-contents)
 **⚠️ Warning:** This transpiler assumes each schema has a unique name across all namespaces.
 
 If you have conflicting schema names (e.g., `Pet` in both `responses` and `requestBodies`), they will be duplicated in the same namespace, causing TypeScript errors.
@@ -395,7 +555,18 @@ module.exports = function(data, key) {
 };
 ```
 
-## Requirements
+## Requirements [↑](#table-of-contents)
 
 - Node.js >= 14.0.0
 - OpenAPI 3.0+ (Swagger 2.0 not supported)
+
+## Summary
+
+**OAPI** gives you the best of both worlds:
+
+1. **Type safety** - Generated TypeScript types from your OpenAPI spec
+2. **Complete control** - Your HTTP implementation, your rules
+3. **Minimal code** - Clean, readable, maintainable generated files
+4. **Maximum flexibility** - Use any library, any pattern, any architecture
+
+**No more bloated, opinionated API clients that don't fit your project.**
