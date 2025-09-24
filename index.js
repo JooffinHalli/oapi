@@ -4,6 +4,7 @@ var fs = require('node:fs');
 var util = require('node:util');
 var exec = util.promisify(require('node:child_process').exec);
 var path = require('path');
+var { apiTmplate, createClientTemplate, indexTemplate, typesTemplate } = require('./templates');
 
 var { 2: configPath } = process.argv;
 
@@ -69,10 +70,7 @@ function doWrite({ Paths, Schemas } = {}) {
     if (Paths) {
         fs.writeFile(`${output}/paths.ts`, [banner, imports || '', Paths].join('\n\n'), null, f);
         if (!config.generateClient) return;
-        fs.readFile('./templates/index.txt', (err, data) => {
-            if (err) return f(err);
-            fs.writeFile(`${output}/index.ts`, data.toString().replaceAll('<name>', this.dirname), null, f);
-        });
+        fs.writeFile(`${output}/index.ts`, indexTemplate.replaceAll('<name>', this.dirname), null, f);
     }
 
     return this.dirname;
@@ -87,20 +85,23 @@ function doWriteApiIndex(services) {
     var imports = services.map((service) => `import { ${service} } from './${service}';`).join('\n');
     var fields = services.map((service) => `${' '.repeat(config.tabSize || 2)}${service},`).join('\n');
 
-    fs.readFile('./templates/api.txt', (err, data) => {
-        if (err) return f(err);
-        var content = data.toString().replace('<imports>', imports).replace('<fields>', fields);
-        fs.writeFile(`${config.output}/index.ts`, content, null, f);
-    });
+    var content = apiTmplate.replace('<imports>', imports).replace('<fields>', fields);
+    fs.writeFile(`${config.output}/index.ts`, content, null, f);
 }
 
 function generateClient(output) {
     if (!fs.existsSync(output)) fs.mkdirSync(output);
+
     var f = (path) => (e) => {
+        console.log({
+            output,
+            cwd: process.cwd(),
+        });
+        console.log(e);
         (e && log(`Error while generating client to ${output}/${path}: ${e}`))
     }
-    fs.copyFile('./templates/createClient.txt', `${output}/createClient.ts`, f('createClient.ts'));
-    fs.copyFile('./templates/types.txt',        `${output}/types.ts`, f('types.ts'));
+    fs.writeFile(`${config.output}/createClient.ts`, createClientTemplate, null, f);
+    fs.writeFile(`${config.output}/types.ts`, typesTemplate, null, f);
 }
 
 function log(message) {

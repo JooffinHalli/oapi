@@ -1,8 +1,0 @@
-// -------------------------------
-// | this file is auto-generated |
-// -------------------------------
-
-import type { Paths } from './paths';
-import { createClient } from '../createClient';
-
-export const <name> = createClient<Paths>();
