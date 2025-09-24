@@ -3,130 +3,37 @@
 [![GitHub](https://img.shields.io/badge/GitHub-JooffinHalli%2Foapi-blue?style=flat-square&logo=github)](https://github.com/JooffinHalli/oapi)
 [![OpenAPI 3.0+](https://img.shields.io/badge/OpenAPI-3.0%2B-brightgreen)](https://spec.openapis.org/oas/latest.html)
 
-**OpenAPI/Swagger to TypeScript transpiler** that generates clean, minimal code with maximum customization.
+**Generate types and a minimal HTTP client with maximum customization.**
 
 ## Table of Contents
 
-- [Philosophy](#philosophy) <a id="toc-philosophy"></a>
-  - [The Problem](#the-problem) <a id="toc-the-problem"></a>
-  - [The Solution](#the-solution) <a id="toc-the-solution"></a>
-  - [Key Principles](#key-principles) <a id="toc-key-principles"></a>
-  - [How It Works](#how-it-works) <a id="toc-how-it-works"></a>
-- [What You Get](#what-you-get) <a id="toc-what-you-get"></a>
-  - [Generated Files](#generated-files) <a id="toc-generated-files"></a>
-  - [Key Features](#key-features) <a id="toc-key-features"></a>
-  - [What Makes It Different](#what-makes-it-different) <a id="toc-what-makes-it-different"></a>
+- [Features](#features) <a id="toc-features"></a>
 - [Usage](#usage) <a id="toc-usage"></a>
 - [Quick Start](#quick-start) <a id="toc-quick-start"></a>
-- [VS Code Settings](#vs-code-settings) <a id="toc-vs-code-settings"></a>
-- [Configuration Options](#configuration-options) <a id="toc-configuration-options"></a>
+- [Configuration](#configuration) <a id="toc-configuration"></a>
   - [Global Options](#global-options) <a id="toc-global-options"></a>
   - [Service Options](#service-options) <a id="toc-service-options"></a>
-- [Hooks](#hooks) <a id="toc-hooks"></a>
-- [Filtering](#filtering) <a id="toc-filtering"></a>
-- [Config examples](#config-examples) <a id="toc-config-examples"></a>
-- [Usage Examples](#usage-examples) <a id="toc-usage-examples"></a>
-  - [Basic Usage (Default Implementation)](#basic-usage-default-implementation) <a id="toc-basic-usage-default-implementation"></a>
-  - [Custom Implementation (Axios)](#custom-implementation-axios) <a id="toc-custom-implementation-axios"></a>
-  - [Custom Implementation (Your Own Logic)](#custom-implementation-your-own-logic) <a id="toc-custom-implementation-your-own-logic"></a>
-  - [Using Utilities (Optional)](#using-utilities-optional) <a id="toc-using-utilities-optional"></a>
-  - [Multiple Services](#multiple-services) <a id="toc-multiple-services"></a>
-- [Why Not Use Alternatives?](#why-not-use-alternatives) <a id="toc-why-not-use-alternatives"></a>
-- [Generated Output](#generated-output) <a id="toc-generated-output"></a>
-  - [schemas.ts](#schemasts) <a id="toc-schemasts"></a>
-  - [paths.ts](#pathsts) <a id="toc-pathsts"></a>
+  - [Hooks](#hooks-option) <a id="toc-hooks-option"></a>
+  - [Filter](#filter-option) <a id="toc-filter-option"></a>
+  - [Config examples](#config-examples) <a id="toc-config-examples"></a>
+- [VS Code Settings](#vs-code-settings) <a id="toc-vs-code-settings"></a>
+- [Generated Types](#types) <a id="toc-types"></a>
+- [Client Usage](#client-usage) <a id="toc-client-usage"></a>
 - [Important Limitations](#important-limitations) <a id="toc-important-limitations"></a>
   - [OpenAPI Version Support](#openapi-version-support) <a id="toc-openapi-version-support"></a>
   - [Schema Name Conflicts](#schema-name-conflicts) <a id="toc-schema-name-conflicts"></a>
 - [Requirements](#requirements) <a id="toc-requirements"></a>
-- [Summary](#summary) <a id="toc-summary"></a>
+- [Assumptions](#assumptions) <a id="toc-assumptions"></a>
 
-## Philosophy [↑](#toc-philosophy) <a id="philosophy"></a>
-
-### The Problem [↑](#toc-the-problem) <a id="the-problem"></a>
-Every project has unique requirements for API communication:
-- Custom authentication (JWT, API keys, OAuth)
-- Special headers and prefixes
-- Different HTTP libraries (axios, fetch, custom implementations)
-- Project-specific error handling and retry logic
-
-**Generic solutions fail** because they try to solve everything for everyone, resulting in bloated, opinionated code that doesn't fit your needs.
-
-### The Solution [↑](#toc-the-solution) <a id="the-solution"></a>
-This tool provides **two essential things**:
-
-1. **TypeScript types** - Generated from your OpenAPI spec
-2. **Minimal abstraction** - A thin wrapper that accepts these types and returns a typed client
-
-### Key Principles [↑](#toc-key-principles) <a id="key-principles"></a>
-
-**🎯 Maximum Customization**
-- You control the HTTP implementation completely
-- Use axios, fetch, or any custom function
-- Add your own authentication, headers, error handling
-- Keep your existing patterns and conventions
-
-**🧹 Minimal Generated Code**
-- No bloated abstractions or unnecessary objects
-- Clean, readable TypeScript
-- Only what you actually need
-- Easy to understand and modify
-
-**🔧 Optional Everything**
-- Use the default implementation or provide your own
-- Access utility functions when needed (`this.interpolate`, `this.getUrl`, etc.)
-- Or ignore them completely and do everything yourself
-
-**📦 Source Code Generation**
-- You get actual TypeScript files, not runtime magic
-- Review, modify, and commit the generated code
-- Full control over the final output
-
-### How It Works [↑](#toc-how-it-works) <a id="how-it-works"></a>
-
-```typescript
-// You get types
-type Paths = {
-  '/users': {
-    get: { res: User[] }
-    post: { body: CreateUser, res: User }
-  }
-}
-
-// You get a minimal abstraction
-const client = createClient<Paths>((method, path, options) => {
-  // Your custom implementation
-  return axios({ method, url: path, data: options.body })
-})
-
-// You get type safety
-const users = await client.get('/users') // ✅ User[]
-```
-
-**The generated code is yours to own, modify, and integrate however you want.**
-
-## What You Get [↑](#toc-what-you-get) <a id="what-you-get"></a>
-
-### Generated Files [↑](#toc-generated-files) <a id="generated-files"></a>
-- **`types.ts`** - TypeScript types for all API schemas
-- **`paths.ts`** - TypeScript types for all API endpoints  
-- **`createClient.ts`** - Minimal client factory with utilities
-- **`index.ts`** - Main API export (optional)
-
-### Key Features [↑](#toc-key-features) <a id="key-features"></a>
+## Features [↑](#toc-features) <a id="features"></a>
+- ✅ **Types generation** (Paths and Schemas)
+- ✅ **Client generation** (fully typed and customizable)
 - ✅ **OpenAPI 3.0+** support (Swagger 2.0 not supported)
-- ✅ **Zero dependencies** - pure Node.js (~300 lines)
 - ✅ **Custom hooks** for data transformation
 - ✅ **Path filtering** with regular expressions
-- ✅ **Multiple sources** (URLs and local files)
 - ✅ **JSDoc comments** generation
 - ✅ **Configurable output** formatting
-
-### What Makes It Different [↑](#toc-what-makes-it-different) <a id="what-makes-it-different"></a>
-- **No runtime dependencies** - just TypeScript types and utilities
-- **Your code, your rules** - modify generated files as needed
-- **Minimal footprint** - only generates what you actually use
-- **Maximum flexibility** - use any HTTP library or custom implementation
+- ✅ **Multiple sources** (URLs and local files)
 
 ## Usage [↑](#toc-usage) <a id="usage"></a>
 
@@ -149,7 +56,7 @@ npx https://github.com/JooffinHalli/oapi <path-to-config-file>
       "services": [
         {
           "src": "https://raw.githubusercontent.com/stripe/openapi/master/openapi/spec3.json",
-          "dirname": "stripe"
+          "dirname": "someService"
         }
       ]
     }
@@ -169,10 +76,178 @@ src/
 ├── createClient.ts   # HTTP client builder
 ├── types.ts          # Client types
 ├── index.ts          # Main API export
-└── stripe/           # Service directory
+└── someService/      # Service directory
     ├── schemas.ts    # TypeScript types for schemas
     ├── paths.ts      # TypeScript types for paths
     └── index.ts      # Service export
+```
+
+## Configuration [↑](#toc-configuration) <a id="configuration"></a>
+
+### Global Options [↑](#toc-global-options) <a id="global-options"></a>
+File formats: Configuration can be written in either `.js` or `.json` files.
+
+- `.js` files: Must export the configuration via `module.exports = config`
+- `.json` files: Standard JSON format
+
+Validation included: The tool automatically validates your config file and provides helpful error messages.
+
+| Option           | Type    | Required | Default   | Description                                             |
+|------------------|---------|----------|-----------|----------------------------------------------------------
+| `output`         | string  | true     | -         | Global output directory for all files                   |
+| `services`       | array   | true     | -         | Array of [Service Options](#service-options) to process |
+| `generateClient` | boolean | false    | false     | Flag to generate http client                            |
+| `tabSize`        | number  | false    | 2         | Tab size for generated files (1-8)                      |
+
+### Service Options [↑](#toc-service-options) <a id="service-options"></a>
+
+<a id="table"></a>
+| Option    | Type               | Required | Default   | Description                                                                         |
+|-----------|--------------------|----------|-----------|--------------------------------------------------------------------------------------
+| `src`     | string             | true     | -         | OpenAPI/Swagger source (URL or file path)                                           |
+| `dirname` | string             | true     | -         | Directory name for this service                                                     |
+| `hook`    | string \| function | false    | -         | In .js files should be a [function](#js-hook), in .json files should be a [path to function](#json-hook) |
+| `filter`  | string             | false    | -         | Regular expression to [filter](#filter-examples) paths                                                  |
+
+### Hooks [↑](#toc-hooks-option) <a id="hooks-option"></a>
+```typescript
+type HookFunction = (value: any, key: string) => void
+```
+
+As mentioned above
+ - in `.js` files `hook` field must be a js function [↑](#table) <a id="js-hook"></a>
+```js
+module.exports = {
+  // other fields...
+  services: [
+    {
+      // other fields...
+      hook: (value, key) => {
+        if (key === 'paths') {
+          delete value['/some/path/to/delete'];
+        }
+        if (key === 'MySchema') {
+          value.type = 'number'
+        }
+      }
+    }
+  ]
+};
+```
+ - in `.json` files `hook` field must be a path to js function [↑](#table) <a id="json-hook"></a>
+```json
+    {
+      // other fields...
+      "hook": "./hooks/billing.js"
+    }
+```
+hooks/billing.js
+```js
+module.exports = (value, key) => {
+    if (key === 'paths') {
+      delete value['/some/path/to/delete'];
+    }
+    if (key === 'MySchema') {
+      value.type = 'number'
+    }
+}
+```
+
+The hook function is called for each property of the OpenAPI object and receives two parameters:
+
+- **`value`** - The current OpenAPI object being processed (paths, schemas, components, etc.)
+- **`key`** - The property key of the current OpenAPI object being processed ("paths", "schemas", "components", etc.)
+
+How Hooks Work
+
+- **Return values are ignored** - you don't need to return anything
+- **Mutate the incoming `value` object directly** to make changes
+- **Modify freely** - add, delete, or change keys and values as needed
+
+### Filter [↑](#toc-filter-option) <a id="filter-option"></a>
+Use regular expressions to include or exclude specific API paths. [↑](#table) <a id="filter-examples"></a>
+```regex
+^/api/v1/.*$           # Only paths starting with /api/v1/
+^/users/.*$            # Only user-related endpoints  
+^/(users|posts)/.*$    # Only users and posts endpoints
+
+^(?!.*internal).*$     # Exclude paths containing "internal"
+^(?!.*admin).*$        # Exclude admin routes
+^(?!.*(test|debug)).*$ # Exclude test and debug endpoints
+```
+
+### Configuration Examples [↑](#toc-config-examples) <a id="config-examples"></a>
+
+**Minimal (JSON):**
+```json
+{
+  "output": "src/api",
+  "services": [
+    {
+      "src": "https://api.example.com/swagger.json",
+      "dirname": "test"
+    }
+  ]
+}
+```
+
+**Minimal (JS):**
+```js
+module.exports = {
+  output: "src/api",
+  services: [
+    {
+      src: "https://api.example.com/swagger.json",
+      dirname: "test"
+    }
+  ]
+};
+```
+
+**Advanced (JSON):**
+```json
+{
+  "generateClient": true,
+  "output": "src/api",
+  "tabSize": 2,
+  "services": [
+    {
+      "src": "https://api.example.com/swagger.json",
+      "dirname": "billing",
+      "hook": "./hooks/billing.js",
+      "filter": "^(?!.*internal).*$"
+    },
+    {
+      "src": "./local-swagger.json",
+      "dirname": "local"
+    }
+  ]
+}
+```
+
+**Advanced (JS):**
+```js
+module.exports = {
+  generateClient: true,
+  output: "src",
+  tabSize: 2,
+  services: [
+    {
+      src: "https://api.example.com/swagger.json",
+      dirname: "api",
+      hook: (value, key) => {
+        if (key === 'paths') {
+          console.log('Processing path:', value);
+        }
+      },
+      filter: "^(?!.*internal).*$"
+    },
+    {
+      src: "./local-swagger.json",
+      dirname: "local"
+    }
+  ]
+};
 ```
 
 ## VS Code Settings [↑](#toc-vs-code-settings) <a id="vs-code-settings"></a>
@@ -198,346 +273,169 @@ EOF
 
 **Note:** Replace `"api.config.json"` with your actual config filename (e.g., `"my-config.json"`).
 
-## Configuration Options [↑](#toc-configuration-options) <a id="configuration-options"></a>
+## Generated Types [↑](#toc-types) <a id="types"></a>
 
-### Global Options [↑](#toc-global-options) <a id="global-options"></a>
+paths.ts
+```typescript
+import type { Schemas } from './schemas';
 
-| Option | Type | Required | Description |
-|--------|------|----------|-------------|
-| `generateClient` | boolean | false | Generate HTTP client (default: false) |
-| `output` | string | true | Global output directory for all files |
-| `tabSize` | number | false | Tab size for generated files (1-8, default: 2) |
-| `services` | array | true | Array of OpenAPI services to process |
+/**
+ * @see {@link https://raw.githubusercontent.com/stripe/openapi/master/openapi/spec3.json swagger}
+ * @title Stripe API
+ * @description The Stripe REST API. Please see https://stripe.com/docs/api for more details.
+ */
+export type Paths = {
 
-### Service Options [↑](#toc-service-options) <a id="service-options"></a>
+  '/v1/account': {
 
-| Option | Type | Required | Description |
-|--------|------|----------|-------------|
-| `src` | string | true | OpenAPI/Swagger source (URL or file path) |
-| `dirname` | string | true | Directory name for this service |
-| `hook` | string or function | false | In .js files should be a function, in .json files should be a path to hook function |
-| `filter` | string | false | Regular expression to filter paths |
-
-## Hooks [↑](#toc-hooks) <a id="hooks"></a>
-
-Create custom hooks to transform data during processing. **Important:** You must mutate the data object directly:
-
-### JSON config (path to hook file):
-```json
-{
-  "output": "src",
-  "services": [
-    {
-      "src": "https://api.example.com/swagger.json",
-      "dirname": "myApi",
-      "hook": "./hooks/api.js"
-    }
-  ]
-}
-```
-
-### JS config (function directly):
-```javascript
-module.exports = {
-  output: "src",
-  services: [
-    {
-      src: "https://api.example.com/swagger.json",
-      dirname: "myApi",
-      hook: function(data, key) {
-        if (key === 'paths') {
-          console.log('Processing path:', data);
-        }
-        // Mutate data directly - don't return anything
+    /**
+     * @description <p>Retrieves the details of an account.</p>
+     * @assumptions Retrieve account
+     * @operationId GetAccount
+     */
+    get: {
+      queryParams?: {
+        /**
+         * @description Specifies which fields in the response should be expanded.
+         */
+        expand?: string[]
       }
+      res: Schemas.account
     }
-  ]
-};
-```
 
-### Hook file example:
-```javascript
-// hooks/api.js
-module.exports = function(data, key) {
-  // Transform data before processing
-  if (key === 'paths') {
-    // Custom path processing
-    console.log('Processing path:', data);
   }
-  
-  // Mutate data directly - don't return anything
-};
-```
-
-## Filtering [↑](#toc-filtering) <a id="filtering"></a>
-
-Use regular expressions to filter paths:
-
-### Exclude internal paths
-```json
-{
-  "output": "src",
-  "services": [
-    {
-      "src": "https://api.example.com/swagger.json",
-      "dirname": "myApi",
-      "filter": "^(?!.*internal).*$"
-    }
-  ]
 }
 ```
 
-### Include only specific paths
-```json
-{
-  "output": "src",
-  "services": [
-    {
-      "src": "https://api.example.com/swagger.json",
-      "dirname": "myApi",
-      "filter": "^/api/v1/.*$"
-    }
-  ]
-}
-```
-
-### Exclude multiple patterns
-```json
-{
-  "output": "src",
-  "services": [
-    {
-      "src": "https://api.example.com/swagger.json",
-      "dirname": "myApi",
-      "filter": "^(?!.*(?:internal|private|admin)).*$"
-    }
-  ]
-}
-```
-
-## Config examples [↑](#toc-config-examples) <a id="config-examples"></a>
-
-### Basic Config
-```json
-{
-  "output": "src",
-  "services": [
-    {
-      "src": "https://api.example.com/swagger.json",
-      "dirname": "myApi"
-    }
-  ]
-}
-```
-
-### Advanced Config
-```json
-{
-  "generateClient": true,
-  "output": "src",
-  "tabSize": 4,
-  "services": [
-    {
-      "src": "https://api.example.com/swagger.json",
-      "dirname": "example",
-      "hook": "./hooks/example.js",
-      "filter": "^(?!.*internal).*$"
-    },
-    {
-      "src": "./local-swagger.json",
-      "dirname": "local"
-    }
-  ]
-}
-```
-
-### JS file config
-```js
-module.exports = {
-  generateClient: true,
-  output: "src",
-  tabSize: 2,
-  services: [
-    {
-      src: "https://api.example.com/swagger.json",
-      dirname: "example",
-      hook: (data, key) => {},
-      filter: "^(?!.*internal).*$"
-    },
-    {
-      src: "./local-swagger.json",
-      dirname: "local"
-    }
-  ]
-}
-```
-
-## Usage Examples [↑](#toc-usage-examples) <a id="usage-examples"></a>
-
-### Basic Usage (Default Implementation) [↑](#toc-basic-usage-default-implementation) <a id="basic-usage-default-implementation"></a>
-
+schemas.ts
 ```typescript
-import { createClient } from './createClient';
-import type { Paths } from './stripe/paths';
-
-// Use the default fetch implementation
-const client = createClient<Paths>();
-
-// Typed API calls
-const users = await client.get('/users'); // ✅ User[]
-const user = await client.post('/users', { 
-  body: { name: 'John', email: 'john@example.com' } 
-}); // ✅ User
-```
-
-### Custom Implementation (Axios) [↑](#toc-custom-implementation-axios) <a id="custom-implementation-axios"></a>
-
-```typescript
-import axios from 'axios';
-import { createClient } from './createClient';
-import type { Paths } from './stripe/paths';
-
-const client = createClient<Paths>((method, path, options) => {
-  return axios({
-    method,
-    url: path,
-    data: options?.body,
-    headers: { 'Authorization': 'Bearer token' }
-  }).then(res => res.data);
-});
-
-// Same typed API, but with your custom logic
-const users = await client.get('/users'); // ✅ User[]
-```
-
-### Custom Implementation (Your Own Logic) [↑](#toc-custom-implementation-your-own-logic) <a id="custom-implementation-your-own-logic"></a>
-
-```typescript
-import { createClient } from './createClient';
-import type { Paths } from './stripe/paths';
-
-const client = createClient<Paths>((method, path, options) => {
-  // Your custom implementation
-  const url = `https://api.example.com${path}`;
-  const headers = {
-    'Authorization': `Bearer ${getToken()}`,
-    'X-API-Version': 'v2'
-  };
-  
-  return myCustomHttpClient.request({
-    method,
-    url,
-    headers,
-    body: options?.body
-  });
-});
-```
-
-### Using Utilities (Optional) [↑](#toc-using-utilities-optional) <a id="using-utilities-optional"></a>
-
-```typescript
-const client = createClient<Paths>((method, path, options) => {
-  // Access utilities via 'this' context
-  const url = this.getUrl(path, options); // Handles path params and query params
-  const body = this.getBody(options?.body); // JSON stringify with error handling
-  
-  return fetch(url, {
-    method,
-    headers: this.headers, // Default headers
-    body
-  }).then(this.handleRes); // Error handling
-});
-```
-
-### Multiple Services [↑](#toc-multiple-services) <a id="multiple-services"></a>
-
-```typescript
-import { api } from './src';
-
-// Each service has its own typed client
-const stripeUsers = await api.stripe.get('/customers');
-const githubRepos = await api.github.get('/user/repos');
-```
-
-## Why Not Use Alternatives? [↑](#toc-why-not-use-alternatives) <a id="why-not-use-alternatives"></a>
-
-### vs. OpenAPI Generator <a id="vs-openapi-generator"></a>
-- **❌ OpenAPI Generator**: Generates 1000+ lines of complex code
-- **✅ OAPI**: Generates ~100 lines of clean, minimal code
-
-### vs. Orval <a id="vs-orval"></a>
-- **❌ Orval**: Opinionated, hard to customize, runtime dependencies
-- **✅ OAPI**: Your code, your rules, zero runtime dependencies
-
-### vs. Swagger Codegen <a id="vs-swagger-codegen"></a>
-- **❌ Swagger Codegen**: Bloated templates, hard to modify
-- **✅ OAPI**: Simple templates, easy to understand and modify
-
-### vs. Manual Types <a id="vs-manual-types"></a>
-- **❌ Manual**: Time-consuming, error-prone, hard to maintain
-- **✅ OAPI**: Automatic, type-safe, always up-to-date
-
-## Generated Output [↑](#toc-generated-output) <a id="generated-output"></a>
-
-### schemas.ts [↑](#toc-schemasts) <a id="schemasts"></a>
-
-```typescript
+/**
+ * @see {@link https://raw.githubusercontent.com/stripe/openapi/master/openapi/spec3.json swagger}
+ * @title Stripe API
+ * @description The Stripe REST API. Please see https://stripe.com/docs/api for more details.
+ */
 export namespace Schemas {
 
   /**
-   * User model
+   * @title AccountAnnualRevenue
    */
-  export type User = {
-    /** User ID */
-    id: number
-    /** User name */
-    name: string
-    /** User email */
-    email: string
+  export type account_annual_revenue = {
+    /**
+     * @description A non-negative integer representing the amount in the [smallest currency unit](/currencies#zero-decimal).
+     */
+    amount?: number | null
+    /**
+     * @description Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+     */
+    currency?: string | null
+    /**
+     * @description The close-out date of the preceding fiscal year in ISO 8601 format. E.g. 2023-12-31 for the 31st of December, 2023.
+     */
+    fiscal_year_end?: string | null
   }
-
 }
 ```
 
-### paths.ts [↑](#toc-pathsts) <a id="pathsts"></a>
+## Client Usage [↑](#toc-client-usage) <a id="client-usage"></a>
+
+### The Core Philosophy
+
+Making backend requests requires a flexible HTTP client that can adapt to your specific needs. You might prefer using Axios, Fetch, XHR, or have custom requirements involving specific headers, URL prefixes, authentication mechanisms like JWT or API keys, sophisticated error handling, response interception, request logging, retry logic, or performance monitoring. Creating a one-size-fits-all solution is impossible.
+
+Instead, OAPI provides a wrapper that accepts generated types and returns a **fully typed** client interface, while letting you implement the actual HTTP engine.
+
+### Generated Client Structure
+
+Each service directory contains an index file with:
 
 ```typescript
-import type { Schemas } from './Schemas';
+import type { Paths } from './paths';
+import { createClient } from '../createClient';
 
-export type Paths = {
-
-  '/users': {
-
-    get: {
-      /** Query parameters */
-      queryParams?: {
-        /** Limit number of results */
-        limit?: number
-        /** Offset for pagination */
-        offset?: number
-      };
-      /** Response type */
-      res: Schemas.User[]
-    }
-
-  }
-
-  '/users/{id}': {
-
-    get: {
-      /** Path parameters */
-      pathParams: {
-        /** User ID */
-        id: number
-      };
-      /** Response type */
-      res: Schemas.User
-    }
-
-  }
-
-}
+export const serviceName = createClient<Paths>();
 ```
+
+### How createClient Works
+The `createClient` function takes your generated API types and returns a fully typed client. It accepts your custom HTTP implementation function (let's call it [doFetch](#doFetch)) as an optional parameter. If you don't provide one, it uses a simple default fetch-based implementation. This approach gives you maximum flexibility while maintaining full TypeScript type safety across all your API calls.
+
+<a id="doFetch"></a>
+```typescript
+function doFetch(this: HelpfullUtils, method: string, path: string, options: Options): Promise<any>
+```
+
+### Utility Methods
+
+When you pass a regular function (not an arrow function) to `createClient`, you gain access to helpful utility methods via the `this` context:
+
+```typescript
+export const myService = createClient<Paths>(function(method, path, options) {
+
+    const urlStr = this.interpolate('prefix' + path, options?.pathParams || {});
+    const url = new URL(urlStr, 'https://domain.com/api');
+    this.fillQueryParams(url.searchParams, options?.queryParams || {});
+
+    return fetch(url, {
+        method,
+        headers: this.headers,
+        body: this.getBody(options?.body),
+        credentials: 'include',
+    }).then(this.handleRes);
+});
+```
+
+Available Utilities
+ - this.interpolate() - Replace path parameters (/users/{id} → /users/123)
+ - this.fillQueryParams() - Append query parameters to URL
+ - this.getUrl() - Combine base URL, path, and parameters
+ - this.getBody() - Safely stringify request body with error handling
+ - this.handleRes() - Process response
+ - this.headers - Default headers collection
+ - These utilities are completely optional—use them as needed, or implement your own logic entirely.
+
+### Transparency Through Source Code
+
+Rather than documenting every possible customization, OAPI embraces a different philosophy: **transparency through readable generated code**.
+
+The utility is highly customizable, but instead of enumerating all options, I encourage you to generate the client once and examine the source. You'll find a remarkably compact `createClient.ts` file (72 lines of code) containing the complete implementation with full TypeScript typing.
+
+### Why This Matters
+OAPI generates actual source code, not runtime magic. I've prioritized making the generated output:
+
+ - Minimalistic - No bloat, only essential code
+ - Readable - Clean, self-documenting structure
+ - Extensible - Easy to modify and adapt
+ - Maintainable - Straightforward to debug and update
+
+### The Best Documentation
+The generated code is the documentation. What you see is exactly what runs in your application—no hidden behaviors, no mysterious abstractions. This approach ensures you maintain full control and understanding of your API layer.
+
+### Transparency Through Source Code
+
+OAPI generates **actual source code**, not a black box with thousands of lines of duplicated code and incomprehensible abstractions that prevent you from understanding what's really happening under the hood.
+
+Many OpenAPI generators operate on a "code dump" principle—they output massive amounts of generated code that becomes legacy the moment it's created. This code feels alien to your codebase, filled with duplication and abstractions you didn't choose.
+
+OAPI takes the opposite approach: we generate minimal, intentional code that respects your intelligence as a developer. The output is meant to be read, understood, and even modified—not treated as an impenetrable black box.
+
+Generate once, read the code, and you'll understand everything.
+
+### How to Use the Client
+
+```typescript
+api.billing.post('/path/{userId}', {    // ✅ Autocompleted paths wich have the GET method
+    pathParams: { userId: 'abc' },      // ✅ Autocompleted path parameters
+    queryParams: { param: 'def' },      // ✅ Type-checked query params  
+    body: { key: 'ghi' }                // ✅ Validated request body
+}).then((res) => {
+    console.log(res);                   // ✅ Fully typed responce
+});
+```
+
+Just go to the main index file and print `api.` That's it.
+
+From there, TypeScript takes the wheel and won't let you make mistakes. The autocomplete and type checking will guide you through every possible API call.
+
+Just start typing—the types will do the rest.
 
 ## ⚠️ Important Limitations [↑](#toc-important-limitations) <a id="important-limitations"></a>
 
@@ -569,13 +467,6 @@ module.exports = function(data, key) {
 - Node.js >= 14.0.0
 - OpenAPI 3.0+ (Swagger 2.0 not supported)
 
-## Summary [↑](#toc-summary) <a id="summary"></a>
+## Assumptions [↑](#toc-assumptions) <a id="assumptions"></a>
 
-**OAPI** gives you the best of both worlds:
-
-1. **Type safety** - Generated TypeScript types from your OpenAPI spec
-2. **Complete control** - Your HTTP implementation, your rules
-3. **Minimal code** - Clean, readable, maintainable generated files
-4. **Maximum flexibility** - Use any library, any pattern, any architecture
-
-**No more bloated, opinionated API clients that don't fit your project.**
+This tool is designed for **production-ready OpenAPI specifications** and assumes they are already syntactically valid. No validation is performed—invalid fields are **silently** ignored, and malformed schemas result in `unknown` type. Always validate your OpenAPI documents before use.
