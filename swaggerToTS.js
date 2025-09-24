@@ -244,14 +244,14 @@ String.prototype.toKey = function(isOptional) {
 }
 String.prototype.toCamelCase = function(bool) {
     if (!bool || !this.length) return this;
-    return this.split(/[^\p{L}0-9]+/u)
+    return this.split(/(?<=[\p{L}0-9])_(?=[\p{L}0-9])|[^\p{L}0-9_]+/u)
         .filter(Boolean)
         .map((w, i) => i === 0 ? w.toLowerCase() : w[0].toUpperCase() + w.slice(1).toLowerCase())
         .join('');
 }
 String.prototype.toPascalCase = function(bool) {
     if (!bool || !this.length) return this;
-    return this.split(/[^\p{L}0-9]+/u)
+    return this.split(/(?<=[\p{L}0-9])_(?=[\p{L}0-9])|[^\p{L}0-9_]+/u)
         .filter(Boolean)
         .map((w) => w[0].toUpperCase() + w.slice(1).toLowerCase())
         .join('');
