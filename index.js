@@ -13,7 +13,10 @@ var swaggerToTS = require('./swaggerToTS');
 var { config, isJson } = validateConfig(configPath);
 
 var apiTmplate =
-`// -------------------------------
+`/* eslint-disable */
+/* tslint:disable */
+
+// -------------------------------
 // | this file is auto-generated |
 // -------------------------------
 
@@ -25,7 +28,10 @@ export const api = {
 `;
 
 var createClientTemplate =
-`// -------------------------------
+`/* eslint-disable */
+/* tslint:disable */
+
+// -------------------------------
 // | this file is auto-generated |
 // -------------------------------
 
@@ -104,7 +110,10 @@ export function createClient<Paths>(doFetch = defaultFetch) {
 `;
 
 var indexTemplate =
-`// -------------------------------
+`/* eslint-disable */
+/* tslint:disable */
+
+// -------------------------------
 // | this file is auto-generated |
 // -------------------------------
 
@@ -177,7 +186,10 @@ function doWrite({ Paths, Schemas } = {}) {
     var { output } = this;
 
     var f = (e) => (e && log(`Error while writing to ${output}: ${e}`));
+
     var banner = [
+        '/* eslint-disable */',
+        '/* tslint:disable */\n',
         '// -------------------------------',
         '// | this file is auto-generated |',
         '// -------------------------------',
