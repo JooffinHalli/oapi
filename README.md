@@ -422,7 +422,7 @@ Generate once, read the code, and you'll understand everything.
 ### How to Use the Client
 
 ```typescript
-api.billing.post('/path/{userId}', {    // ✅ Autocompleted paths wich have the GET method
+api.billing.post('/path/{userId}', {    // ✅ Autocompleted paths with POST method
     pathParams: { userId: 'abc' },      // ✅ Autocompleted path parameters
     queryParams: { param: 'def' },      // ✅ Type-checked query params  
     body: { key: 'ghi' }                // ✅ Validated request body
