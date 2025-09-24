@@ -391,7 +391,7 @@ Available Utilities
  - this.handleRes() - Process response
  - this.headers - Default headers collection
 
-These utilities are completely optional—use them as needed, or implement your own logic entirely.
+These utilities are completely optional — use them as needed, or implement your own logic entirely.
 
 ### The Best Documentation
 
@@ -399,15 +399,15 @@ Rather than documenting every possible customization, OAPI embraces a different 
 
 The utility is highly customizable, but instead of enumerating all options, I encourage you to generate the client once and examine the source. You'll find a remarkably compact `createClient.ts` file (72 lines of code) containing the complete implementation with full TypeScript typing.
 
-The generated code is the documentation. What you see is exactly what runs in your application—no hidden behaviors, no mysterious abstractions. This approach ensures you maintain full control and understanding of your API layer.
+The generated code is the documentation. What you see is exactly what runs in your application — no hidden behaviors, no mysterious abstractions. This approach ensures you maintain full control and understanding of your API layer.
 
 ### Transparency Through Source Code
 
 OAPI generates **actual source code**, not a black box with thousands of lines of duplicated code and incomprehensible abstractions that prevent you from understanding what's really happening under the hood.
 
-Many OpenAPI generators operate on a "code dump" principle—they output massive amounts of generated code that becomes legacy the moment it's created. This code feels alien to your codebase, filled with duplication and abstractions you didn't choose.
+Many OpenAPI generators operate on a "code dump" principle — they output massive amounts of generated code that becomes legacy the moment it's created. This code feels alien to your codebase, filled with duplication and abstractions you didn't choose.
 
-OAPI takes the opposite approach: we generate minimal, intentional code that respects your intelligence as a developer. The output is meant to be read, understood, and even modified—not treated as an impenetrable black box.
+OAPI takes the opposite approach: we generate minimal, intentional code that respects your intelligence as a developer. The output is meant to be read, understood, and even modified — not treated as an impenetrable black box.
 
 Generate once, read the code, and you'll understand everything.
 
@@ -427,7 +427,7 @@ Just go to the main index file and print `api.` That's it.
 
 From there, TypeScript takes the wheel and won't let you make mistakes. The autocomplete and type checking will guide you through every possible API call.
 
-Just start typing—the types will do the rest.
+Just start typing — the types will do the rest.
 
 ## ⚠️ Important Limitations [↑](#toc-important-limitations) <a id="important-limitations"></a>
 
@@ -461,4 +461,4 @@ module.exports = function(data, key) {
 
 ## Assumptions [↑](#toc-assumptions) <a id="assumptions"></a>
 
-This tool is designed for **production-ready OpenAPI specifications** and assumes they are already syntactically valid. No validation is performed—invalid fields are **silently** ignored, and malformed schemas result in `unknown` type. Always validate your OpenAPI documents before use.
+This tool is designed for **production-ready OpenAPI specifications** and assumes they are already syntactically valid. No validation is performed — invalid fields are **silently** ignored, and malformed schemas result in `unknown` type. Always validate your OpenAPI documents before use.
