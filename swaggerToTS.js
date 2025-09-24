@@ -53,7 +53,7 @@ var alphabet = {
     '@anySchema'(schema, name) {
         var jsdoc = runComment.call(this, schema);
         var types = runSchema.call(this, schema);
-        return `${jsdoc}export type ${name.toId()} = ${types}`;
+        return `${jsdoc}export type ${name.toId().toPascalCase(this.toCamelCase)} = ${types}`;
     },
     'properties'(props) {
         var ctx = this.incLvl().command('@anyProperty');
@@ -62,7 +62,7 @@ var alphabet = {
     '@anyProperty'(schema, name) {
         var types = runSchema.call(this, schema);
         var jsdoc = runComment.call(this, schema);
-        return `${jsdoc}${name.toKey(!schema.isRequired)}: ${types}`;
+        return `${jsdoc}${name.toKey(!schema.isRequired).toCamelCase(this.toCamelCase)}: ${types}`;
     },
     'items'(schema) {
         return runSchema.call(this, schema).concat('[]');
@@ -84,7 +84,7 @@ var alphabet = {
     },
     '$ref'(ref) {
         var { 3: name } = ref.split('/');
-        return name ? `Schemas.${name.toId()}` : 'unknown';
+        return name ? `Schemas.${name.toId().toPascalCase(this.toCamelCase)}` : 'unknown';
     },
     'paths'(paths) {
         if (this.generatePaths === false) return;
@@ -160,7 +160,7 @@ function runComposition(devider) {
 function runParam(param) {
     var types = run.call(this, param).join(' | ').or('unknown');
     var jsdoc = runComment.call(this, param);
-    return `${jsdoc}${param.name.toKey(!param.required)}: ${types}`;
+    return `${jsdoc}${param.name.toKey(!param.required).toCamelCase(this.toCamelCase)}: ${types}`;
 };
 
 function runParams(rawParams, place) {
@@ -241,6 +241,16 @@ String.prototype.toId = function(isOptional) {
 String.prototype.toKey = function(isOptional) {
     var isId = /^[\p{L}$_][\p{N}\p{L}$_]*$/u.test(this);
     return (isId ? this : `'${this}'`).concat(isOptional ? '?' : '');
+}
+String.prototype.toCamelCase = function(bool) {
+    if (!bool || !this.length) return this;
+    var str = this[0].toLowerCase() + this.slice(1);
+    return str.replace(/([-_]\w)/g, (match) => match[1].toUpperCase());
+}
+String.prototype.toPascalCase = function(bool) {
+    if (!bool || !this.length) return this;
+    var str = this[0].toUpperCase() + this.slice(1);
+    return str.replace(/([-_]\w)/g, (match) => match[1].toUpperCase());
 }
 String.prototype.nullable = function(bool) {
     return bool ? `${this} | null` : this;

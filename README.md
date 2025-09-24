@@ -93,6 +93,7 @@ File formats: Configuration can be written in either `.js` or `.json` files.
 
 Validation included: The tool automatically validates your config file and provides helpful error messages.
 
+<a id="main-table"></a>
 | Option           | Type    | Required | Default   | Description                                             |
 |------------------|---------|----------|-----------|----------------------------------------------------------
 | `output`         | string  | true     | -         | Global output directory for all files                   |
@@ -110,6 +111,7 @@ Validation included: The tool automatically validates your config file and provi
 | `hook`          | string \| function | false    | -         | In .js files should be a [function](#js-hook), in .json files should be a [path to function](#json-hook) |
 | `filter`        | string             | false    | -         | Regular expression to [filter](#filter-examples) paths |
 | `generatePaths` | boolean            | false    | true      | Flag to generate `paths.ts` and `index.ts` files. If `false`, only `schemas.ts` is generated |
+| `toCamelCase`   | boolean            | false    | false     | Convert schema keys to camelCase and schema names to PascalCase. [Use with caution!](#toCamelCase) |
 
 ### Hooks [↑](#toc-hooks-option) <a id="hooks-option"></a>
 ```typescript
@@ -178,9 +180,23 @@ Use regular expressions to include or exclude specific API paths. [↑](#table) 
 ^(?!.*(test|debug)).*$ # Exclude test and debug endpoints
 ```
 
+### ⚠️ Case Conversion (`toCamelCase`) [↑](#table) <a id="toCamelCase"></a>
+**Important Warning:** I recommend not using this setting if you're generating an API client. If the backend operates with a different case convention, there's a risk of sending data in the wrong case to the backend, and the same issue applies when receiving data from the backend. 
+
+Use this option only when generating schemas for type definitions without API client generation.
+
+```json
+{
+  "src": "https://test.example.com/swagger.json", 
+  "dirname": "test",
+  "toCamelCase": true,  // ⚠️ Use only with generatePaths: false or generateClient: false
+  "generatePaths": false
+}
+```
+
 ### Configuration Examples [↑](#toc-config-examples) <a id="config-examples"></a>
 
-**Minimal (JSON):**
+**Minimal (JSON):** [↑](#main-table)
 ```json
 {
   "output": "src/api",
@@ -193,7 +209,7 @@ Use regular expressions to include or exclude specific API paths. [↑](#table) 
 }
 ```
 
-**Minimal (JS):**
+**Minimal (JS):** [↑](#main-table)
 ```js
 module.exports = {
   output: "src/api",
@@ -206,7 +222,7 @@ module.exports = {
 };
 ```
 
-**Advanced (JSON):**
+**Advanced (JSON):** [↑](#main-table)
 ```json
 {
   "generateClient": true,
@@ -221,13 +237,15 @@ module.exports = {
     },
     {
       "src": "./local-swagger.json",
-      "dirname": "local"
+      "dirname": "local",
+      "generatePaths": false,
+      "toCamelCase": true
     }
   ]
 }
 ```
 
-**Advanced (JS):**
+**Advanced (JS):** [↑](#main-table)
 ```js
 module.exports = {
   generateClient: true,
@@ -246,7 +264,9 @@ module.exports = {
     },
     {
       src: "./local-swagger.json",
-      dirname: "local"
+      dirname: "local",
+      generatePaths: false,
+      toCamelCase: true
     }
   ]
 };
@@ -511,6 +531,6 @@ This tool is designed for **production-ready OpenAPI specifications** and assume
 
 ## By the way [↑](#toc-btw) <a id="btw"></a>
 
-This utility has **zero dependencies** and the entire transpiler is just **265 lines of code**.
+This utility has **zero dependencies** and the entire transpiler with all the features is just **276 lines of code**.
 
 I plan to write an article explaining the algorithm behind this minimal implementation and will link it here soon.
