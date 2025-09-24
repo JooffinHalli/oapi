@@ -430,6 +430,50 @@ From there, TypeScript takes the wheel and won't let you make mistakes. The auto
 
 Just start typing — the types will do the rest.
 
+### By the way
+
+**What if you have a service without Swagger/OpenAPI? No problem!**
+
+`createClient` only requires a type contract. You can use it with **hand-written types** for any API:
+
+```typescript
+export const manualService = createClient<{
+    'test/path': {
+        get: {
+            queryParams?: { id?: string }
+            res: string[]
+        }
+    },
+    'users/{id}': {
+        get: { 
+            pathParams: { id: string }
+            res: User 
+        }
+    }
+}>();
+```
+
+### The Three Pieces of Type-Safe API Layer
+
+Building a type-safe API client involves three independent pieces that fit together perfectly:
+
+**🧩 Piece 1: Types (generated or hand-written)** - describes your API contract
+
+**🧩 Piece 2: HTTP Function (default or custom)** - your preferred way to make requests
+
+**🧩 Piece 3: `createClient` (the glue)** - combines types and HTTP function into a typed abstraction
+
+```
+Types + HTTP Function + createClient = Fully Typed API Client
+```
+
+### Performance and Scalability
+
+>Unlike code generators that create a separate function for each endpoint, OAPI maintains a **constant runtime footprint**: your bundle size doesn't grow with your API surface.
+
+- **Compile-time**: TypeScript analyzes thousands of endpoints for generating declarative type descriptions
+- **Runtime**: Only a handful of functions are created (`get`, `post`, `put`, etc.)
+
 ## ⚠️ Important Limitations [↑](#toc-important-limitations) <a id="important-limitations"></a>
 
 ### OpenAPI Version Support [↑](#toc-openapi-version-support) <a id="openapi-version-support"></a>

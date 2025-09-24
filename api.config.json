@@ -1,0 +1,10 @@
+{
+  "generateClient": true,
+  "output": "src",
+  "services": [
+    {
+      "src": "https://raw.githubusercontent.com/stripe/openapi/master/openapi/spec3.json",
+      "dirname": "someService"
+    }
+  ]
+}
