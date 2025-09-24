@@ -5,8 +5,8 @@ module.exports = function(openapi) {
         return {};
     };
 
-    Object.setPrototypeOf(this, { openapi, tab: ' '.repeat(this.tabSize || 2) });
-    Object.setPrototypeOf(context, this);
+    var tab = ' '.repeat(this.tabSize || 2);
+    Object.setPrototypeOf(context, Object.setPrototypeOf({ openapi, tab }, this));
 
     var types   = run.call(context, openapi);
     var jsdoc   = types.find((type) => (type.key === 'jsdoc'));
@@ -14,8 +14,8 @@ module.exports = function(openapi) {
     var Schemas = types.find((type) => (type.key === 'Schemas'));
 
     return {
-        Paths:   [jsdoc, Paths].join(''),
-        Schemas: [jsdoc, Schemas].join('')
+        Paths:   Paths   ? [jsdoc, Paths].join('')   : null,
+        Schemas: Schemas ? [jsdoc, Schemas].join('') : null,
     };
 };
 
@@ -87,6 +87,7 @@ var alphabet = {
         return name ? `Schemas.${name.toId()}` : 'unknown';
     },
     'paths'(paths) {
+        if (this.generatePaths === false) return;
         var types = run.call(this.command('@anyPath'), paths).join('\n\n');
         return `export type Paths = {\n\n${types}\n\n}`.meta({ key: 'Paths' });
     },

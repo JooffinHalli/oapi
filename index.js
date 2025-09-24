@@ -10,7 +10,7 @@ var { 2: configPath } = process.argv;
 var validateConfig = require('./validateConfig');
 var swaggerToTS = require('./swaggerToTS');
 
-var { config, isJson } = validateConfig(configPath);
+var { config, isJson, paths } = validateConfig(configPath);
 
 var apiTmplate =
 `/* eslint-disable */
@@ -186,7 +186,7 @@ function doFetch(url) {
 
 function doWrite({ Paths, Schemas } = {}) {
     if (!Paths && !Schemas) return;
-    var { output } = this;
+    var { output, generatePaths = true } = this;
 
     var f = (e) => (e && log(`Error while writing to ${output}: ${e}`));
 
@@ -206,7 +206,7 @@ function doWrite({ Paths, Schemas } = {}) {
         var imports = `import type { Schemas } from './schemas';`;
         fs.writeFile(`${output}/schemas.ts`, [banner, Schemas].join('\n\n'), null, f);
     }
-    if (Paths) {
+    if (Paths && generatePaths !== false) {
         fs.writeFile(`${output}/paths.ts`, [banner, imports || '', Paths].join('\n\n'), null, f);
         if (!config.generateClient) return;
         fs.writeFile(`${output}/index.ts`, indexTemplate.replaceAll('<name>', this.dirname), null, f);
@@ -216,7 +216,7 @@ function doWrite({ Paths, Schemas } = {}) {
 }
 
 function doWriteApiIndex(services) {
-    services = services.filter(Boolean);
+    services = services.filter(Boolean).filter((service) => paths.get(service));
     if (!config.generateClient || !services.length) return;
 
     var f = (e) => (e && log(`Error while writing to ${config.output}/index.ts: ${e}`));
@@ -232,11 +232,6 @@ function generateClient(output) {
     if (!fs.existsSync(output)) fs.mkdirSync(output);
 
     var f = (path) => (e) => {
-        console.log({
-            output,
-            cwd: process.cwd(),
-        });
-        console.log(e);
         (e && log(`Error while generating client to ${output}/${path}: ${e}`))
     }
     fs.writeFile(`${config.output}/createClient.ts`, createClientTemplate, null, f);
@@ -248,14 +243,15 @@ function log(message) {
 }
 
 function normalizeItem(item) {
-    var { hook = () => {}, filter, src } = item;
+    var { hook = () => {}, filter } = item;
     if (isJson && hook) {
         hook = doTry(() => require(path.join(process.cwd(), path.normalize(hook))), () => {});
     }
     if (filter) {
         filter = doTry(() => new RegExp(filter), null);
     }
-    return { hook, filter, src, tabSize: config.tabSize };
+    var newObj = { hook, filter };
+    return Object.setPrototypeOf(newObj, item);
 }
 
 function doTry(doTry, fallback) {

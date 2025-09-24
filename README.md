@@ -103,12 +103,13 @@ Validation included: The tool automatically validates your config file and provi
 ### Service Options [↑](#toc-service-options) <a id="service-options"></a>
 
 <a id="table"></a>
-| Option    | Type               | Required | Default   | Description                                                                         |
-|-----------|--------------------|----------|-----------|--------------------------------------------------------------------------------------
-| `src`     | string             | true     | -         | OpenAPI/Swagger source (URL or file path)                                           |
-| `dirname` | string             | true     | -         | Directory name for this service                                                     |
-| `hook`    | string \| function | false    | -         | In .js files should be a [function](#js-hook), in .json files should be a [path to function](#json-hook) |
-| `filter`  | string             | false    | -         | Regular expression to [filter](#filter-examples) paths                                                  |
+| Option          | Type               | Required | Default   | Description |
+|-----------------|--------------------|----------|-----------|--------------
+| `src`           | string             | true     | -         | OpenAPI/Swagger source (URL or file path) |
+| `dirname`       | string             | true     | -         | Directory name for this service |
+| `hook`          | string \| function | false    | -         | In .js files should be a [function](#js-hook), in .json files should be a [path to function](#json-hook) |
+| `filter`        | string             | false    | -         | Regular expression to [filter](#filter-examples) paths |
+| `generatePaths` | boolean            | false    | true      | Flag to generate `paths.ts` and `index.ts` files. If `false`, only `schemas.ts` is generated |
 
 ### Hooks [↑](#toc-hooks-option) <a id="hooks-option"></a>
 ```typescript

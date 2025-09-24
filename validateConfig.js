@@ -35,11 +35,14 @@ function validateConfig(configPath) {
     dieIf(isNot(services,  'array'), `"services" must be an array, got "${typeOf(services)}"`);
     dieIf((!services.length       ), `"services" must be an array with at least one item`);
 
+    var paths = new Map;
+
     services.forEach((item) => {
         dieIf(is(item, 'undefined'), `Each item of "services" must be an object, got "${typeOf(item)}"`);
         dieIf(isNot(item, 'object'), `Each item of "services" must be an object, got "${typeOf(item)}"`);
 
-        var { src, dirname, hook, filter } = item;
+        var { src, dirname, hook, filter, generatePaths, toCamelCase } = item;
+        paths.set(dirname, generatePaths ?? true);
 
         dieIf(is(src, 'undefined'), `Each item of "services" must have a "src" field`);
         dieIf(isNot(src, 'string'), `"src" must be a string, got "${typeOf(src)}"`);
@@ -50,12 +53,14 @@ function validateConfig(configPath) {
         dieIf(isJs   && isNot(hook, 'function'), `in js file "hook" must be a function, got "${typeOf(hook)}"`);
         dieIf(isJson && isNot(hook,   'string'), `in json file "hook" must be a string, got "${typeOf(hook)}"`);
 
-        dieIf(isNot(filter, 'string'), `"filter" must be a string, got "${typeOf(filter)}"`);
+        dieIf(isNot(filter,         'string'), `"filter" must be a string, got "${typeOf(filter)}"`);
+        dieIf(isNot(toCamelCase,   'boolean'), `"toCamelCase" must be a boolean, got "${typeOf(toCamelCase)}"`);
+        dieIf(isNot(generatePaths, 'boolean'), `"generatePaths" must be a boolean, got "${typeOf(generatePaths)}"`);
 
         item.output = path.join(config.output, path.normalize(dirname));
     });
 
-    return { config, isJson };
+    return { config, isJson, paths };
 }
 
 function die(message) {
