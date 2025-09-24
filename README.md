@@ -390,7 +390,8 @@ Available Utilities
  - this.getBody() - Safely stringify request body with error handling
  - this.handleRes() - Process response
  - this.headers - Default headers collection
- - These utilities are completely optional—use them as needed, or implement your own logic entirely.
+
+These utilities are completely optional—use them as needed, or implement your own logic entirely.
 
 ### Transparency Through Source Code
 
