@@ -270,8 +270,8 @@ Array.prototype.unify = function() {
 function toCase(mapper) {
     return function(bool) {
         if (!bool || !this.length) return this;
-        var start = this.match(/^_*/)[0];
-        var end = this.match(/_*$/)[0];
+        var start = this.match(/^[^\p{L}0-9]*/u)[0];
+        var end = this.match(/[^\p{L}0-9]*$/u)[0];
         var mid = this.slice(start.length, this.length - end.length);
         var res = mid.split(/[^\p{L}0-9]+/u).filter(Boolean).map(mapper).join('');
         return start + res + end;
