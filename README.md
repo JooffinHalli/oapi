@@ -427,7 +427,7 @@ api.billing.post('/path/{userId}', {    // ✅ Autocompleted paths with POST met
     queryParams: { param: 'def' },      // ✅ Type-checked query params  
     body: { key: 'ghi' }                // ✅ Validated request body
 }).then((res) => {
-    console.log(res);                   // ✅ Fully typed responce
+    console.log(res);                   // ✅ Fully typed response
 });
 ```
 
