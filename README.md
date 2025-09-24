@@ -531,6 +531,6 @@ This tool is designed for **production-ready OpenAPI specifications** and assume
 
 ## By the way [↑](#toc-btw) <a id="btw"></a>
 
-This utility has **zero dependencies** and the entire transpiler with all the features is just **280 lines of code**.
+This utility has **zero dependencies** and the entire transpiler with all the features is just **279 lines of code**.
 
 I plan to write an article explaining the algorithm behind this minimal implementation and will link it here soon.

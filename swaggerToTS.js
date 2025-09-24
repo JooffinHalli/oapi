@@ -242,20 +242,8 @@ String.prototype.toKey = function(isOptional) {
     var isId = /^[\p{L}$_][\p{N}\p{L}$_]*$/u.test(this);
     return (isId ? this : `'${this}'`).concat(isOptional ? '?' : '');
 }
-String.prototype.toCamelCase = function(bool) {
-    if (!bool || !this.length) return this;
-    return this.split(/(?<=[\p{L}0-9])_(?=[\p{L}0-9])|[^\p{L}0-9_]+/u)
-        .filter(Boolean)
-        .map((w, i) => i === 0 ? w.toLowerCase() : w[0].toUpperCase() + w.slice(1).toLowerCase())
-        .join('');
-}
-String.prototype.toPascalCase = function(bool) {
-    if (!bool || !this.length) return this;
-    return this.split(/(?<=[\p{L}0-9])_(?=[\p{L}0-9])|[^\p{L}0-9_]+/u)
-        .filter(Boolean)
-        .map((w) => w[0].toUpperCase() + w.slice(1).toLowerCase())
-        .join('');
-}
+String.prototype.toCamelCase = toCase((w, i) => (i === 0) ? w.toLowerCase() : w[0].toUpperCase() + w.slice(1).toLowerCase());
+String.prototype.toPascalCase = toCase((w) => w[0].toUpperCase() + w.slice(1).toLowerCase());
 String.prototype.nullable = function(bool) {
     return bool ? `${this} | null` : this;
 }
@@ -277,4 +265,15 @@ Array.prototype.unify = function() {
     return Array.from(this.reduce(
         (map, value) => (map.set(`${value}`, value), map), new Map
     ).values());
+}
+
+function toCase(mapper) {
+    return function(bool) {
+        if (!bool || !this.length) return this;
+        var start = this.match(/^_*/)[0];
+        var end = this.match(/_*$/)[0];
+        var mid = this.slice(start.length, this.length - end.length);
+        var res = mid.split(/[^\p{L}0-9]+/u).filter(Boolean).map(mapper).join('');
+        return start + res + end;
+    }
 }
