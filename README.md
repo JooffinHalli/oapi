@@ -393,21 +393,12 @@ Available Utilities
 
 These utilities are completely optional—use them as needed, or implement your own logic entirely.
 
-### Transparency Through Source Code
+### The Best Documentation
 
 Rather than documenting every possible customization, OAPI embraces a different philosophy: **transparency through readable generated code**.
 
 The utility is highly customizable, but instead of enumerating all options, I encourage you to generate the client once and examine the source. You'll find a remarkably compact `createClient.ts` file (72 lines of code) containing the complete implementation with full TypeScript typing.
 
-### Why This Matters
-OAPI generates actual source code, not runtime magic. I've prioritized making the generated output:
-
- - Minimalistic - No bloat, only essential code
- - Readable - Clean, self-documenting structure
- - Extensible - Easy to modify and adapt
- - Maintainable - Straightforward to debug and update
-
-### The Best Documentation
 The generated code is the documentation. What you see is exactly what runs in your application—no hidden behaviors, no mysterious abstractions. This approach ensures you maintain full control and understanding of your API layer.
 
 ### Transparency Through Source Code
