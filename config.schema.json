@@ -77,6 +77,24 @@
                             "^/api/v1/.*$",
                             "^(?!.*(?:internal|private|admin)).*$"
                         ]
+                    },
+                    "generatePaths": {
+                        "type": "boolean",
+                        "description": "Flag to generate path.ts ans index.ts files",
+                        "default": true,
+                        "examples": [
+                            true,
+                            false
+                        ]
+                    },
+                    "toCamelCase": {
+                        "type": "boolean",
+                        "description": "Flag to convert property names to camelCase and type names to PascalCase",
+                        "default": false,
+                        "examples": [
+                            true,
+                            false
+                        ]
                     }
                 },
                 "additionalProperties": false

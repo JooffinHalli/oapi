@@ -244,13 +244,17 @@ String.prototype.toKey = function(isOptional) {
 }
 String.prototype.toCamelCase = function(bool) {
     if (!bool || !this.length) return this;
-    var str = this[0].toLowerCase() + this.slice(1);
-    return str.replace(/([-_]\w)/g, (match) => match[1].toUpperCase());
+    return this.split(/[^\p{L}0-9]+/u)
+        .filter(Boolean)
+        .map((w, i) => i === 0 ? w.toLowerCase() : w[0].toUpperCase() + w.slice(1).toLowerCase())
+        .join('');
 }
 String.prototype.toPascalCase = function(bool) {
     if (!bool || !this.length) return this;
-    var str = this[0].toUpperCase() + this.slice(1);
-    return str.replace(/([-_]\w)/g, (match) => match[1].toUpperCase());
+    return this.split(/[^\p{L}0-9]+/u)
+        .filter(Boolean)
+        .map((w) => w[0].toUpperCase() + w.slice(1).toLowerCase())
+        .join('');
 }
 String.prototype.nullable = function(bool) {
     return bool ? `${this} | null` : this;
