@@ -24,6 +24,7 @@
   - [Schema Name Conflicts](#schema-name-conflicts) <a id="toc-schema-name-conflicts"></a>
 - [Requirements](#requirements) <a id="toc-requirements"></a>
 - [Assumptions](#assumptions) <a id="toc-assumptions"></a>
+- [By the way](#btw) <a id="toc-btw"></a>
 
 ## Features [↑](#toc-features) <a id="features"></a>
 - ✅ **Types generation** (Paths and Schemas)
@@ -462,3 +463,9 @@ module.exports = function(data, key) {
 ## Assumptions [↑](#toc-assumptions) <a id="assumptions"></a>
 
 This tool is designed for **production-ready OpenAPI specifications** and assumes they are already syntactically valid. No validation is performed — invalid fields are **silently** ignored, and malformed schemas result in `unknown` type. Always validate your OpenAPI documents before use.
+
+## By the way [↑](#toc-btw) <a id="btw"></a>
+
+This utility has **zero dependencies** and the entire transpiler is just **265 lines of code**.
+
+I plan to write an article explaining the algorithm behind this minimal implementation and will link it here soon.
