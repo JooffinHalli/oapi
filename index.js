@@ -124,7 +124,10 @@ export const <name> = createClient<Paths>();
 `;
 
 var typesTemplate =
-`// -------------------------------
+`/* eslint-disable */
+/* tslint:disable */
+
+// -------------------------------
 // | this file is auto-generated |
 // -------------------------------
 
