@@ -183,7 +183,7 @@ Use regular expressions to include or exclude specific API paths. [↑](#table) 
 ### ⚠️ Case Conversion (`toCamelCase`) [↑](#table) <a id="toCamelCase"></a>
 **Important Warning:** I recommend not using this setting if you're generating an API client. If the backend operates with a different case convention, there's a risk of sending data in the wrong case to the backend, and the same issue applies when receiving data from the backend. 
 
-Use this option only when generating schemas for type definitions without API client generation.
+Use this option only when generating schemas without API client generation.
 
 ```json
 {
