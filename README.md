@@ -429,7 +429,7 @@ OAPI generates **actual source code**, not a black box with thousands of lines o
 
 Many OpenAPI generators operate on a "code dump" principle — they output massive amounts of generated code that becomes legacy the moment it's created. This code feels alien to your codebase, filled with duplication and abstractions you didn't choose.
 
-OAPI takes the opposite approach: we generate minimal, intentional code that respects your intelligence as a developer. The output is meant to be read, understood, and even modified — not treated as an impenetrable black box.
+OAPI takes the opposite approach: it generates minimal, intentional code that respects your intelligence as a developer. The output is meant to be read, understood, and even modified — not treated as an impenetrable black box.
 
 Generate once, read the code, and you'll understand everything.
 
