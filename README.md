@@ -387,7 +387,7 @@ function doFetch(this: HelpfullUtils, method: string, path: string, options: Opt
 
 ### Utility Methods
 
-When you pass a regular function (not an arrow function) to `createClient`, you gain access to helpful utility methods via the `this` context:
+When you pass a regular function (not an arrow function) to `createClient`, you gain access to helpful utility methods via the `this` keyword:
 
 ```typescript
 export const myService = createClient<Paths>(function(method, path, options) {
