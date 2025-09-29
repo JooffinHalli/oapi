@@ -51,7 +51,7 @@ function fillQueryParams(usp: URLSearchParams, queryParams: Record<string, strin
 
 function getUrl(this: typeof context, path: string, options: Record<string, any>) {
     const urlStr = this.interpolate(path, options?.pathParams || {});
-    const url = new URL(urlStr);
+    const url = new URL(urlStr, location.origin);
     this.fillQueryParams(url.searchParams, options?.queryParams || {});
     return url;
 }
