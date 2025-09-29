@@ -77,7 +77,7 @@ var alphabet = {
     'anyOf': runComposition(' | '),
     'allOf': runComposition(' & '),
     'enum'(enums) {
-        return enums.map((x) => ((typeof(x) === 'string') ? `'${x}'` : x)).join2(' | ');
+        return enums.map((x) => ((typeof(x) === 'string') ? `'${x}'` : String(x))).join2(' | ');
     },
     'type'(type) {
         return types[type] || 'unknown';
@@ -259,6 +259,7 @@ String.prototype.meta = function(meta) {
 }
 Array.prototype.join2 = function(separator) {
     var arr = this.unify();
+    console.log(this, arr, (arr.length > 1) ? `(${arr.join(separator)})` : arr.join(separator));
     return (arr.length > 1) ? `(${arr.join(separator)})` : arr.join(separator);
 }
 Array.prototype.unify = function() {
