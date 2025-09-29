@@ -58,6 +58,7 @@ function validateConfig(configPath) {
         dieIf(isNot(generatePaths, 'boolean'), `"generatePaths" must be a boolean, got "${typeOf(generatePaths)}"`);
 
         item.output = path.join(config.output, path.normalize(dirname));
+        Reflect.setPrototypeOf(item, config);
     });
 
     return { config, configDir, isJson, paths };
