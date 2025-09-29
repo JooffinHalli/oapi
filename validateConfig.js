@@ -60,7 +60,7 @@ function validateConfig(configPath) {
         item.output = path.join(config.output, path.normalize(dirname));
     });
 
-    return { config, isJson, paths };
+    return { config, configDir, isJson, paths };
 }
 
 function die(message) {

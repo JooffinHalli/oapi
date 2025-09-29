@@ -6,11 +6,12 @@ var exec = util.promisify(require('node:child_process').exec);
 var path = require('path');
 
 var { 2: configPath } = process.argv;
+configPath = path.join(process.cwd(), configPath);
 
 var validateConfig = require('./validateConfig');
 var swaggerToTS = require('./swaggerToTS');
 
-var { config, isJson, paths } = validateConfig(configPath);
+var { config, configDir, isJson, paths } = validateConfig(configPath);
 
 var apiTmplate =
 `/* eslint-disable */
@@ -243,14 +244,14 @@ function log(message) {
 }
 
 function normalizeItem(item) {
-    var { hook = () => {}, filter } = item;
+    var { hook, filter } = item;
     if (isJson && hook) {
-        hook = doTry(() => require(path.join(process.cwd(), path.normalize(hook))), () => {});
+        hook = doTry(() => require(path.join(configDir, path.normalize(hook))), () => {});
     }
     if (filter) {
         filter = doTry(() => new RegExp(filter), null);
     }
-    var newObj = { hook, filter };
+    var newObj = { hook: hook || (() => {}), filter };
     return Object.setPrototypeOf(newObj, item);
 }
 
