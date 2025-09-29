@@ -259,7 +259,6 @@ String.prototype.meta = function(meta) {
 }
 Array.prototype.join2 = function(separator) {
     var arr = this.unify();
-    console.log(this, arr, (arr.length > 1) ? `(${arr.join(separator)})` : arr.join(separator));
     return (arr.length > 1) ? `(${arr.join(separator)})` : arr.join(separator);
 }
 Array.prototype.unify = function() {
