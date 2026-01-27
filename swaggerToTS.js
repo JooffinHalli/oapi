@@ -61,6 +61,7 @@ var alphabet = {
     },
     '@anyProperty'(schema, name) {
         var types = runSchema.call(this, schema);
+        console.log(types);
         var jsdoc = runComment.call(this, schema);
         return `${jsdoc}${name.toKey(!schema.isRequired).toCamelCase(this.toCamelCase)}: ${types}`;
     },
@@ -80,7 +81,7 @@ var alphabet = {
         return enums.map((x) => ((typeof(x) === 'string') ? `'${x}'` : String(x))).join2(' | ');
     },
     'type'(type) {
-        if (Array.isArray(type)) return type.map(alphabet.type).join(' | ');
+        if (Array.isArray(type)) return type.map(alphabet.type).join2(' | ');
         return types[type] || 'unknown';
     },
     '$ref'(ref) {
@@ -154,7 +155,8 @@ function runComment(schema, extraRow = '') {
 
 function runComposition(devider) {
     return function(composition) {
-        return composition.map(runSchema, this).join2(devider);
+        var res = composition.map(runSchema, this).join2(devider);
+        return res;
     };
 }
 
