@@ -80,6 +80,7 @@ var alphabet = {
         return enums.map((x) => ((typeof(x) === 'string') ? `'${x}'` : String(x))).join2(' | ');
     },
     'type'(type) {
+        if (Array.isArray(type)) return type.map(alphabet.type).join(' | ');
         return types[type] || 'unknown';
     },
     '$ref'(ref) {
