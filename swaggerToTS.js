@@ -84,7 +84,7 @@ var alphabet = {
         return types[type] || 'unknown';
     },
     'const'(value) {
-        return (String(value).includes(' ')) ? `'${value}'` : String(value);
+        return isNumeric(value) ? String(value) : `'${value}'`;
     },
     '$ref'(ref) {
         var { 3: name } = ref.split('/');
@@ -220,7 +220,7 @@ function normalizeSchemaEnum(schema) {
         ['number', 'integer'].includes(schema.type) &&
         Array.isArray(schema.enum)
     ) schema.enum.forEach((value, i, enums) => {
-        if (value && !Number.isNaN(Number(value))) {
+        if (value && isNumeric(value)) {
             enums[i] = Number(value);
         }
     });
@@ -290,4 +290,8 @@ function toCase(mapper) {
         var res = mid.split(/[^\p{L}0-9]+/u).filter(Boolean).map(mapper).join('');
         return start + res + end;
     }
+}
+
+function isNumeric(x) {
+    return !Number.isNaN(Number(x));
 }
