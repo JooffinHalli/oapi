@@ -141,7 +141,7 @@ var types = {
 };
 
 var schemasFields = ['schemas', 'requestBodies', 'responses', 'parameters', 'pathItems'];
-var schemaTypeFields = ['properties', 'items', 'additionalProperties', 'enum', 'oneOf', 'anyOf', 'allOf'];
+var schemaTypeFields = ['properties', 'items', 'additionalProperties', 'enum', 'oneOf', 'anyOf', 'allOf', 'const'];
 var commentFields = ['title', 'description', 'summary', 'operationId', 'deprecated'];
 
 function runComment(schema, extraRow = '') {
