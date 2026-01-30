@@ -84,7 +84,7 @@ var alphabet = {
         return types[type] || 'unknown';
     },
     'const'(value) {
-        return (typeof(value) === 'string') ? `'${value}'` : String(value);
+        return (String(value).includes(' ')) ? `'${value}'` : String(value);
     },
     '$ref'(ref) {
         var { 3: name } = ref.split('/');
