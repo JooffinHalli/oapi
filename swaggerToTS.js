@@ -62,6 +62,9 @@ var alphabet = {
     '@anyProperty'(schema, name) {
         var types = runSchema.call(this, schema);
         var jsdoc = runComment.call(this, schema);
+        if ('legal_address' === name) {
+            console.log(name, types, schema);
+        }
         return `${jsdoc}${name.toKey(!schema.isRequired).toCamelCase(this.toCamelCase)}: ${types}`;
     },
     'items'(schema) {
