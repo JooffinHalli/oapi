@@ -161,9 +161,7 @@ function runComment(schema, extraRow = '') {
 
 function runComposition(devider) {
     return function(composition) {
-        var res = composition.map(runSchema, this).join2(devider);
-        console.log(composition, res);
-        return res;
+        return composition.map(runSchema, this).join2(devider);
     };
 }
 
