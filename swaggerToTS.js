@@ -139,14 +139,18 @@ var types = {
 
 var schemasFields = ['schemas', 'requestBodies', 'responses', 'parameters', 'pathItems'];
 var schemaTypeFields = ['properties', 'items', 'additionalProperties', 'enum'];
-var commentFields = ['title', 'description', 'summary', 'operationId'];
+var commentFields = ['title', 'description', 'summary', 'operationId', 'deprecated'];
 
 function runComment(schema, extraRow = '') {
     schema = getRawSchema.call(this, schema);
     var tab = this?.t?.() || '';
     return commentFields
         .filter((field) => schema[field])
-        .map((field) => `${tab} * @${field} ${schema[field].replaceAll('\n', `\n${tab} * `)}`)
+        .map((field) => {
+            var value = schema[field];
+            if (value === true) return `${tab} * @${field}`;
+            return `${tab} * @${field} ${schema[field].replaceAll('\n', `\n${tab} * `)}`;
+        })
         .join('\n')
         .wrap(`${tab}/**\n${extraRow}`, `\n${tab} */\n${tab}`)
         .or(tab);
