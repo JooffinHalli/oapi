@@ -179,7 +179,7 @@ function runParams(rawParams, place) {
 
 function runSchema(schema) {
     var types = run.call(this, normalizedSchema(schema));
-    return types.join(' & ').or('unknown').nullable(schema.nullable);
+    return types.join(' | ').or('unknown').nullable(schema.nullable);
 };
 
 function unrefSchema(schema) {
