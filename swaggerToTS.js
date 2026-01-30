@@ -193,6 +193,11 @@ function getRawSchema(schema) {
 };
 
 function normalizedSchema(schema) {
+    var type = schema.type;
+    if (Array.isArray(type) && (type.length === 2) && type.includes('null')) {
+        schema.nullable = true;
+        schema.type = type.find((x) => (x !== 'null'));
+    }
     normalizeSchemaEnum(schema);
     if (schemaTypeFields.some(schema.hasOwnProperty, schema)) {
         delete schema.type;
