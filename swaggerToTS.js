@@ -83,6 +83,9 @@ var alphabet = {
         if (Array.isArray(type)) return type.map(alphabet.type).join(' | ');
         return types[type] || 'unknown';
     },
+    'const'(value) {
+        return value;
+    },
     '$ref'(ref) {
         var { 3: name } = ref.split('/');
         return name ? `Schemas.${name.toId().toPascalCase(this.toCamelCase)}` : 'unknown';
@@ -138,7 +141,7 @@ var types = {
 };
 
 var schemasFields = ['schemas', 'requestBodies', 'responses', 'parameters', 'pathItems'];
-var schemaTypeFields = ['properties', 'items', 'additionalProperties', 'enum'];
+var schemaTypeFields = ['properties', 'items', 'additionalProperties', 'enum', 'oneOf', 'anyOf', 'allOf'];
 var commentFields = ['title', 'description', 'summary', 'operationId', 'deprecated'];
 
 function runComment(schema, extraRow = '') {
@@ -158,7 +161,9 @@ function runComment(schema, extraRow = '') {
 
 function runComposition(devider) {
     return function(composition) {
-        return composition.map(runSchema, this).join2(devider);
+        var res = composition.map(runSchema, this).join2(devider);
+        console.log(composition, res);
+        return res;
     };
 }
 
@@ -179,7 +184,7 @@ function runParams(rawParams, place) {
 
 function runSchema(schema) {
     var types = run.call(this, normalizedSchema(schema));
-    return types.join(' | ').or('unknown').nullable(schema.nullable);
+    return types.join(' & ').or('unknown').nullable(schema.nullable);
 };
 
 function unrefSchema(schema) {
@@ -199,6 +204,7 @@ function normalizedSchema(schema) {
     }
     normalizeSchemaEnum(schema);
     if (schemaTypeFields.some(schema.hasOwnProperty, schema)) {
+        if (schema.type === 'null') schema.nullable = true;
         delete schema.type;
     }
     if (!schema.properties) return schema;
